@@ -22,7 +22,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   let userRole = ''
   if (SUPABASE_CONFIGURED) {
     try {
-      const supabase = createServerSupabaseClient()
+      const supabase = await createServerSupabaseClient()
       const { data: { user } } = await supabase.auth.getUser()
       userEmail = user?.email ?? ''
       if (user) {

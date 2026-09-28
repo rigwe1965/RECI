@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -45,7 +45,8 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="text-[10px] font-bold text-[#9CA3AF] dark:text-gray-500 uppercase tracking-widest mb-3">{children}</p>
 }
 
-export default function BookingDetailPage({ params }: { params: { id: string } }) {
+export default function BookingDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const router = useRouter()
   const [booking, setBooking] = useState<any>(null)
   const [loading, setLoading] = useState(true)

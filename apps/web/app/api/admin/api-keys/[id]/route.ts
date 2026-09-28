@@ -11,10 +11,8 @@ async function assertAdmin(request: NextRequest) {
   return user
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   if (!(await assertAdmin(request))) {
     return NextResponse.json({ error: 'Admin only' }, { status: 403 })
   }

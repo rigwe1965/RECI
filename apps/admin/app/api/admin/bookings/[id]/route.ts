@@ -21,7 +21,8 @@ const PatchSchema = z.object({
   notes: z.string().optional(),
 })
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   if (!SUPABASE_CONFIGURED) {
     const booking = MOCK_BOOKINGS.find((b) => b.id === params.id)
     if (!booking) return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
@@ -51,7 +52,8 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   return NextResponse.json(data)
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await assertAdminSession()
   if (!session.authorized) return session.response
 

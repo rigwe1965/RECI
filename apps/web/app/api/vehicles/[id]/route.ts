@@ -3,10 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 
 export const revalidate = 3600
 
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(_request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const supabase = await createClient()
 
   const { data, error } = await supabase

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/layout/Navbar'
 import CheckoutStepper from '@/components/booking/CheckoutStepper'
@@ -15,7 +15,8 @@ function unsplashUrl(url: string, w: number): string {
   return `${url.split('?')[0]}?auto=format&fit=crop&w=${w}&q=80`
 }
 
-export default function BookStep1Page({ params }: { params: { vehicleId: string } }) {
+export default function BookStep1Page(props: { params: Promise<{ vehicleId: string }> }) {
+  const params = use(props.params);
   const { vehicleId } = params
   const router = useRouter()
   const { setVehicle, setDates, setDropoffLocationId, setPricing, pickupDate, dropoffDate, pickupLocationId, dropoffLocationId, vehicle: storedVehicle } = useBookingStore()

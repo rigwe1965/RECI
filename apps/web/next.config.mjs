@@ -3,9 +3,7 @@ import { withSentryConfig } from '@sentry/nextjs'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['@reci/ui', '@reci/utils', '@reci/types'],
-  experimental: {
-    serverComponentsExternalPackages: ['stripe'],
-  },
+  serverExternalPackages: ['stripe'],
   images: {
     remotePatterns: [
       {

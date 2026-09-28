@@ -11,10 +11,8 @@ const PatchUserSchema = z.object({
   last_name: z.string().min(1).optional(),
 })
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await assertAdminOnly()
   if (!session.authorized) return session.response
 
@@ -56,10 +54,8 @@ export async function PATCH(
   return NextResponse.json(data)
 }
 
-export async function DELETE(
-  _req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await assertAdminOnly()
   if (!session.authorized) return session.response
 

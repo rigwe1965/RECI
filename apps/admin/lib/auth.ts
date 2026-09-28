@@ -20,7 +20,7 @@ export type SessionResult = AuthorizedSession | UnauthorizedSession
 
 export async function assertAdminSession(): Promise<SessionResult> {
   try {
-    const supabase = createServerSupabaseClient()
+    const supabase = await createServerSupabaseClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       return { authorized: false, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
