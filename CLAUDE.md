@@ -327,8 +327,14 @@ Two separate Vercel projects (web and admin). See `SKILL.md` section 18 for full
 |---|---|
 | Customer portal | `https://web-lilac-nine-19.vercel.app` |
 | Admin portal | `https://admin-umber-seven.vercel.app/admin` |
-| Demo admin login | `demo@reci-transport.com` / `RecIDemo2026!` |
 | Supabase project | `https://ewrknfmpdifdgxlmqbzi.supabase.co` |
+
+**Demo admin login:** removed from this file during a 2026-09-28 security review — the
+credentials here (`demo@reci-transport.com` / `RecIDemo2026!`) had been committed to git
+history and were documented as valid against the *production* admin portal above. If this
+account still exists with `role IN ('admin','staff')`, rotate its password immediately and
+consider downgrading its role or moving demo access to a separate, non-production Supabase
+project. See `audits/security-audit-2026-09-28.md` finding #3.
 
 ### Vercel Env Var Warning — PowerShell BOM Bug
 **NEVER** set Vercel env vars by piping strings in PowerShell:

@@ -8,32 +8,18 @@ export async function checkDbRateLimit(
 ): Promise<boolean> {
   try {
     const supabase = createAdminClient()
-    const now = new Date()
-    const resetAt = new Date(now.getTime() + windowMs).toISOString()
 
-    const { data: existing } = await supabase
-      .from('api_rate_limits')
-      .select('count, reset_at')
-      .eq('ip', ip)
-      .eq('endpoint', endpoint)
-      .single()
+    // Atomic increment-and-check via RPC (supabase/migrations/011_atomic_rate_limit.sql)
+    // — avoids the read-then-write race a client-side select+update/upsert would have.
+    const { data, error } = await supabase.rpc('increment_rate_limit', {
+      p_ip: ip,
+      p_endpoint: endpoint,
+      p_window_ms: windowMs,
+      p_max: maxPerWindow,
+    })
 
-    if (!existing || new Date(existing.reset_at) < now) {
-      await supabase
-        .from('api_rate_limits')
-        .upsert({ ip, endpoint, count: 1, reset_at: resetAt }, { onConflict: 'ip,endpoint' })
-      return true
-    }
-
-    if (existing.count >= maxPerWindow) return false
-
-    await supabase
-      .from('api_rate_limits')
-      .update({ count: existing.count + 1 })
-      .eq('ip', ip)
-      .eq('endpoint', endpoint)
-
-    return true
+    if (error) throw error
+    return data === true
   } catch {
     return true // fail open — don't block requests if rate limit check errors
   }

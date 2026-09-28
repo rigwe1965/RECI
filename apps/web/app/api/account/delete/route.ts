@@ -31,7 +31,15 @@ export async function DELETE() {
   // Anonymise PII in historical bookings (legal retention obligation — keep booking records, remove identity)
   const { error: bookingErr } = await admin
     .from('bookings')
-    .update({ user_id: null })
+    .update({
+      user_id: null,
+      driver_first_name: 'Deleted',
+      driver_last_name: 'User',
+      // driver_email/driver_phone are NOT NULL columns — mask rather than null
+      driver_email: `deleted-${user.id}@erased.invalid`,
+      driver_phone: 'erased',
+      driver_licence_number: null,
+    })
     .eq('user_id', user.id)
 
   if (bookingErr) {

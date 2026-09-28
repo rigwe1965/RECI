@@ -2,22 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { CreatePaymentIntentSchema } from '@/lib/schemas'
-
-const RATE_LIMIT_WINDOW_MS = 60_000
-const RATE_LIMIT_MAX = 5
-const ipCounts = new Map<string, { count: number; resetAt: number }>()
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = ipCounts.get(ip)
-  if (!entry || now > entry.resetAt) {
-    ipCounts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
-    return true
-  }
-  if (entry.count >= RATE_LIMIT_MAX) return false
-  entry.count++
-  return true
-}
+import { checkDbRateLimit } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   const ip =
@@ -25,7 +10,7 @@ export async function POST(request: NextRequest) {
     request.headers.get('x-real-ip') ??
     'unknown'
 
-  if (!checkRateLimit(ip)) {
+  if (!(await checkDbRateLimit(ip, 'payments/intent', 5, 60_000))) {
     return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
   }
 

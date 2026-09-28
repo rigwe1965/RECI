@@ -13,39 +13,39 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.2",
-    "@sentry/nextjs": "^8.0.0",
     "@hookform/resolvers": "^5.2.2",
     "@reci/types": "workspace:*",
     "@reci/ui": "workspace:*",
     "@reci/utils": "workspace:*",
+    "@sentry/nextjs": "^8.0.0",
     "@stripe/react-stripe-js": "^2.9.0",
     "@stripe/stripe-js": "^4.9.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.2",
-    "next": "14.2.21",
+    "next": "14.2.25",
+    "posthog-js": "^1.240.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",
     "resend": "^6.12.3",
     "stripe": "^17.5.0",
     "zod": "^3.24.1",
-    "zustand": "^5.0.2",
-    "posthog-js": "^1.240.0"
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@reci/config": "workspace:*",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.10.5",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.21",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.2",
-    "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
     "jest-environment-node": "^29.7.0",
-    "ts-jest": "^29.2.5"
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.2"
   }
 }

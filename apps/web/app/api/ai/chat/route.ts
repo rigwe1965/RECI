@@ -4,22 +4,7 @@ import anthropic from '@/lib/anthropic'
 import { createClient } from '@/lib/supabase/server'
 import { logAICall } from '@/lib/ai-logger'
 import { searchFaq } from '@/lib/faq-content'
-
-const RATE_LIMIT_WINDOW_MS = 60_000
-const RATE_LIMIT_MAX = 30
-const ipCounts = new Map<string, { count: number; resetAt: number }>()
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = ipCounts.get(ip)
-  if (!entry || now > entry.resetAt) {
-    ipCounts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
-    return true
-  }
-  if (entry.count >= RATE_LIMIT_MAX) return false
-  entry.count++
-  return true
-}
+import { checkDbRateLimit } from '@/lib/rate-limit'
 
 const SUPABASE_CONFIGURED =
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -296,7 +281,7 @@ export async function POST(request: NextRequest) {
   }
 
   const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'unknown'
-  if (!checkRateLimit(ip)) {
+  if (!(await checkDbRateLimit(ip, 'ai/chat', 30, 60_000))) {
     return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
   }
 

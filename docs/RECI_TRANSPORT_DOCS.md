@@ -399,8 +399,7 @@ The admin portal is separate from the customer website. All management functions
 ## 2.2 Accessing the Admin Portal
 
 **Development (testing) URL:** `http://localhost:3001/admin`  
-**Production URL:** `https://admin-umber-seven.vercel.app/admin`  
-**Demo credentials:** `demo@reci-transport.com` / `RecIDemo2026!`
+**Production URL:** `https://admin-umber-seven.vercel.app/admin`
 
 Log in with your staff or admin credentials. If you cannot log in, contact your technical team — your account may need the correct staff role assigned.
 

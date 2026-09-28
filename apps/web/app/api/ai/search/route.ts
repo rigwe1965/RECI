@@ -1,22 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import anthropic from '@/lib/anthropic'
 import { ConversationalSearchResponseSchema } from '@/lib/schemas'
-
-const RATE_LIMIT_WINDOW_MS = 60_000
-const RATE_LIMIT_MAX = 20
-const ipCounts = new Map<string, { count: number; resetAt: number }>()
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = ipCounts.get(ip)
-  if (!entry || now > entry.resetAt) {
-    ipCounts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
-    return true
-  }
-  if (entry.count >= RATE_LIMIT_MAX) return false
-  entry.count++
-  return true
-}
+import { checkDbRateLimit } from '@/lib/rate-limit'
 
 const SYSTEM_PROMPT = `You are a vehicle rental search assistant for RECI Transport.
 Extract structured search parameters from natural language queries.
@@ -52,7 +37,7 @@ export async function POST(request: NextRequest) {
   }
 
   const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'unknown'
-  if (!checkRateLimit(ip)) {
+  if (!(await checkDbRateLimit(ip, 'ai/search', 20, 60_000))) {
     return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
   }
 

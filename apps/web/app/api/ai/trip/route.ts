@@ -3,22 +3,7 @@ import anthropic from '@/lib/anthropic'
 import { TripCopilotRequestSchema, TripCopilotResponseSchema } from '@/lib/schemas'
 import { logAICall } from '@/lib/ai-logger'
 import { getUserFromRequest } from '@/lib/supabase/server'
-
-const RATE_LIMIT_WINDOW_MS = 60_000
-const RATE_LIMIT_MAX = 10
-const ipCounts = new Map<string, { count: number; resetAt: number }>()
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = ipCounts.get(ip)
-  if (!entry || now > entry.resetAt) {
-    ipCounts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
-    return true
-  }
-  if (entry.count >= RATE_LIMIT_MAX) return false
-  entry.count++
-  return true
-}
+import { checkDbRateLimit } from '@/lib/rate-limit'
 
 const SYSTEM_PROMPT = `You are a Berlin-based travel planning assistant for RECI Transport.
 You help customers plan their rental trip with practical, specific advice.
@@ -58,7 +43,7 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'unknown'
-  if (!checkRateLimit(ip)) {
+  if (!(await checkDbRateLimit(ip, 'ai/trip', 10, 60_000))) {
     return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
   }
 

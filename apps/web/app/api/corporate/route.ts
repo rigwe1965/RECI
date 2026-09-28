@@ -2,22 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
-
-const RATE_LIMIT_WINDOW_MS = 60_000
-const RATE_LIMIT_MAX = 3
-const ipCounts = new Map<string, { count: number; resetAt: number }>()
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = ipCounts.get(ip)
-  if (!entry || now > entry.resetAt) {
-    ipCounts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
-    return true
-  }
-  if (entry.count >= RATE_LIMIT_MAX) return false
-  entry.count++
-  return true
-}
+import { checkDbRateLimit } from '@/lib/rate-limit'
 
 const CreateCorporateSchema = z.object({
   company_name: z.string().min(2, 'Company name required'),
@@ -59,7 +44,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'unknown'
-  if (!checkRateLimit(ip)) return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
+  if (!(await checkDbRateLimit(ip, 'corporate', 3, 60_000))) return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
 
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()

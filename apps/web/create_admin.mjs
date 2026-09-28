@@ -1,14 +1,29 @@
 import { createClient } from '@supabase/supabase-js'
 
+// Run with: node --env-file=.env.local create_admin.mjs
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+  console.error('Missing NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY. Run with: node --env-file=.env.local create_admin.mjs')
+  process.exit(1)
+}
+
 const supabase = createClient(
-  'https://ewrknfmpdifdgxlmqbzi.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3cmtuZm1wZGlmZGd4bG1xYnppIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODU5MDYyOCwiZXhwIjoyMDk0MTY2NjI4fQ.W9yt2J63AjLGPM3n7xgzfHoZIzTxUKbAXCl1MulnTq8',
+  SUPABASE_URL,
+  SERVICE_ROLE_KEY,
   { auth: { autoRefreshToken: false, persistSession: false } }
 )
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
+if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+  console.error('Missing ADMIN_EMAIL / ADMIN_PASSWORD env vars. Example:\n  ADMIN_EMAIL=you@example.com ADMIN_PASSWORD=... node --env-file=.env.local create_admin.mjs')
+  process.exit(1)
+}
+
 const { data, error } = await supabase.auth.admin.createUser({
-  email: 'iromanus@gmail.com',
-  password: 'Admin1234!',
+  email: ADMIN_EMAIL,
+  password: ADMIN_PASSWORD,
   email_confirm: true,
   user_metadata: { first_name: 'Romanus', last_name: 'Igwe' }
 })

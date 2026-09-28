@@ -1,29 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getUserFromRequest } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin-server'
+import { checkDbRateLimit } from '@/lib/rate-limit'
 import { CreateBookingSchema } from '@/lib/schemas'
 import { calculatePrice } from '@reci/utils'
 import { runCorporateAgent } from '@/lib/corporate-agent'
 
-const RATE_LIMIT_WINDOW_MS = 60_000
-const RATE_LIMIT_MAX = 10
-const ipCounts = new Map<string, { count: number; resetAt: number }>()
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = ipCounts.get(ip)
-  if (!entry || now > entry.resetAt) {
-    ipCounts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
-    return true
-  }
-  if (entry.count >= RATE_LIMIT_MAX) return false
-  entry.count++
-  return true
-}
-
 export async function POST(request: NextRequest) {
   const ip =
     request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'unknown'
-  if (!checkRateLimit(ip)) {
+  if (!(await checkDbRateLimit(ip, 'bookings', 10, 60_000))) {
     return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
   }
 
@@ -42,7 +28,15 @@ export async function POST(request: NextRequest) {
   const data = parsed.data
 
   // Get session user (optional — guest checkout supported)
-  const { supabase, user } = await getUserFromRequest(request)
+  const { user } = await getUserFromRequest(request)
+
+  // All reads/writes below use the admin client, never the caller's anon/session
+  // client — RLS on `bookings` intentionally has no client-facing INSERT policy,
+  // so this route is the only path allowed to create a booking, and the
+  // availability conflict-check below needs visibility across ALL users'
+  // bookings (RLS's `own_bookings` policy would otherwise hide other users'
+  // conflicting bookings from a session-scoped client and defeat this check).
+  const supabase = createAdminClient()
 
   // Re-check availability (TOCTOU guard) + fetch vehicle + profile in parallel
   const today = new Date().toISOString().split('T')[0]

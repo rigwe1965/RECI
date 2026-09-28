@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import AdminShell from '@/components/AdminShell'
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 }
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const nonce = (await headers()).get('x-nonce') ?? undefined
   let userEmail = ''
   let userRole = ''
   if (SUPABASE_CONFIGURED) {
@@ -44,7 +46,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       {/* Anti-FOUC: set dark class before React hydrates */}
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <script dangerouslySetInnerHTML={{ __html: `
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: `
           try {
             var t = localStorage.getItem('reci-theme') ||
               (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');

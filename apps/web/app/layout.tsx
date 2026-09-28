@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
+import { headers } from 'next/headers'
 import { Poppins } from 'next/font/google'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import CookieBanner from '@/components/CookieBanner'
@@ -51,11 +52,13 @@ export const viewport = {
   initialScale: 1,
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const nonce = (await headers()).get('x-nonce') ?? undefined
+
   return (
     <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: `
           try {
             var t = localStorage.getItem('reci-theme') ||
               (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');

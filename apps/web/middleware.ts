@@ -9,6 +9,20 @@ const SUPABASE_CONFIGURED =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY !== 'placeholder-anon-key'
 
+function buildCspHeader(nonce: string): string {
+  return [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://js.stripe.com`,
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com",
+    "connect-src 'self' https://*.supabase.co https://api.stripe.com https://o*.ingest.sentry.io",
+    "frame-src https://js.stripe.com https://hooks.stripe.com",
+    "object-src 'none'",
+    "base-uri 'self'",
+  ].join('; ')
+}
+
 async function handleApiKeyAuth(request: NextRequest): Promise<NextResponse> {
   const apiKey = request.headers.get('x-api-key')
   if (!apiKey) {
@@ -53,14 +67,31 @@ async function handleApiKeyAuth(request: NextRequest): Promise<NextResponse> {
 }
 
 export async function middleware(request: NextRequest) {
+  const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
+  const cspHeader = buildCspHeader(nonce)
+
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-nonce', nonce)
+
   // White-label API: API key auth, no session needed
   if (request.nextUrl.pathname.startsWith('/api/v1/ai/')) {
-    return handleApiKeyAuth(request)
+    const apiKeyResponse = await handleApiKeyAuth(request)
+    apiKeyResponse.headers.set('Content-Security-Policy', cspHeader)
+    return apiKeyResponse
   }
 
-  if (!SUPABASE_CONFIGURED) return NextResponse.next({ request })
+  const path = request.nextUrl.pathname
+  const needsAuthCheck =
+    SUPABASE_CONFIGURED &&
+    (path.startsWith('/account') || path === '/auth/login' || path === '/auth/register')
 
-  let supabaseResponse = NextResponse.next({ request })
+  if (!needsAuthCheck) {
+    const response = NextResponse.next({ request: { headers: requestHeaders } })
+    response.headers.set('Content-Security-Policy', cspHeader)
+    return response
+  }
+
+  let supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -72,7 +103,7 @@ export async function middleware(request: NextRequest) {
         },
         setAll(cookiesToSet: Array<{ name: string; value: string; options?: Record<string, unknown> }>) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({ request })
+          supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options as Parameters<typeof supabaseResponse.cookies.set>[2])
           )
@@ -86,13 +117,13 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const path = request.nextUrl.pathname
-
   if (!user && path.startsWith('/account')) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/auth/login'
     loginUrl.searchParams.set('next', path)
-    return NextResponse.redirect(loginUrl)
+    const response = NextResponse.redirect(loginUrl)
+    response.headers.set('Content-Security-Policy', cspHeader)
+    return response
   }
 
   // Force password reset for admin-created accounts accessing frontend
@@ -108,7 +139,9 @@ export async function middleware(request: NextRequest) {
       const resetUrl = request.nextUrl.clone()
       resetUrl.pathname = '/auth/reset-password'
       resetUrl.searchParams.set('required', 'true')
-      return NextResponse.redirect(resetUrl)
+      const response = NextResponse.redirect(resetUrl)
+      response.headers.set('Content-Security-Policy', cspHeader)
+      return response
     }
   }
 
@@ -116,12 +149,15 @@ export async function middleware(request: NextRequest) {
   if (user && (path === '/auth/login' || path === '/auth/register')) {
     const accountUrl = request.nextUrl.clone()
     accountUrl.pathname = '/account/bookings'
-    return NextResponse.redirect(accountUrl)
+    const response = NextResponse.redirect(accountUrl)
+    response.headers.set('Content-Security-Policy', cspHeader)
+    return response
   }
 
+  supabaseResponse.headers.set('Content-Security-Policy', cspHeader)
   return supabaseResponse
 }
 
 export const config = {
-  matcher: ['/api/v1/ai/:path*', '/account/:path*', '/auth/login', '/auth/register'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }
