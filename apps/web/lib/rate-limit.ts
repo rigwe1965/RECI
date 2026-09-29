@@ -21,6 +21,11 @@ export async function checkDbRateLimit(
     if (error) throw error
     return data === true
   } catch {
-    return true // fail open — don't block requests if rate limit check errors
+    // Fail OPEN by design: this guards general abuse prevention, where
+    // availability outweighs strictness. Contrast with the daily API-key
+    // usage check in apps/web/middleware.ts (handleApiKeyAuth), which fails
+    // CLOSED because it meters a paid quota. Not an oversight — see
+    // audits/error-handling-audit-2026-09-29.md #10.
+    return true
   }
 }

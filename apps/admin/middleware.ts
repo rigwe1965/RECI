@@ -63,7 +63,23 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  let user: Awaited<ReturnType<typeof supabase.auth.getUser>>['data']['user'] = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch (err) {
+    // Supabase project can be paused / DNS can fail entirely on the free tier
+    // (see CLAUDE.md "Supabase Free Tier Behaviour") — this must not crash
+    // every request behind a raw framework error page.
+    console.error('[admin middleware] auth.getUser() failed:', err)
+    if (pathname.startsWith('/api/')) {
+      return withCsp(NextResponse.json({ error: 'Service temporarily unavailable' }, { status: 503 }))
+    }
+    const loginUrl = request.nextUrl.clone()
+    loginUrl.pathname = '/auth/login'
+    loginUrl.searchParams.set('error', 'service_unavailable')
+    return withCsp(NextResponse.redirect(loginUrl))
+  }
 
   if (!user) {
     if (pathname.startsWith('/api/')) {
@@ -75,12 +91,25 @@ export async function middleware(request: NextRequest) {
   }
 
   // Role check via service role client
-  const admin = createAdminClient()
-  const { data: profile } = await admin
-    .from('user_profiles')
-    .select('role, password_reset_required')
-    .eq('id', user.id)
-    .single()
+  let profile: { role: string; password_reset_required: boolean } | null = null
+  try {
+    const admin = createAdminClient()
+    const { data } = await admin
+      .from('user_profiles')
+      .select('role, password_reset_required')
+      .eq('id', user.id)
+      .single()
+    profile = data
+  } catch (err) {
+    console.error('[admin middleware] profile lookup failed:', err)
+    if (pathname.startsWith('/api/')) {
+      return withCsp(NextResponse.json({ error: 'Service temporarily unavailable' }, { status: 503 }))
+    }
+    const loginUrl = request.nextUrl.clone()
+    loginUrl.pathname = '/auth/login'
+    loginUrl.searchParams.set('error', 'service_unavailable')
+    return withCsp(NextResponse.redirect(loginUrl))
+  }
 
   if (!profile || !['admin', 'staff'].includes(profile.role)) {
     if (pathname.startsWith('/api/')) {

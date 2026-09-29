@@ -11,6 +11,26 @@ function authHeaders(token: string | null): Record<string, string> {
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
+// API routes return JSON error bodies like {"error":"..."} or
+// {"error":"...","details":{...}}. Parse that out instead of using the raw
+// response body as the Error message — otherwise callers that display
+// err.message directly (Alert.alert, setError) show raw JSON to the user.
+// See audits/error-handling-audit-2026-09-29.md #9.
+async function parseErrorBody(res: Response): Promise<string> {
+  try {
+    const json: unknown = await res.json()
+    if (json && typeof json === 'object') {
+      const error = (json as { error?: unknown }).error
+      if (typeof error === 'string') return error
+      const formErrors = (error as { formErrors?: unknown } | undefined)?.formErrors
+      if (Array.isArray(formErrors) && typeof formErrors[0] === 'string') return formErrors[0]
+    }
+    return `API error ${res.status}`
+  } catch {
+    return `API error ${res.status}`
+  }
+}
+
 export async function apiGet<T>(
   path: string,
   params?: Record<string, string | undefined>
@@ -26,8 +46,7 @@ export async function apiGet<T>(
     headers: authHeaders(token),
   })
   if (!res.ok) {
-    const text = await res.text()
-    throw new Error(text || `API error ${res.status}`)
+    throw new Error(await parseErrorBody(res))
   }
   return res.json() as Promise<T>
 }
@@ -43,8 +62,7 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T> {
     body: JSON.stringify(body),
   })
   if (!res.ok) {
-    const text = await res.text()
-    throw new Error(text || `API error ${res.status}`)
+    throw new Error(await parseErrorBody(res))
   }
   return res.json() as Promise<T>
 }
@@ -60,8 +78,7 @@ export async function apiPatch<T>(path: string, body: unknown): Promise<T> {
     body: JSON.stringify(body),
   })
   if (!res.ok) {
-    const text = await res.text()
-    throw new Error(text || `API error ${res.status}`)
+    throw new Error(await parseErrorBody(res))
   }
   return res.json() as Promise<T>
 }
