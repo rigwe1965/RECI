@@ -51,6 +51,18 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
     .single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  // Keep the JWT's app_metadata.role claim in sync with user_profiles.role
+  // (documented "Two-Layer Check" in CLAUDE.md) whenever role changes.
+  if (parsed.data.role) {
+    const { error: metaError } = await supabase.auth.admin.updateUserById(params.id, {
+      app_metadata: { role: parsed.data.role },
+    })
+    if (metaError) {
+      console.error('[admin/users PATCH] failed to sync app_metadata.role:', metaError)
+    }
+  }
+
   return NextResponse.json(data)
 }
 

@@ -24,6 +24,8 @@ const { data: user, error: createError } = await admin.auth.admin.createUser({
   email: EMAIL,
   password: PASSWORD,
   email_confirm: true,
+  // JWT claim checked by the admin portal's "Two-Layer Check" (see CLAUDE.md)
+  app_metadata: { role: 'admin' },
 })
 
 if (createError) {
@@ -51,6 +53,13 @@ if (!finalId) {
 }
 
 console.log('User ID:', finalId)
+
+// Ensure app_metadata.role is set even if the user already existed
+// (createUser's app_metadata above only applies on first creation)
+const { error: metaError } = await admin.auth.admin.updateUserById(finalId, {
+  app_metadata: { role: 'admin' },
+})
+if (metaError) console.error('app_metadata update failed:', metaError.message)
 
 // Upsert admin profile
 const { error: profileError } = await admin

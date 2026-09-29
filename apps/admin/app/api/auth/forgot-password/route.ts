@@ -1,24 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { checkDbRateLimit } from '@/lib/rate-limit'
 
-// In-memory rate limit: 3 attempts per IP per 15 minutes
-// NOTE: resets on cold start — acceptable on free tier where volume is low
-const attempts = new Map<string, { count: number; resetAt: number }>()
 const WINDOW_MS = 15 * 60 * 1000
 const MAX_ATTEMPTS = 3
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = attempts.get(ip)
-  if (!entry || now > entry.resetAt) {
-    attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS })
-    return true
-  }
-  if (entry.count >= MAX_ATTEMPTS) return false
-  entry.count++
-  return true
-}
 
 export async function POST(request: NextRequest) {
   const ip =
@@ -26,7 +12,7 @@ export async function POST(request: NextRequest) {
     request.headers.get('x-real-ip') ??
     'unknown'
 
-  if (!checkRateLimit(ip)) {
+  if (!(await checkDbRateLimit(ip, 'admin/forgot-password', MAX_ATTEMPTS, WINDOW_MS))) {
     return NextResponse.json({ ok: true }) // silent — don't reveal rate limiting
   }
 
@@ -37,12 +23,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Email required' }, { status: 400 })
   }
 
-  // Validate redirectTo — only allow same origin to prevent open redirect in reset email
+  // Validate redirectTo — only allow same origin to prevent open redirect in reset email.
+  // The localhost carve-out is dev-only — never honoured in production.
   const origin = request.nextUrl.origin
+  const allowLocalhost = process.env.NODE_ENV !== 'production'
   const safeRedirectTo =
     redirectTo &&
     typeof redirectTo === 'string' &&
-    (redirectTo.startsWith(`${origin}/`) || redirectTo.startsWith('http://localhost:'))
+    (redirectTo.startsWith(`${origin}/`) || (allowLocalhost && redirectTo.startsWith('http://localhost:')))
       ? redirectTo
       : `${origin}/auth/reset-password`
 

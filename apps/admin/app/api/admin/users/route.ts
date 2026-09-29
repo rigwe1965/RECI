@@ -77,6 +77,9 @@ export async function POST(request: NextRequest) {
         first_name: parsed.data.first_name,
         last_name: parsed.data.last_name,
       },
+      // Keep the JWT's app_metadata.role claim in sync with user_profiles.role
+      // (documented "Two-Layer Check" in CLAUDE.md) — set via service role only.
+      app_metadata: { role: parsed.data.role },
     })
     if (updateError) {
       return NextResponse.json({ error: updateError.message }, { status: 400 })
@@ -91,6 +94,7 @@ export async function POST(request: NextRequest) {
         first_name: parsed.data.first_name,
         last_name: parsed.data.last_name,
       },
+      app_metadata: { role: parsed.data.role },
     })
     if (authError) {
       return NextResponse.json({ error: authError.message }, { status: 400 })

@@ -38,21 +38,27 @@ async function handleApiKeyAuth(request: NextRequest): Promise<NextResponse> {
   const supabase = createAdminClient()
   const { data: keyRow } = await supabase
     .from('api_keys')
-    .select('id, revoked_at, requests_today, last_reset_at')
+    .select('id, revoked_at')
     .eq('key_hash', keyHash)
     .single()
 
   if (!keyRow) return NextResponse.json({ error: 'Invalid API key' }, { status: 401 })
   if (keyRow.revoked_at) return NextResponse.json({ error: 'API key revoked' }, { status: 401 })
 
-  const today = new Date().toISOString().split('T')[0]
-  if (keyRow.last_reset_at < today) {
-    await supabase.from('api_keys').update({ requests_today: 0, last_reset_at: today }).eq('id', keyRow.id)
-    keyRow.requests_today = 0
+  const DAILY_LIMIT = 100
+  // Atomic check-and-increment (migration 013_atomic_api_key_usage.sql) —
+  // avoids the read-then-write race a separate select+update would have.
+  const { data: allowed, error: usageError } = await supabase.rpc('increment_api_key_usage', {
+    p_key_id: keyRow.id,
+    p_daily_limit: DAILY_LIMIT,
+  })
+
+  if (usageError) {
+    console.error('[api-key-auth] increment_api_key_usage failed:', usageError)
+    return NextResponse.json({ error: 'Rate limit check failed' }, { status: 500 })
   }
 
-  const DAILY_LIMIT = 100
-  if (keyRow.requests_today >= DAILY_LIMIT) {
+  if (!allowed) {
     const midnight = new Date()
     midnight.setUTCHours(24, 0, 0, 0)
     const retryAfter = Math.ceil((midnight.getTime() - Date.now()) / 1000)
@@ -62,7 +68,6 @@ async function handleApiKeyAuth(request: NextRequest): Promise<NextResponse> {
     )
   }
 
-  void supabase.from('api_keys').update({ requests_today: keyRow.requests_today + 1 }).eq('id', keyRow.id)
   return NextResponse.next()
 }
 

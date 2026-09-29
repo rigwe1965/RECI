@@ -46,7 +46,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       {/* Anti-FOUC: set dark class before React hydrates */}
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: `
+        {/* nonce is intentionally stripped from the client RSC payload by Next.js
+            for security, so it will always mismatch on hydration — harmless, since
+            only the server-rendered value needs to match the CSP header. */}
+        <script nonce={nonce} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: `
           try {
             var t = localStorage.getItem('reci-theme') ||
               (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');

@@ -25,7 +25,9 @@ const { data, error } = await supabase.auth.admin.createUser({
   email: ADMIN_EMAIL,
   password: ADMIN_PASSWORD,
   email_confirm: true,
-  user_metadata: { first_name: 'Romanus', last_name: 'Igwe' }
+  user_metadata: { first_name: 'Romanus', last_name: 'Igwe' },
+  // JWT claim checked by the admin portal's "Two-Layer Check" (see CLAUDE.md)
+  app_metadata: { role: 'admin' }
 })
 
 if (error) { console.error('Error:', error.message); process.exit(1) }

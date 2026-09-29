@@ -58,7 +58,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <head>
-        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: `
+        {/* nonce is intentionally stripped from the client RSC payload by Next.js
+            for security, so it will always mismatch on hydration — harmless, since
+            only the server-rendered value needs to match the CSP header. */}
+        <script nonce={nonce} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: `
           try {
             var t = localStorage.getItem('reci-theme') ||
               (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
