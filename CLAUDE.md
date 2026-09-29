@@ -282,7 +282,7 @@ Admin review routes (in `apps/admin/app/api/admin/reviews/`):
 ## Performance Patterns (Already Live)
 
 - **Anthropic singleton** — module-level init, not per-request
-- **API caching** — `revalidate = 86400` on `/api/locations`, `3600` on `/api/extras` and `/api/vehicles/[id]`, `300` on `/api/pricing-signals`, `60` on `/api/vehicles` and `/api/admin/kpis`
+- **API caching** — `3600` on `/api/extras` and `/api/vehicles/[id]`, `300` on `/api/pricing-signals`, `60` on `/api/vehicles` and `/api/admin/kpis`. `/api/locations` moved from ISR (`revalidate = 86400`) to `dynamic = 'force-dynamic'` + a `Cache-Control: s-maxage=86400` header — the former made `next build` execute the route against real Supabase creds, which broke the GitHub Actions Build job (placeholder secrets only); same 24h edge caching, no build-time DB access.
 - **Fleet pagination** — `/api/admin/vehicles` accepts `page`/`perPage`; default 20 per page
 - **AdminNav review count cache** — module-level `_reviewCount` + `_reviewFetchedAt`; max one fetch per 30s across all re-mounts
 - **AbortController** — ConversationalSearch cancels in-flight request on re-submit
