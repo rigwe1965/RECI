@@ -43,7 +43,9 @@ test.describe('Homepage', () => {
 
   test('privacy policy page loads', async ({ page }) => {
     await page.goto('/privacy')
-    await expect(page.getByText('Privacy Policy')).toBeVisible()
+    // "Privacy Policy" also appears as a footer link — scope to the page's
+    // own heading rather than matching any instance of the text.
+    await expect(page.getByRole('heading', { name: 'Privacy Policy' })).toBeVisible()
     // "GDPR" appears both in a table header and in body copy — match any
     // instance, we're only checking the term appears somewhere.
     await expect(page.getByText('GDPR').first()).toBeVisible()
@@ -51,6 +53,8 @@ test.describe('Homepage', () => {
 
   test('terms page loads', async ({ page }) => {
     await page.goto('/terms')
-    await expect(page.getByText('Terms of Service')).toBeVisible()
+    // "Terms of Service" also appears as a footer link — scope to the
+    // page's own heading, same as the privacy policy test above.
+    await expect(page.getByRole('heading', { name: 'Terms of Service' })).toBeVisible()
   })
 })
