@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
+import { adminErrorResponse } from '@/lib/errors'
 
 export const dynamic = 'force-dynamic'
 
@@ -48,9 +49,9 @@ export async function GET(request: NextRequest) {
         .lte('start_date', end.split('T')[0]),
     ])
 
-    if (vErr) return NextResponse.json({ error: vErr.message }, { status: 500 })
-    if (bErr) return NextResponse.json({ error: bErr.message }, { status: 500 })
-    if (blErr) return NextResponse.json({ error: blErr.message }, { status: 500 })
+    if (vErr) return adminErrorResponse('admin/calendar', vErr)
+    if (bErr) return adminErrorResponse('admin/calendar', bErr)
+    if (blErr) return adminErrorResponse('admin/calendar', blErr)
 
     const resources = (vehicles ?? []).map((v) => ({
       id: v.id,

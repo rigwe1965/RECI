@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
 import Anthropic from '@anthropic-ai/sdk'
+import { adminErrorResponse } from '@/lib/errors'
 
 export const dynamic = 'force-dynamic'
 
@@ -93,7 +94,7 @@ export async function GET(_req: NextRequest) {
     .eq('is_active', true)
     .order('mileage', { ascending: false })
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/maintenance', error)
 
   // Flag vehicles exceeding thresholds
   const flagged: FlaggedVehicle[] = []
@@ -175,6 +176,6 @@ export async function PATCH(request: NextRequest) {
     })
     .eq('id', vehicle_id)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/maintenance', error)
   return NextResponse.json({ success: true })
 }

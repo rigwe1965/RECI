@@ -23,6 +23,8 @@ export async function checkDbRateLimit(
     if (error) throw error
     return data === true
   } catch {
-    return true // fail open — don't block requests if rate limit check errors
+    // Fail OPEN by design — mirrors apps/web/lib/rate-limit.ts. See
+    // audits/error-handling-audit-2026-09-29.md #10.
+    return true
   }
 }

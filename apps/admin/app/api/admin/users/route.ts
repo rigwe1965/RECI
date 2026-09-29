@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminOnly } from '@/lib/auth'
 import { z } from 'zod'
+import { adminErrorResponse } from '@/lib/errors'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,7 +32,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { data, error, count } = await query
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/users', error)
   return NextResponse.json({ users: data, total: count ?? 0, page, per_page: perPage })
 }
 
@@ -118,7 +119,7 @@ export async function POST(request: NextRequest) {
     if (!existingAuthUser) {
       await supabase.auth.admin.deleteUser(userId)
     }
-    return NextResponse.json({ error: profileError.message }, { status: 500 })
+    return adminErrorResponse('admin/users', profileError)
   }
 
   return NextResponse.json(

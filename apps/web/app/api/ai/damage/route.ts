@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
   const input = DamageDetectionRequestSchema.safeParse(body)
   if (!input.success) {
-    return NextResponse.json({ error: 'Invalid request', details: input.error.flatten() }, { status: 400 })
+    return NextResponse.json({ error: 'Invalid request', details: input.error.flatten() }, { status: 422 })
   }
 
   const { booking_id, inspection_type, photo_urls, baseline_photo_urls } = input.data

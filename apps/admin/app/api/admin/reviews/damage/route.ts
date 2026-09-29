@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
 import { SUPABASE_CONFIGURED } from '@/lib/mock-data'
+import { adminErrorResponse } from '@/lib/errors'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,7 +31,7 @@ export async function GET(_req: NextRequest) {
     .limit(50)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return adminErrorResponse('admin/reviews/damage', error)
   }
 
   return NextResponse.json({ inspections: data ?? [], total: count ?? 0 })

@@ -1,3 +1,4 @@
+import { adminErrorResponse } from '@/lib/errors'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
@@ -64,7 +65,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
     ])
 
     if (inspectionUpdate.error) {
-      return NextResponse.json({ error: inspectionUpdate.error.message }, { status: 500 })
+      return adminErrorResponse('admin/reviews/damage/[id]', inspectionUpdate.error)
     }
     if (bookingUpdate.error) {
       console.error('[reviews/damage] Failed to update booking notes:', bookingUpdate.error)
@@ -97,7 +98,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
     ])
 
     if (inspectionUpdate.error) {
-      return NextResponse.json({ error: inspectionUpdate.error.message }, { status: 500 })
+      return adminErrorResponse('admin/reviews/damage/[id]', inspectionUpdate.error)
     }
     if (bookingUpdate.error) {
       console.error('[reviews/damage] Failed to update booking notes:', bookingUpdate.error)
@@ -128,7 +129,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
   ])
 
   if (inspectionUpdate.error) {
-    return NextResponse.json({ error: inspectionUpdate.error.message }, { status: 500 })
+    return adminErrorResponse('admin/reviews/damage/[id]', inspectionUpdate.error)
   }
   if (bookingUpdate.error) {
     console.error('[reviews/damage] Failed to clear booking notes:', bookingUpdate.error)

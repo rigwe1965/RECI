@@ -1,3 +1,4 @@
+import { adminErrorResponse } from '@/lib/errors'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
@@ -65,7 +66,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
       .eq('id', params.id)
 
     if (updateErr) {
-      return NextResponse.json({ error: updateErr.message }, { status: 500 })
+      return adminErrorResponse('admin/reviews/licences/[id]', updateErr)
     }
 
     // Now mark user profile as verified
@@ -97,7 +98,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
     .eq('id', params.id)
 
   if (rejectErr) {
-    return NextResponse.json({ error: rejectErr.message }, { status: 500 })
+    return adminErrorResponse('admin/reviews/licences/[id]', rejectErr)
   }
 
   void logAudit({ adminId: session.userId, adminEmail: session.email, action: 'licence.rejected', resource: 'licence_verifications', resourceId: params.id, details: { note } })

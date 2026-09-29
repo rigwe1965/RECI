@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
+import { dbErrorResponse } from '@/lib/errors'
 
 export const revalidate = 86400 // locations change rarely — cache 24h
 
@@ -10,6 +11,6 @@ export async function GET() {
     .select('id, name, city')
     .order('city')
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return dbErrorResponse('locations', error)
   return NextResponse.json(data)
 }

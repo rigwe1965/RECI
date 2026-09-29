@@ -1,3 +1,4 @@
+import { adminErrorResponse } from '@/lib/errors'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminOnly } from '@/lib/auth'
@@ -50,7 +51,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
     .select()
     .single()
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/users/[id]', error)
 
   // Keep the JWT's app_metadata.role claim in sync with user_profiles.role
   // (documented "Two-Layer Check" in CLAUDE.md) whenever role changes.
@@ -86,6 +87,6 @@ export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: s
 
   // Hard-delete from auth — cascades to user_profiles via ON DELETE CASCADE
   const { error } = await supabase.auth.admin.deleteUser(params.id)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/users/[id]', error)
   return NextResponse.json({ success: true })
 }

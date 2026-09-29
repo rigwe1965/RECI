@@ -55,6 +55,9 @@ async function handleApiKeyAuth(request: NextRequest): Promise<NextResponse> {
 
   if (usageError) {
     console.error('[api-key-auth] increment_api_key_usage failed:', usageError)
+    // Fail CLOSED by design — this meters a paid quota, unlike the general
+    // abuse-prevention checkDbRateLimit() which fails open. See
+    // audits/error-handling-audit-2026-09-29.md #10.
     return NextResponse.json({ error: 'Rate limit check failed' }, { status: 500 })
   }
 
@@ -118,9 +121,23 @@ export async function middleware(request: NextRequest) {
   )
 
   // Refresh session — MUST call getUser() not getSession() per Supabase SSR docs
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  let user: Awaited<ReturnType<typeof supabase.auth.getUser>>['data']['user'] = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch (err) {
+    // Supabase project can be paused / DNS can fail entirely on the free tier
+    // (see CLAUDE.md "Supabase Free Tier Behaviour") — don't crash the page,
+    // degrade to "logged out" for account pages instead.
+    console.error('[web middleware] auth.getUser() failed:', err)
+    const loginUrl = request.nextUrl.clone()
+    loginUrl.pathname = '/auth/login'
+    loginUrl.searchParams.set('next', path)
+    loginUrl.searchParams.set('error', 'service_unavailable')
+    const response = NextResponse.redirect(loginUrl)
+    response.headers.set('Content-Security-Policy', cspHeader)
+    return response
+  }
 
   if (!user && path.startsWith('/account')) {
     const loginUrl = request.nextUrl.clone()
@@ -133,20 +150,26 @@ export async function middleware(request: NextRequest) {
 
   // Force password reset for admin-created accounts accessing frontend
   if (user && path.startsWith('/account')) {
-    const adminClient = createAdminClient()
-    const { data: profile } = await adminClient
-      .from('user_profiles')
-      .select('password_reset_required')
-      .eq('id', user.id)
-      .single()
+    try {
+      const adminClient = createAdminClient()
+      const { data: profile } = await adminClient
+        .from('user_profiles')
+        .select('password_reset_required')
+        .eq('id', user.id)
+        .single()
 
-    if (profile?.password_reset_required) {
-      const resetUrl = request.nextUrl.clone()
-      resetUrl.pathname = '/auth/reset-password'
-      resetUrl.searchParams.set('required', 'true')
-      const response = NextResponse.redirect(resetUrl)
-      response.headers.set('Content-Security-Policy', cspHeader)
-      return response
+      if (profile?.password_reset_required) {
+        const resetUrl = request.nextUrl.clone()
+        resetUrl.pathname = '/auth/reset-password'
+        resetUrl.searchParams.set('required', 'true')
+        const response = NextResponse.redirect(resetUrl)
+        response.headers.set('Content-Security-Policy', cspHeader)
+        return response
+      }
+    } catch (err) {
+      console.error('[web middleware] password_reset_required lookup failed:', err)
+      // Fail open here — this check is a UX nicety, not an auth gate, and the
+      // user already has a valid session from the getUser() call above.
     }
   }
 

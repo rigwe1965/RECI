@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
+import { dbErrorResponse } from '@/lib/errors'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,6 +19,6 @@ export async function POST() {
     .update({ password_reset_required: false })
     .eq('id', user.id)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return dbErrorResponse('account/clear-reset', error)
   return NextResponse.json({ success: true })
 }

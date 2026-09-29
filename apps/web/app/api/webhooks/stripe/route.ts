@@ -49,8 +49,9 @@ export async function POST(request: NextRequest) {
         ? intent.latest_charge
         : (intent.latest_charge as { id: string } | null)?.id ?? null
 
-    // Update payment row
-    await supabase
+    // Update payment row — must succeed before we touch the booking, or we'd
+    // mark a booking confirmed with no corresponding paid record.
+    const { error: payErr } = await supabase
       .from('payments')
       .update({
         status: 'paid',
@@ -59,21 +60,38 @@ export async function POST(request: NextRequest) {
       })
       .eq('stripe_payment_intent_id', intent.id)
 
-    // Confirm booking
-    await supabase
+    if (payErr) {
+      console.error('[webhook] failed to mark payment paid — returning 500 so Stripe retries:', payErr, { bookingId, intentId: intent.id })
+      return NextResponse.json({ error: 'payment update failed' }, { status: 500 })
+    }
+
+    // Confirm booking — if this fails after the payment update above already
+    // succeeded, the idempotency check on line ~43 would otherwise swallow
+    // every future retry (payment.status is already 'paid'). Returning 500
+    // here surfaces the split-brain state instead of silently losing it.
+    const { error: bookErr } = await supabase
       .from('bookings')
       .update({ status: 'confirmed' })
       .eq('id', bookingId)
+
+    if (bookErr) {
+      console.error('[webhook] payment marked paid but booking confirm failed — needs manual reconciliation:', bookErr, { bookingId, intentId: intent.id })
+      return NextResponse.json({ error: 'booking update failed' }, { status: 500 })
+    }
 
     // Send confirmation email — failure silently logged inside sendBookingConfirmation
     await sendBookingConfirmation(bookingId)
 
     // Fetch booking for corporate invoice + loyalty points
-    const { data: confirmedBooking } = await supabase
+    const { data: confirmedBooking, error: fetchErr } = await supabase
       .from('bookings')
       .select('corporate_account_id, user_id, total_price, points_redeemed')
       .eq('id', bookingId)
       .single()
+
+    if (fetchErr) {
+      console.error('[webhook] failed to re-fetch confirmed booking for invoice/points:', fetchErr, { bookingId })
+    }
 
     if (confirmedBooking?.corporate_account_id) {
       await sendCorporateInvoice(bookingId)
@@ -84,11 +102,14 @@ export async function POST(request: NextRequest) {
       const totalPaid = Number(confirmedBooking.total_price)
       const pointsEarned = Math.floor(totalPaid)
       if (pointsEarned > 0) {
-        await supabase.rpc('award_loyalty_points', {
+        const { error: pointsErr } = await supabase.rpc('award_loyalty_points', {
           p_user_id: confirmedBooking.user_id,
           p_points: pointsEarned,
           p_booking_id: bookingId,
         })
+        if (pointsErr) {
+          console.error('[webhook] award_loyalty_points failed:', pointsErr, { bookingId, userId: confirmedBooking.user_id, pointsEarned })
+        }
       }
     }
   }

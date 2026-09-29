@@ -1,3 +1,4 @@
+import { adminErrorResponse } from '@/lib/errors'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
@@ -101,7 +102,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
     .single()
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return adminErrorResponse('admin/bookings/[id]', error)
   }
 
   return NextResponse.json(data)
