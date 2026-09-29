@@ -3,13 +3,15 @@ import { test, expect } from '@playwright/test'
 test.describe('Homepage', () => {
   test('loads and shows vehicle search', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByText('RECI Transport')).toBeVisible()
+    // "RECI Transport" also appears in the footer — match any instance, we're
+    // only checking the brand renders somewhere on the page.
+    await expect(page.getByText('RECI Transport').first()).toBeVisible()
     await expect(page.getByText('Available Vehicles')).toBeVisible()
   })
 
   test('AI search toggle visible', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByText('AI Search')).toBeVisible()
+    await expect(page.getByText('Smart Search')).toBeVisible()
     await expect(page.getByText('Filters')).toBeVisible()
   })
 
@@ -21,17 +23,20 @@ test.describe('Homepage', () => {
   })
 
   test('cookie banner appears on first visit', async ({ page }) => {
-    // Clear storage to simulate first visit
+    // Storage is only accessible once the page has an origin — navigate
+    // first, then clear, then reload to simulate a fresh first visit.
+    await page.goto('/')
     await page.context().clearCookies()
     await page.evaluate(() => localStorage.clear())
-    await page.goto('/')
+    await page.reload()
     await expect(page.getByRole('dialog', { name: /cookie/i })).toBeVisible()
   })
 
   test('cookie banner disappears after accept', async ({ page }) => {
+    await page.goto('/')
     await page.context().clearCookies()
     await page.evaluate(() => localStorage.clear())
-    await page.goto('/')
+    await page.reload()
     await page.getByRole('button', { name: 'Accept' }).click()
     await expect(page.getByRole('dialog', { name: /cookie/i })).not.toBeVisible()
   })
@@ -39,7 +44,9 @@ test.describe('Homepage', () => {
   test('privacy policy page loads', async ({ page }) => {
     await page.goto('/privacy')
     await expect(page.getByText('Privacy Policy')).toBeVisible()
-    await expect(page.getByText('GDPR')).toBeVisible()
+    // "GDPR" appears both in a table header and in body copy — match any
+    // instance, we're only checking the term appears somewhere.
+    await expect(page.getByText('GDPR').first()).toBeVisible()
   })
 
   test('terms page loads', async ({ page }) => {
