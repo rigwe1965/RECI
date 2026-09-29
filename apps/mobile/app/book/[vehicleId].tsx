@@ -10,6 +10,7 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { apiGet } from '@/lib/api'
 import { useBookingStore } from '@/store/bookingStore'
+import { calculatePrice } from '@reci/utils'
 
 interface Vehicle {
   id: string
@@ -26,11 +27,6 @@ interface Vehicle {
 interface PricingSignal {
   signal_type: 'normal' | 'high' | 'peak'
   message: string
-}
-
-function daysBetween(a: string, b: string) {
-  const ms = new Date(b).getTime() - new Date(a).getTime()
-  return Math.max(1, Math.round(ms / 86400000))
 }
 
 export default function BookVehicleScreen() {
@@ -70,8 +66,21 @@ export default function BookVehicleScreen() {
     return <View style={styles.center}><Text style={styles.error}>Vehicle not found.</Text></View>
   }
 
-  const days = pickupDate && dropoffDate ? daysBetween(pickupDate, dropoffDate) : 1
-  const total = vehicle.daily_rate != null ? vehicle.daily_rate * days : null
+  let pricing: ReturnType<typeof calculatePrice> | null = null
+  if (vehicle.daily_rate != null && pickupDate && dropoffDate) {
+    try {
+      pricing = calculatePrice({
+        base_rate_per_day: vehicle.daily_rate,
+        pickup_datetime: pickupDate,
+        dropoff_datetime: dropoffDate,
+        extras: [],
+      })
+    } catch {
+      // invalid date range — fall back to no pricing display
+    }
+  }
+  const days = pricing?.days ?? 1
+  const total = pricing?.total ?? null
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
