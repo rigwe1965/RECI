@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getUserFromRequest } from '@/lib/supabase/server'
+import { parseJsonBody } from '@reci/api'
 
 const UpdateProfileSchema = z.object({
   first_name: z.string().min(1).optional(),
@@ -27,15 +28,8 @@ export async function PATCH(request: NextRequest) {
   const { supabase, user } = await getUserFromRequest(request)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  let body: unknown
-  try { body = await request.json() } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const parsed = UpdateProfileSchema.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json({ error: 'Validation failed', details: parsed.error.flatten() }, { status: 422 })
-  }
+  const parsed = await parseJsonBody(request, UpdateProfileSchema)
+  if (!parsed.ok) return parsed.response
 
   const { error } = await supabase
     .from('user_profiles')

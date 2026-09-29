@@ -3,8 +3,14 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
 import Anthropic from '@anthropic-ai/sdk'
 import { adminErrorResponse } from '@/lib/errors'
+import { z } from 'zod'
+import { parseJsonBody } from '@reci/api'
 
 export const dynamic = 'force-dynamic'
+
+const ResolveSchema = z.object({
+  vehicle_id: z.string().uuid(),
+})
 
 // Thresholds (km since last service)
 const THRESHOLD_WARNING  = 8_000
@@ -151,13 +157,9 @@ export async function PATCH(request: NextRequest) {
   const session = await assertAdminSession()
   if (!session.authorized) return session.response
 
-  let body: unknown
-  try { body = await request.json() } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const { vehicle_id } = body as { vehicle_id?: string }
-  if (!vehicle_id) return NextResponse.json({ error: 'vehicle_id required' }, { status: 400 })
+  const parsed = await parseJsonBody(request, ResolveSchema)
+  if (!parsed.ok) return parsed.response
+  const { vehicle_id } = parsed.data
 
   const supabase = createAdminClient()
   const { data: vehicle } = await supabase

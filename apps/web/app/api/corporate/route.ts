@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { checkDbRateLimit } from '@/lib/rate-limit'
+import { parseJsonBody } from '@reci/api'
 
 const CreateCorporateSchema = z.object({
   company_name: z.string().min(2, 'Company name required'),
@@ -64,15 +65,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Application already pending' }, { status: 409 })
   }
 
-  let body: unknown
-  try { body = await request.json() } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const parsed = CreateCorporateSchema.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json({ error: 'Validation failed', details: parsed.error.flatten() }, { status: 422 })
-  }
+  const parsed = await parseJsonBody(request, CreateCorporateSchema)
+  if (!parsed.ok) return parsed.response
 
   const admin = createAdminClient()
 

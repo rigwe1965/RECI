@@ -6,6 +6,7 @@ import { CreateBookingSchema } from '@/lib/schemas'
 import { calculatePrice } from '@reci/utils'
 import { runCorporateAgent } from '@/lib/corporate-agent'
 import { withErrorHandling } from '@/lib/api-handler'
+import { parseJsonBody } from '@reci/api'
 
 // Wrapped so any exception this handler doesn't explicitly catch (e.g. a
 // Supabase call throwing instead of returning { error }) still gets a
@@ -18,17 +19,8 @@ export const POST = withErrorHandling(async function POST(request: NextRequest) 
     return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
   }
 
-  let body: unknown
-  try {
-    body = await request.json()
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const parsed = CreateBookingSchema.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json({ error: 'Validation failed', details: parsed.error.flatten() }, { status: 422 })
-  }
+  const parsed = await parseJsonBody(request, CreateBookingSchema)
+  if (!parsed.ok) return parsed.response
 
   const data = parsed.data
 

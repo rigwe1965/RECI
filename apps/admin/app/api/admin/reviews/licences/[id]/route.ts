@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
 import { logAudit } from '@/lib/audit'
 import { z } from 'zod'
+import { parseJsonBody } from '@reci/api'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,15 +22,8 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
   const session = await assertAdminSession()
   if (!session.authorized) return session.response
 
-  let body: unknown
-  try { body = await request.json() } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const parsed = PatchSchema.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 422 })
-  }
+  const parsed = await parseJsonBody(request, PatchSchema)
+  if (!parsed.ok) return parsed.response
 
   const supabase = createAdminClient()
 

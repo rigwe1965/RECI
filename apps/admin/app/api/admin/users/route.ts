@@ -4,6 +4,7 @@ import { assertAdminOnly } from '@/lib/auth'
 import { z } from 'zod'
 import { adminErrorResponse } from '@/lib/errors'
 import { ADMIN_PORTAL_ROLES } from '@reci/types'
+import { parseJsonBody } from '@reci/api'
 
 export const dynamic = 'force-dynamic'
 
@@ -48,15 +49,8 @@ export async function POST(request: NextRequest) {
   const session = await assertAdminOnly()
   if (!session.authorized) return session.response
 
-  let body: unknown
-  try { body = await request.json() } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const parsed = CreateUserSchema.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 422 })
-  }
+  const parsed = await parseJsonBody(request, CreateUserSchema)
+  if (!parsed.ok) return parsed.response
 
   // Generate temp password — shown once, never stored in plain text
   const tempPassword = `Reci-${crypto.randomUUID().slice(0, 8).toUpperCase()}!`

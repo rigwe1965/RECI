@@ -6,6 +6,7 @@ import { logAICall } from '@/lib/ai-logger'
 import { callVisionAI } from '@/lib/ai-vision-adapter'
 
 import { checkDbRateLimit } from '@/lib/rate-limit'
+import { parseJsonBody } from '@reci/api'
 
 const SYSTEM_PROMPT = `You are an expert automotive damage inspector for a vehicle rental company.
 Your job is to carefully compare vehicle photos and identify any new damage.
@@ -43,17 +44,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Rate limit exceeded. Please try again in a moment.' }, { status: 429 })
   }
 
-  let body: unknown
-  try {
-    body = await request.json()
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const input = DamageDetectionRequestSchema.safeParse(body)
-  if (!input.success) {
-    return NextResponse.json({ error: 'Invalid request', details: input.error.flatten() }, { status: 422 })
-  }
+  const input = await parseJsonBody(request, DamageDetectionRequestSchema)
+  if (!input.ok) return input.response
 
   const { booking_id, inspection_type, photo_urls, baseline_photo_urls } = input.data
 

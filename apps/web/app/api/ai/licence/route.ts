@@ -6,6 +6,15 @@ import { getUserFromRequest } from '@/lib/supabase/server'
 import { logAICall, hashInput } from '@/lib/ai-logger'
 
 import { checkDbRateLimit } from '@/lib/rate-limit'
+import { parseJsonBody } from '@reci/api'
+import { z } from 'zod'
+
+const LicenceUploadSchema = z.object({
+  image_base64: z.string().min(1),
+  media_type: z.string().min(1),
+  booking_first_name: z.string().optional(),
+  booking_last_name: z.string().optional(),
+})
 
 const SYSTEM_PROMPT = `You are a driving licence OCR specialist. Extract information from EU/German driving licence photos.
 
@@ -39,23 +48,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Rate limit exceeded. Please wait a moment.' }, { status: 429 })
   }
 
-  let body: {
-    image_base64?: string
-    media_type?: string
-    booking_first_name?: string
-    booking_last_name?: string
-  }
-  try {
-    body = await request.json()
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const { image_base64, media_type, booking_first_name, booking_last_name } = body
-
-  if (!image_base64 || !media_type) {
-    return NextResponse.json({ error: 'image_base64 and media_type are required' }, { status: 400 })
-  }
+  const bodyParsed = await parseJsonBody(request, LicenceUploadSchema)
+  if (!bodyParsed.ok) return bodyParsed.response
+  const { image_base64, media_type, booking_first_name, booking_last_name } = bodyParsed.data
 
   const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
   if (!allowedTypes.includes(media_type)) {

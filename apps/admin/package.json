@@ -16,6 +16,7 @@
     "@fullcalendar/react": "^6.1.20",
     "@fullcalendar/resource-timeline": "^6.1.20",
     "@hookform/resolvers": "^5.2.2",
+    "@reci/api": "workspace:*",
     "@reci/supabase": "workspace:*",
     "@reci/types": "workspace:*",
     "@reci/ui": "workspace:*",

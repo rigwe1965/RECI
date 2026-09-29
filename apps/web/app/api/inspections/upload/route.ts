@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { getUserFromRequest } from '@/lib/supabase/server'
+import { parseJsonBody } from '@reci/api'
+import { z } from 'zod'
+
+const UploadSchema = z.object({
+  booking_id: z.string(),
+  inspection_type: z.enum(['pickup', 'return']),
+  angle: z.enum(['front', 'back', 'left', 'right']),
+  data_url: z.string().min(1),
+})
 
 // Verify decoded bytes actually match the declared MIME type — the data URL
 // prefix is client-supplied and otherwise trusted as a label, not content.
@@ -26,23 +35,9 @@ export async function POST(request: NextRequest) {
   const { user } = await getUserFromRequest(request)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  let body: { booking_id?: string; inspection_type?: string; angle?: string; data_url?: string }
-  try {
-    body = await request.json()
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const { booking_id, inspection_type, angle, data_url } = body
-  if (!booking_id || !inspection_type || !angle || !data_url) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
-  }
-
-  const allowedAngles = ['front', 'back', 'left', 'right']
-  const allowedTypes = ['pickup', 'return']
-  if (!allowedAngles.includes(angle) || !allowedTypes.includes(inspection_type)) {
-    return NextResponse.json({ error: 'Invalid angle or inspection_type' }, { status: 400 })
-  }
+  const parsed = await parseJsonBody(request, UploadSchema)
+  if (!parsed.ok) return parsed.response
+  const { booking_id, inspection_type, angle, data_url } = parsed.data
 
   const supabase = createAdminClient()
 

@@ -3,6 +3,7 @@ import { stripe, createPaymentIntentWithRetry } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { CreatePaymentIntentSchema } from '@/lib/schemas'
 import { checkDbRateLimit } from '@/lib/rate-limit'
+import { parseJsonBody } from '@reci/api'
 
 export async function POST(request: NextRequest) {
   const ip =
@@ -14,20 +15,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
   }
 
-  let body: unknown
-  try {
-    body = await request.json()
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const parsed = CreatePaymentIntentSchema.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'Validation failed', details: parsed.error.flatten() },
-      { status: 422 }
-    )
-  }
+  const parsed = await parseJsonBody(request, CreatePaymentIntentSchema)
+  if (!parsed.ok) return parsed.response
 
   const { booking_id } = parsed.data
   const supabase = createAdminClient()

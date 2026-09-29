@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
 import { z } from 'zod'
 import { adminErrorResponse } from '@/lib/errors'
+import { parseJsonBody } from '@reci/api'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,12 +32,8 @@ export async function POST(request: NextRequest) {
   const session = await assertAdminSession()
   if (!session.authorized) return session.response
 
-  let body: unknown
-  try { body = await request.json() } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-  const parsed = CreateSchema.safeParse(body)
-  if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 422 })
+  const parsed = await parseJsonBody(request, CreateSchema)
+  if (!parsed.ok) return parsed.response
 
   const supabase = createAdminClient()
   const { data, error } = await supabase.from('pricing_rules').insert(parsed.data).select().single()

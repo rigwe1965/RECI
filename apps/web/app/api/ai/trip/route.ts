@@ -4,6 +4,7 @@ import { TripCopilotRequestSchema, TripCopilotResponseSchema } from '@/lib/schem
 import { logAICall } from '@/lib/ai-logger'
 import { getUserFromRequest } from '@/lib/supabase/server'
 import { checkDbRateLimit } from '@/lib/rate-limit'
+import { parseJsonBody } from '@reci/api'
 
 const SYSTEM_PROMPT = `You are a Berlin-based travel planning assistant for RECI Transport.
 You help customers plan their rental trip with practical, specific advice.
@@ -47,17 +48,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
   }
 
-  let body: unknown
-  try {
-    body = await request.json()
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const input = TripCopilotRequestSchema.safeParse(body)
-  if (!input.success) {
-    return NextResponse.json({ error: 'Invalid request', details: input.error.flatten() }, { status: 422 })
-  }
+  const input = await parseJsonBody(request, TripCopilotRequestSchema)
+  if (!input.ok) return input.response
 
   const { booking_id, pickup_location, fuel_type, pickup_date, dropoff_date, vehicle_name } = input.data
 

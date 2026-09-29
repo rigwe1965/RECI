@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { getUserFromRequest } from '@/lib/supabase/server'
 import { ADMIN_PORTAL_ROLES } from '@reci/types'
+import { parseJsonBody } from '@reci/api'
+import { z } from 'zod'
+
+const OverrideSchema = z.object({
+  inspection_type: z.enum(['pickup', 'return']).default('return'),
+  admin_override: z.boolean().optional(),
+  admin_override_note: z.string().optional(),
+})
 
 export async function GET(request: NextRequest, props: { params: Promise<{ bookingId: string }> }) {
   const params = await props.params;
@@ -73,14 +81,9 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ boo
     return NextResponse.json({ error: 'Admin only' }, { status: 403 })
   }
 
-  let body: { inspection_type?: string; admin_override?: boolean; admin_override_note?: string }
-  try {
-    body = await request.json()
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const { inspection_type = 'return', admin_override, admin_override_note } = body
+  const parsed = await parseJsonBody(request, OverrideSchema)
+  if (!parsed.ok) return parsed.response
+  const { inspection_type, admin_override, admin_override_note } = parsed.data
 
   const { error } = await supabase
     .from('vehicle_inspections')

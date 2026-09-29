@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminOnly } from '@/lib/auth'
 import { z } from 'zod'
 import { ADMIN_PORTAL_ROLES } from '@reci/types'
+import { parseJsonBody } from '@reci/api'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,15 +19,8 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
   const session = await assertAdminOnly()
   if (!session.authorized) return session.response
 
-  let body: unknown
-  try { body = await request.json() } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
-  }
-
-  const parsed = PatchUserSchema.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 422 })
-  }
+  const parsed = await parseJsonBody(request, PatchUserSchema)
+  if (!parsed.ok) return parsed.response
 
   if (Object.keys(parsed.data).length === 0) {
     return NextResponse.json({ error: 'No fields to update' }, { status: 400 })
