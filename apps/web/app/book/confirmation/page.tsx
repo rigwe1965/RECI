@@ -143,7 +143,7 @@ function BookConfirmationContent() {
         <div className="max-w-lg mx-auto px-4 py-16 text-center">
           <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <h1 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-2">Confirming your booking…</h1>
-          <p className="text-[#6B7280] dark:text-gray-400 text-sm">Payment received. We're confirming your reservation.</p>
+          <p className="text-[#6B7280] dark:text-gray-400 text-sm">Payment received. We&apos;re confirming your reservation.</p>
         </div>
       </div>
     )

@@ -27,6 +27,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
               >
                 Try again
               </button>
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- global-error replaces <html>/<body> and must not depend on router context; next/link is not safe here */}
               <a
                 href="/"
                 style={{ border: '1px solid #E5E7EB', color: '#1A1A1A', padding: '10px 20px', borderRadius: 12, fontWeight: 600, fontSize: 14, textDecoration: 'none' }}

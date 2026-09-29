@@ -306,7 +306,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Build Anthropic messages array (map our simple format to SDK format)
-  let anthropicMessages: Anthropic.MessageParam[] = messages.map((m) => ({
+  const anthropicMessages: Anthropic.MessageParam[] = messages.map((m) => ({
     role: m.role,
     content: m.content,
   }))

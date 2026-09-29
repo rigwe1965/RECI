@@ -135,7 +135,7 @@ export default function RewardsPage() {
             <span className="w-8 h-8 rounded-full bg-[#407E3C] flex items-center justify-center text-white text-xs font-bold shrink-0">P</span>
             <div>
               <p className="font-semibold text-[#407E3C]">Platinum member</p>
-              <p className="text-xs text-[#6B7280] dark:text-gray-400">You've reached our highest tier. Thank you!</p>
+              <p className="text-xs text-[#6B7280] dark:text-gray-400">You&apos;ve reached our highest tier. Thank you!</p>
             </div>
           </div>
         )}
