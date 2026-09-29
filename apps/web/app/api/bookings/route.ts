@@ -5,8 +5,13 @@ import { checkDbRateLimit } from '@/lib/rate-limit'
 import { CreateBookingSchema } from '@/lib/schemas'
 import { calculatePrice } from '@reci/utils'
 import { runCorporateAgent } from '@/lib/corporate-agent'
+import { withErrorHandling } from '@/lib/api-handler'
 
-export async function POST(request: NextRequest) {
+// Wrapped so any exception this handler doesn't explicitly catch (e.g. a
+// Supabase call throwing instead of returning { error }) still gets a
+// consistent { error } JSON shape and one logged line, instead of an
+// unstructured framework 500. See audits/error-handling-audit-2026-09-29.md #6.
+export const POST = withErrorHandling(async function POST(request: NextRequest) {
   const ip =
     request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'unknown'
   if (!(await checkDbRateLimit(ip, 'bookings', 10, 60_000))) {
@@ -224,10 +229,18 @@ export async function POST(request: NextRequest) {
 
   // Deduct redeemed points atomically — non-blocking
   if (user && pointsRedeemed > 0) {
-    void supabase.rpc('deduct_loyalty_points', {
+    supabase.rpc('deduct_loyalty_points', {
       p_user_id: user.id,
       p_points: pointsRedeemed,
       p_booking_id: booking.id,
+    }).then(({ error: deductError }) => {
+      if (deductError) {
+        console.error('[bookings] deduct_loyalty_points failed:', deductError, {
+          bookingId: booking.id,
+          userId: user.id,
+          pointsRedeemed,
+        })
+      }
     })
   }
 
@@ -247,4 +260,4 @@ export async function POST(request: NextRequest) {
     },
     { status: 201 }
   )
-}
+})

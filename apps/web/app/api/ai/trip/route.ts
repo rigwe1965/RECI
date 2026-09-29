@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
   const input = TripCopilotRequestSchema.safeParse(body)
   if (!input.success) {
-    return NextResponse.json({ error: 'Invalid request', details: input.error.flatten() }, { status: 400 })
+    return NextResponse.json({ error: 'Invalid request', details: input.error.flatten() }, { status: 422 })
   }
 
   const { booking_id, pickup_location, fuel_type, pickup_date, dropoff_date, vehicle_name } = input.data

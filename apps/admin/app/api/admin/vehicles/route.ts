@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
 import { z } from 'zod'
+import { adminErrorResponse } from '@/lib/errors'
 
 export const dynamic = 'force-dynamic'
 
@@ -37,7 +38,7 @@ export async function GET(request: NextRequest) {
     .order('created_at', { ascending: false })
     .range(from, to)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/vehicles', error)
   return NextResponse.json({ vehicles: data, total: count ?? 0, page, per_page: perPage })
 }
 
@@ -62,6 +63,6 @@ export async function POST(request: NextRequest) {
     .select()
     .single()
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/vehicles', error)
   return NextResponse.json(data, { status: 201 })
 }

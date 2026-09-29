@@ -1,3 +1,4 @@
+import { adminErrorResponse } from '@/lib/errors'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
@@ -11,6 +12,6 @@ export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: s
 
   const supabase = createAdminClient()
   const { error } = await supabase.from('availability_blocks').delete().eq('id', params.id)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/availability-blocks/[id]', error)
   return NextResponse.json({ success: true })
 }

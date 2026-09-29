@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
 import { z } from 'zod'
+import { adminErrorResponse } from '@/lib/errors'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,7 +23,7 @@ export async function GET() {
     .select('*, vehicle:vehicles(make, model, year, registration_plate)')
     .order('start_date', { ascending: false })
     .limit(500)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/availability-blocks', error)
   return NextResponse.json(data)
 }
 
@@ -39,6 +40,6 @@ export async function POST(request: NextRequest) {
 
   const supabase = createAdminClient()
   const { data, error } = await supabase.from('availability_blocks').insert(parsed.data).select().single()
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return adminErrorResponse('admin/availability-blocks', error)
   return NextResponse.json(data, { status: 201 })
 }

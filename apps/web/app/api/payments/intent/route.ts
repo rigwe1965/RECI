@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { stripe } from '@/lib/stripe'
+import { stripe, createPaymentIntentWithRetry } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { CreatePaymentIntentSchema } from '@/lib/schemas'
 import { checkDbRateLimit } from '@/lib/rate-limit'
@@ -73,17 +73,22 @@ export async function POST(request: NextRequest) {
   // Amount in cents — use server-stored total_price, never client value
   const amountCents = Math.round(Number(booking.total_price) * 100)
 
-  // Create PaymentIntent
-  const intent = await stripe.paymentIntents.create({
-    amount: amountCents,
-    currency: 'eur',
-    receipt_email: booking.driver_email,
-    metadata: {
-      booking_id: booking.id,
-      booking_ref: booking.booking_ref,
+  // Create PaymentIntent — idempotency key keyed on booking_id means a retry
+  // after an ambiguous network failure returns the original intent instead of
+  // creating a duplicate charge target.
+  const intent = await createPaymentIntentWithRetry(
+    {
+      amount: amountCents,
+      currency: 'eur',
+      receipt_email: booking.driver_email,
+      metadata: {
+        booking_id: booking.id,
+        booking_ref: booking.booking_ref,
+      },
+      description: `RECI Transport — ${booking.booking_ref}`,
     },
-    description: `RECI Transport — ${booking.booking_ref}`,
-  })
+    booking.id
+  )
 
   // Insert payment row
   const { error: paymentErr } = await supabase.from('payments').insert({
