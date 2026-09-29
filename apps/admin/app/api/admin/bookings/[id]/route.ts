@@ -2,6 +2,7 @@ import { adminErrorResponse } from '@/lib/errors'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
+import { withAdminAuth } from '@/lib/with-admin-auth'
 import { z } from 'zod'
 import { SUPABASE_CONFIGURED, MOCK_BOOKINGS } from '@/lib/mock-data'
 import { parseJsonBody } from '@reci/api'
@@ -23,6 +24,8 @@ const PatchSchema = z.object({
   notes: z.string().optional(),
 })
 
+// Not wrapped in withAdminAuth: the mock-data fallback below must run before
+// the auth check when Supabase isn't configured (local/demo mode).
 export async function GET(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   if (!SUPABASE_CONFIGURED) {
@@ -54,11 +57,8 @@ export async function GET(_req: NextRequest, props: { params: Promise<{ id: stri
   return NextResponse.json(data)
 }
 
-export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const PATCH = withAdminAuth(async (request: NextRequest, props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params
   const parsed = await parseJsonBody(request, PatchSchema)
   if (!parsed.ok) return parsed.response
 
@@ -100,4 +100,4 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
   }
 
   return NextResponse.json(data)
-}
+})

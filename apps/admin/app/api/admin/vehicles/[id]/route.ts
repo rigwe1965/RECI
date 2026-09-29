@@ -1,7 +1,7 @@
 import { adminErrorResponse } from '@/lib/errors'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { assertAdminSession } from '@/lib/auth'
+import { withAdminAuth } from '@/lib/with-admin-auth'
 import { z } from 'zod'
 import { FUEL_TYPES, TRANSMISSIONS } from '@reci/types'
 import { parseJsonBody } from '@reci/api'
@@ -27,11 +27,8 @@ const PatchVehicleSchema = z.object({
   guaranteed_model: z.boolean().optional(),
 })
 
-export async function GET(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const GET = withAdminAuth(async (_req: NextRequest, props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params
   const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('vehicles')
@@ -41,13 +38,10 @@ export async function GET(_req: NextRequest, props: { params: Promise<{ id: stri
 
   if (error || !data) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   return NextResponse.json(data)
-}
+})
 
-export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const PATCH = withAdminAuth(async (request: NextRequest, props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params
   const parsed = await parseJsonBody(request, PatchVehicleSchema)
   if (!parsed.ok) return parsed.response
 
@@ -61,13 +55,10 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
 
   if (error) return adminErrorResponse('admin/vehicles/[id]', error)
   return NextResponse.json(data)
-}
+})
 
-export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const DELETE = withAdminAuth(async (_req: NextRequest, props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params
   const supabase = createAdminClient()
   const { error } = await supabase
     .from('vehicles')
@@ -76,4 +67,4 @@ export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: s
 
   if (error) return adminErrorResponse('admin/vehicles/[id]', error)
   return NextResponse.json({ success: true })
-}
+})

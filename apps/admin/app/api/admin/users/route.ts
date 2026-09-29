@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { assertAdminOnly } from '@/lib/auth'
+import { withAdminAuth } from '@/lib/with-admin-auth'
 import { z } from 'zod'
 import { adminErrorResponse } from '@/lib/errors'
 import { ADMIN_PORTAL_ROLES } from '@reci/types'
@@ -8,10 +8,7 @@ import { parseJsonBody } from '@reci/api'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET(request: NextRequest) {
-  const session = await assertAdminOnly()
-  if (!session.authorized) return session.response
-
+export const GET = withAdminAuth(async (request: NextRequest) => {
   const { searchParams } = request.nextUrl
   const search = searchParams.get('search') ?? ''
   const page = parseInt(searchParams.get('page') ?? '1', 10)
@@ -36,7 +33,7 @@ export async function GET(request: NextRequest) {
   const { data, error, count } = await query
   if (error) return adminErrorResponse('admin/users', error)
   return NextResponse.json({ users: data, total: count ?? 0, page, per_page: perPage })
-}
+}, { adminOnly: true })
 
 const CreateUserSchema = z.object({
   email: z.string().email(),
@@ -45,10 +42,7 @@ const CreateUserSchema = z.object({
   role: z.enum(['staff', 'admin']),
 })
 
-export async function POST(request: NextRequest) {
-  const session = await assertAdminOnly()
-  if (!session.authorized) return session.response
-
+export const POST = withAdminAuth(async (request: NextRequest) => {
   const parsed = await parseJsonBody(request, CreateUserSchema)
   if (!parsed.ok) return parsed.response
 
@@ -121,4 +115,4 @@ export async function POST(request: NextRequest) {
     { id: userId, email: parsed.data.email, temp_password: tempPassword },
     { status: 201 }
   )
-}
+}, { adminOnly: true })

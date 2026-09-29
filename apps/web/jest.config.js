@@ -7,6 +7,7 @@ const config = {
   testEnvironment: 'node',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
+    '^@reci/([^/]+)/(.*)$': '<rootDir>/../../packages/$1/src/$2',
     '^@reci/(.*)$': '<rootDir>/../../packages/$1/src',
   },
   testMatch: ['**/__tests__/**/*.test.ts', '**/__tests__/**/*.test.tsx'],

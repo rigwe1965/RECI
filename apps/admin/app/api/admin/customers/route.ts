@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { assertAdminSession } from '@/lib/auth'
+import { withAdminAuth } from '@/lib/with-admin-auth'
 import { adminErrorResponse } from '@/lib/errors'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET(request: NextRequest) {
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const GET = withAdminAuth(async (request: NextRequest) => {
   const { searchParams } = request.nextUrl
   const search = searchParams.get('search') ?? ''
   const page = parseInt(searchParams.get('page') ?? '1', 10)
@@ -37,4 +34,4 @@ export async function GET(request: NextRequest) {
   if (error) return adminErrorResponse('admin/customers', error)
 
   return NextResponse.json({ customers: data, total: count ?? 0, page, per_page: perPage })
-}
+})

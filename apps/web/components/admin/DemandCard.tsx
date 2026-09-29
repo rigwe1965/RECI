@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { DemandGauge } from '@reci/ui'
 
 interface DemandRow {
   category_id: string
@@ -9,12 +10,6 @@ interface DemandRow {
   vehicles_remaining: number | null
   computed_at: string
   vehicle_categories: { name: string } | Array<{ name: string }> | null
-}
-
-const SIGNAL_COLOR = {
-  normal: { bar: '#407E3C', label: 'text-[#407E3C]', bg: 'bg-[#407E3C]' },
-  high: { bar: '#EA580C', label: 'text-orange-600', bg: 'bg-orange-500' },
-  peak: { bar: '#DC2626', label: 'text-[#DC2626]', bg: 'bg-[#DC2626]' },
 }
 
 function getCategoryName(raw: DemandRow['vehicle_categories']): string {
@@ -64,31 +59,15 @@ export default function DemandCard() {
 
       {!loading && rows.length > 0 && (
         <div className="space-y-3">
-          {rows.map((row) => {
-            const colors = SIGNAL_COLOR[row.signal_type]
-            const pct = Math.round(row.demand_score * 100)
-            return (
-              <div key={row.category_id}>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-medium text-[#1A1A1A] dark:text-gray-100">
-                    {getCategoryName(row.vehicle_categories)}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {row.vehicles_remaining != null && row.signal_type !== 'normal' && (
-                      <span className="text-xs text-[#6B7280] dark:text-gray-400">{row.vehicles_remaining} left</span>
-                    )}
-                    <span className={`text-xs font-semibold ${colors.label}`}>{pct}%</span>
-                  </div>
-                </div>
-                <div className="h-2 bg-[#E5E7EB] dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all ${colors.bg}`}
-                    style={{ width: `${Math.min(pct, 100)}%` }}
-                  />
-                </div>
-              </div>
-            )
-          })}
+          {rows.map((row) => (
+            <DemandGauge
+              key={row.category_id}
+              label={getCategoryName(row.vehicle_categories)}
+              remaining={row.vehicles_remaining}
+              signal={row.signal_type}
+              pct={Math.round(row.demand_score * 100)}
+            />
+          ))}
         </div>
       )}
 

@@ -1,7 +1,7 @@
 import { adminErrorResponse } from '@/lib/errors'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { assertAdminOnly } from '@/lib/auth'
+import { withAdminAuth } from '@/lib/with-admin-auth'
 import { z } from 'zod'
 import { ADMIN_PORTAL_ROLES } from '@reci/types'
 import { parseJsonBody } from '@reci/api'
@@ -14,11 +14,8 @@ const PatchUserSchema = z.object({
   last_name: z.string().min(1).optional(),
 })
 
-export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
-  const session = await assertAdminOnly()
-  if (!session.authorized) return session.response
-
+export const PATCH = withAdminAuth(async (request: NextRequest, props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params
   const parsed = await parseJsonBody(request, PatchUserSchema)
   if (!parsed.ok) return parsed.response
 
@@ -60,13 +57,10 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
   }
 
   return NextResponse.json(data)
-}
+}, { adminOnly: true })
 
-export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
-  const session = await assertAdminOnly()
-  if (!session.authorized) return session.response
-
+export const DELETE = withAdminAuth(async (_req: NextRequest, props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params
   const supabase = createAdminClient()
 
   // Verify target is an internal user before deleting
@@ -84,4 +78,4 @@ export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: s
   const { error } = await supabase.auth.admin.deleteUser(params.id)
   if (error) return adminErrorResponse('admin/users/[id]', error)
   return NextResponse.json({ success: true })
-}
+}, { adminOnly: true })

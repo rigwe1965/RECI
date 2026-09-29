@@ -1,2 +1,3 @@
 // Shared UI components — populated from Phase 2+
-export {}
+export { PasswordInput } from './PasswordInput'
+export { DemandGauge } from './DemandGauge'

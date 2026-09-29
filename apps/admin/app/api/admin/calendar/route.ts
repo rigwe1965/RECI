@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { assertAdminSession } from '@/lib/auth'
+import { withAdminAuth } from '@/lib/with-admin-auth'
 import { adminErrorResponse } from '@/lib/errors'
 
 export const dynamic = 'force-dynamic'
@@ -15,10 +15,7 @@ const STATUS_COLORS: Record<string, string> = {
   payment_failed: '#EF4444',
 }
 
-export async function GET(request: NextRequest) {
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const GET = withAdminAuth(async (request: NextRequest) => {
   const { searchParams } = request.nextUrl
   const start = searchParams.get('start')
   const end = searchParams.get('end')
@@ -86,4 +83,4 @@ export async function GET(request: NextRequest) {
     console.error('[calendar API]', err)
     return NextResponse.json({ error: String(err) }, { status: 500 })
   }
-}
+})

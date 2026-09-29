@@ -1,13 +1,10 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { assertAdminSession } from '@/lib/auth'
+import { withAdminAuth } from '@/lib/with-admin-auth'
 
 export const revalidate = 60
 
-export async function GET() {
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const GET = withAdminAuth(async () => {
   const supabase = createAdminClient()
   const today = new Date()
   const todayStr = today.toISOString().split('T')[0]
@@ -85,4 +82,4 @@ export async function GET() {
     utilisation_pct: utilisationPct,
     pending_payment: pendingPayment ?? 0,
   })
-}
+})

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { assertAdminSession } from '@/lib/auth'
+import { withAdminAuth } from '@/lib/with-admin-auth'
 import Anthropic from '@anthropic-ai/sdk'
 import { adminErrorResponse } from '@/lib/errors'
 import { z } from 'zod'
@@ -83,10 +83,7 @@ Reply with only a JSON array, no extra text. Example: ["Oil change overdue — s
   return notes
 }
 
-export async function GET(_req: NextRequest) {
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const GET = withAdminAuth(async (_req: NextRequest) => {
   const supabase = createAdminClient()
 
   const { data: vehicles, error } = await supabase
@@ -150,13 +147,10 @@ export async function GET(_req: NextRequest) {
   }
 
   return NextResponse.json({ summary, vehicles: flagged })
-}
+})
 
 // PATCH: resolve an alert (mark vehicle serviced)
-export async function PATCH(request: NextRequest) {
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const PATCH = withAdminAuth(async (request: NextRequest) => {
   const parsed = await parseJsonBody(request, ResolveSchema)
   if (!parsed.ok) return parsed.response
   const { vehicle_id } = parsed.data
@@ -180,4 +174,4 @@ export async function PATCH(request: NextRequest) {
 
   if (error) return adminErrorResponse('admin/maintenance', error)
   return NextResponse.json({ success: true })
-}
+})

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { assertAdminSession } from '@/lib/auth'
+import { withAdminAuth } from '@/lib/with-admin-auth'
 import { z } from 'zod'
 import { adminErrorResponse } from '@/lib/errors'
 import { FUEL_TYPES, TRANSMISSIONS } from '@reci/types'
@@ -23,10 +23,7 @@ const CreateVehicleSchema = z.object({
   image_url: z.string().url().optional(),
 })
 
-export async function GET(request: NextRequest) {
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const GET = withAdminAuth(async (request: NextRequest) => {
   const { searchParams } = request.nextUrl
   const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10))
   const perPage = Math.min(50, parseInt(searchParams.get('perPage') ?? '20', 10))
@@ -42,12 +39,9 @@ export async function GET(request: NextRequest) {
 
   if (error) return adminErrorResponse('admin/vehicles', error)
   return NextResponse.json({ vehicles: data, total: count ?? 0, page, per_page: perPage })
-}
+})
 
-export async function POST(request: NextRequest) {
-  const session = await assertAdminSession()
-  if (!session.authorized) return session.response
-
+export const POST = withAdminAuth(async (request: NextRequest) => {
   const parsed = await parseJsonBody(request, CreateVehicleSchema)
   if (!parsed.ok) return parsed.response
 
@@ -60,4 +54,4 @@ export async function POST(request: NextRequest) {
 
   if (error) return adminErrorResponse('admin/vehicles', error)
   return NextResponse.json(data, { status: 201 })
-}
+})

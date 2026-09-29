@@ -2,17 +2,10 @@
  * Demo seed: 20 vehicles (5 categories) with images.
  * Run: node seed_demo.mjs
  */
-import { createClient } from '@supabase/supabase-js'
+import { getAdminClient } from './scripts/_supabase-admin.mjs'
 
 // Run with: node --env-file=apps/web/.env.local seed_demo.mjs
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
-const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
-if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
-  console.error('Missing NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY. Run with: node --env-file=apps/web/.env.local seed_demo.mjs')
-  process.exit(1)
-}
-
-const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY)
+const supabase = getAdminClient('seed_demo.mjs')
 
 const LOC = 'a1b2c3d4-0000-0000-0000-000000000001'
 const CAT = {
