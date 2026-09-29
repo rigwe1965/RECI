@@ -1,6 +1,7 @@
 import anthropic from '@/lib/anthropic'
 import { z } from 'zod'
 import { createAdminClient } from '@/lib/supabase/admin-server'
+import { formatEUR } from '@reci/utils'
 
 const AgentResultSchema = z.object({
   approved: z.boolean(),
@@ -70,7 +71,7 @@ Company: ${corporate.company_name}
 Employee role: ${(booking.driver as unknown as Array<{ role: string }>)?.[0]?.role ?? 'unknown'}
 Vehicle: ${vehicle?.year} ${vehicle?.make} ${vehicle?.model} (${category?.name ?? 'unknown'}, tier ${category?.tier ?? '?'})
 Rental period: ${booking.pickup_datetime} → ${booking.dropoff_datetime}
-Total cost: €${Number(booking.total_price).toFixed(2)}
+Total cost: ${formatEUR(Number(booking.total_price))}
 Corporate credit limit: €${corporate.credit_limit}
 `.trim()
 

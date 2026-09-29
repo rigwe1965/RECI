@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { formatEUR } from '@reci/utils'
 
 interface CorporateAccount {
   id: string
@@ -98,7 +99,7 @@ export default function CorporatePage() {
             </div>
             <div>
               <dt className="text-[#6B7280] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1">Credit limit</dt>
-              <dd className="font-medium text-[#1A1A1A] dark:text-gray-100">€{Number(account.credit_limit).toFixed(2)}</dd>
+              <dd className="font-medium text-[#1A1A1A] dark:text-gray-100">{formatEUR(Number(account.credit_limit))}</dd>
             </div>
             <div>
               <dt className="text-[#6B7280] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1">Payment terms</dt>

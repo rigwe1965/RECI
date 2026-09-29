@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { formatEUR } from '@reci/utils'
 
 const STATUS_BADGE: Record<string, string> = {
   pending:        'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
@@ -146,13 +147,13 @@ export default function BookingDetailPage(props: { params: Promise<{ id: string 
                       return (
                         <div key={i} className="flex justify-between text-sm">
                           <span className="text-[#6B7280] dark:text-gray-400">{ex?.name}{e.quantity > 1 ? ` ×${e.quantity}` : ''}</span>
-                          <span className="text-[#1A1A1A] dark:text-gray-200">€{Number(e.price_snapshot).toFixed(2)}</span>
+                          <span className="text-[#1A1A1A] dark:text-gray-200">{formatEUR(Number(e.price_snapshot))}</span>
                         </div>
                       )
                     })}
                     <div className="flex justify-between font-semibold pt-2 border-t border-[#F3F4F6] dark:border-gray-800 mt-1">
                       <span className="text-[#1A1A1A] dark:text-gray-100">Total</span>
-                      <span className="text-[#407E3C]">€{Number(booking.total_price).toFixed(2)}</span>
+                      <span className="text-[#407E3C]">{formatEUR(Number(booking.total_price))}</span>
                     </div>
                   </div>
                 </div>
@@ -169,7 +170,7 @@ export default function BookingDetailPage(props: { params: Promise<{ id: string 
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-[#6B7280] dark:text-gray-400">Amount</span>
-                      <span className="text-[#1A1A1A] dark:text-gray-200">€{Number(payment.amount).toFixed(2)}</span>
+                      <span className="text-[#1A1A1A] dark:text-gray-200">{formatEUR(Number(payment.amount))}</span>
                     </div>
                     {payment.stripe_payment_intent_id && (
                       <div className="flex justify-between text-sm">

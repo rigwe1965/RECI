@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { formatEUR } from '@reci/utils'
 
 interface BookingRow {
   id: string
@@ -97,7 +98,7 @@ export default function AccountBookingsPage() {
                 </p>
               </div>
               <div className="text-right shrink-0 space-y-1">
-                <p className="text-base font-bold text-primary">€{Number(b.total_price).toFixed(2)}</p>
+                <p className="text-base font-bold text-primary">{formatEUR(Number(b.total_price))}</p>
                 {b.status === 'confirmed' && (
                   <Link
                     href={`/book/confirmation?booking_id=${b.id}`}

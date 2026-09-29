@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { formatEUR } from '@reci/utils'
 
 function PricingSkeleton() {
   return (
@@ -161,7 +162,7 @@ export default function PricingPage() {
                   return (
                     <tr key={r.id} className="border-b border-[#F3F4F6] dark:border-gray-800 last:border-0">
                       <td className="px-4 py-3 font-medium text-[#1A1A1A] dark:text-gray-100">{cat?.name ?? r.category_id}</td>
-                      <td className="px-4 py-3 font-bold text-[#407E3C]">€{Number(r.base_rate_per_day).toFixed(2)}</td>
+                      <td className="px-4 py-3 font-bold text-[#407E3C]">{formatEUR(Number(r.base_rate_per_day))}</td>
                       <td className="px-4 py-3 text-[#6B7280] dark:text-gray-400 text-xs font-mono">{r.effective_from?.split('T')[0]}</td>
                       <td className="px-4 py-3">
                         {isCurrent ? (
@@ -213,7 +214,7 @@ export default function PricingPage() {
               {saving ? 'Saving…' : 'Add rate'}
             </button>
             {newRule.base_rate_per_day && newRule.category_id && (
-              <p className="text-xs text-[#6B7280] dark:text-gray-400">Preview: €{Number(newRule.base_rate_per_day || 0).toFixed(2)}/day</p>
+              <p className="text-xs text-[#6B7280] dark:text-gray-400">Preview: {formatEUR(Number(newRule.base_rate_per_day || 0))}/day</p>
             )}
           </div>
         </div>

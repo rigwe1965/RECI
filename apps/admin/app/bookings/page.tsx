@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { formatEUR } from '@reci/utils'
 
 interface BookingRow {
   id: string
@@ -162,7 +163,7 @@ function BookingsContent() {
                       {b.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-semibold text-[#1A1A1A] dark:text-gray-100">€{Number(b.total_price).toFixed(2)}</td>
+                  <td className="px-4 py-3 font-semibold text-[#1A1A1A] dark:text-gray-100">{formatEUR(Number(b.total_price))}</td>
                 </tr>
               )
             })}

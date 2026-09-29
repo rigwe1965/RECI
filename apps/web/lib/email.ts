@@ -1,5 +1,6 @@
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin-server'
+import { formatEUR } from '@reci/utils'
 
 function getResend(): Resend {
   if (!process.env.RESEND_API_KEY) {
@@ -45,7 +46,7 @@ function buildHtml(data: BookingEmailData): string {
             (e) =>
               `<tr>
                 <td style="padding:6px 0;color:#6B7280;font-size:14px;">${e.name}${e.quantity > 1 ? ` ×${e.quantity}` : ''}</td>
-                <td style="padding:6px 0;color:#1A1A1A;font-size:14px;text-align:right;">€${e.price_snapshot.toFixed(2)}</td>
+                <td style="padding:6px 0;color:#1A1A1A;font-size:14px;text-align:right;">${formatEUR(e.price_snapshot)}</td>
               </tr>`
           )
           .join('')
@@ -119,7 +120,7 @@ function buildHtml(data: BookingEmailData): string {
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="font-size:15px;font-weight:700;color:#1A1A1A;">Total Charged</td>
-                  <td style="font-size:18px;font-weight:700;color:#407E3C;text-align:right;">€${data.total_price.toFixed(2)}</td>
+                  <td style="font-size:18px;font-weight:700;color:#407E3C;text-align:right;">${formatEUR(data.total_price)}</td>
                 </tr>
               </table>
             </div>
@@ -282,7 +283,7 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
   const extrasRows = extras.length
     ? extras.map((e) => `<tr>
         <td style="padding:6px 0;color:#6B7280;font-size:13px;">${e.name}${e.quantity > 1 ? ` ×${e.quantity}` : ''}</td>
-        <td style="padding:6px 0;font-size:13px;text-align:right;">€${e.price_snapshot.toFixed(2)}</td>
+        <td style="padding:6px 0;font-size:13px;text-align:right;">${formatEUR(e.price_snapshot)}</td>
       </tr>`).join('')
     : ''
 
@@ -326,27 +327,27 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
       </tr>
       <tr>
         <td style="padding:6px 0;font-size:13px;color:#6B7280;">Base rental</td>
-        <td style="padding:6px 0;font-size:13px;text-align:right;">€${Number(booking.base_price).toFixed(2)}</td>
+        <td style="padding:6px 0;font-size:13px;text-align:right;">${formatEUR(Number(booking.base_price))}</td>
       </tr>
       ${extrasRows}
       ${corporate.discount_pct > 0 ? `<tr>
         <td style="padding:6px 0;font-size:13px;color:#407E3C;">Corporate discount (${corporate.discount_pct}%)</td>
-        <td style="padding:6px 0;font-size:13px;color:#407E3C;text-align:right;">−€${(Number(booking.base_price) * corporate.discount_pct / 100).toFixed(2)}</td>
+        <td style="padding:6px 0;font-size:13px;color:#407E3C;text-align:right;">−${formatEUR(Number(booking.base_price) * corporate.discount_pct / 100)}</td>
       </tr>` : ''}
     </table>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
       <tr>
         <td style="padding:4px 0;font-size:13px;color:#6B7280;">Net amount</td>
-        <td style="padding:4px 0;font-size:13px;text-align:right;">€${netAmount.toFixed(2)}</td>
+        <td style="padding:4px 0;font-size:13px;text-align:right;">${formatEUR(netAmount)}</td>
       </tr>
       <tr>
         <td style="padding:4px 0;font-size:13px;color:#6B7280;">VAT (19%)</td>
-        <td style="padding:4px 0;font-size:13px;text-align:right;">€${vatAmount.toFixed(2)}</td>
+        <td style="padding:4px 0;font-size:13px;text-align:right;">${formatEUR(vatAmount)}</td>
       </tr>
       <tr>
         <td style="padding:8px 0 4px;font-size:15px;font-weight:700;color:#1A1A1A;border-top:2px solid #1A1A1A;">Total (incl. VAT)</td>
-        <td style="padding:8px 0 4px;font-size:15px;font-weight:700;color:#407E3C;text-align:right;border-top:2px solid #1A1A1A;">€${Number(booking.total_price).toFixed(2)}</td>
+        <td style="padding:8px 0 4px;font-size:15px;font-weight:700;color:#407E3C;text-align:right;border-top:2px solid #1A1A1A;">${formatEUR(Number(booking.total_price))}</td>
       </tr>
     </table>
 

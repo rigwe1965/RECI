@@ -7,7 +7,7 @@ import CheckoutStepper from '@/components/booking/CheckoutStepper'
 import DemandBanner from '@/components/search/DemandBanner'
 import Image from 'next/image'
 import { useBookingStore } from '@/hooks/useBookingStore'
-import { calculatePrice } from '@reci/utils'
+import { calculatePrice, formatEUR } from '@reci/utils'
 import type { Vehicle } from '@/lib/schemas'
 
 function unsplashUrl(url: string, w: number): string {
@@ -220,11 +220,11 @@ export default function BookStep1Page(props: { params: Promise<{ vehicleId: stri
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-[#6B7280] dark:text-gray-400">€{vehicle.daily_rate} × {days} day{days !== 1 ? 's' : ''}</span>
-                    <span className="dark:text-gray-200">€{preview.base_subtotal.toFixed(2)}</span>
+                    <span className="dark:text-gray-200">{formatEUR(preview.base_subtotal)}</span>
                   </div>
                   <div className="flex justify-between font-semibold pt-2 border-t border-[#E5E7EB] dark:border-gray-700">
                     <span className="dark:text-gray-200">Subtotal</span>
-                    <span className="text-primary">€{preview.total.toFixed(2)}</span>
+                    <span className="text-primary">{formatEUR(preview.total)}</span>
                   </div>
                   <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-2">Extras added in next step</p>
                 </div>

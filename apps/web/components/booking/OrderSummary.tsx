@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useMemo, useState } from 'react'
 import { useBookingStore } from '@/hooks/useBookingStore'
-import { calcDays } from '@reci/utils'
+import { calcDays, formatEUR } from '@reci/utils'
 
 const POINTS_TO_EUR = 100 // 100 points = €1
 const MAX_REDEEM_PCT = 0.20 // max 20% of total
@@ -77,19 +77,18 @@ function OrderSummary() {
           <span className="text-[#6B7280] dark:text-gray-400">
             Base rate{days > 0 ? ` (${days}d)` : ''}
           </span>
-          <span className="dark:text-gray-200">€{(pricing?.base_subtotal ?? (vehicle.daily_rate ?? 0) * days).toFixed(2)}</span>
+          <span className="dark:text-gray-200">{formatEUR(pricing?.base_subtotal ?? (vehicle.daily_rate ?? 0) * days)}</span>
         </div>
 
         {selectedExtras.map((e) => (
           <div key={e.extra_id} className="flex justify-between">
             <span className="text-[#6B7280] dark:text-gray-400">{e.name}</span>
             <span>
-              €
-              {(
+              {formatEUR(
                 e.is_one_time_fee
                   ? e.price_snapshot * e.quantity
                   : e.price_snapshot * days * e.quantity
-              ).toFixed(2)}
+              )}
             </span>
           </div>
         ))}
@@ -97,14 +96,14 @@ function OrderSummary() {
         {pricing && pricing.discount_amount > 0 && (
           <div className="flex justify-between text-[#16A34A]">
             <span>Discount</span>
-            <span>−€{pricing.discount_amount.toFixed(2)}</span>
+            <span>−{formatEUR(pricing.discount_amount)}</span>
           </div>
         )}
 
         {pricing && pricing.surcharge_amount > 0 && (
           <div className="flex justify-between text-orange-600">
             <span>Demand surcharge</span>
-            <span>+€{pricing.surcharge_amount.toFixed(2)}</span>
+            <span>+{formatEUR(pricing.surcharge_amount)}</span>
           </div>
         )}
 
@@ -112,7 +111,7 @@ function OrderSummary() {
         {usePoints && pointsDiscount > 0 && (
           <div className="flex justify-between text-[#407E3C] font-medium">
             <span>Points discount ({maxRedeemPoints} pts)</span>
-            <span>−€{pointsDiscount.toFixed(2)}</span>
+            <span>−{formatEUR(pointsDiscount)}</span>
           </div>
         )}
       </div>
@@ -144,7 +143,7 @@ function OrderSummary() {
               className="w-4 h-4 accent-[#407E3C] cursor-pointer"
             />
             <span className="text-xs text-[#407E3C]">
-              Use {maxRedeemPoints} points → save €{(maxRedeemPoints / POINTS_TO_EUR).toFixed(2)}
+              Use {maxRedeemPoints} points → save {formatEUR(maxRedeemPoints / POINTS_TO_EUR)}
             </span>
           </label>
         </div>
@@ -155,10 +154,10 @@ function OrderSummary() {
         <span className="font-semibold text-[#1A1A1A] dark:text-gray-100">Total</span>
         <div className="text-right">
           {usePoints && pointsDiscount > 0 && (
-            <p className="text-xs text-[#6B7280] dark:text-gray-400 line-through">€{baseTotal.toFixed(2)}</p>
+            <p className="text-xs text-[#6B7280] dark:text-gray-400 line-through">{formatEUR(baseTotal)}</p>
           )}
           <span className="text-2xl font-bold text-primary">
-            €{(usePoints ? finalTotal : baseTotal).toFixed(2)}
+            {formatEUR(usePoints ? finalTotal : baseTotal)}
           </span>
         </div>
       </div>

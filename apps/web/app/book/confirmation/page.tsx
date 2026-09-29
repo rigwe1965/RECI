@@ -10,6 +10,7 @@ import TripCopilot from '@/components/booking/TripCopilot'
 import DigitalCheckIn from '@/components/booking/DigitalCheckIn'
 import { useBookingStore } from '@/hooks/useBookingStore'
 import type { BookingConfirmation } from '@/lib/schemas'
+import { formatEUR } from '@reci/utils'
 
 function formatDatetime(iso: string): string {
   return new Date(iso).toLocaleString('en-DE', {
@@ -219,7 +220,7 @@ function BookConfirmationContent() {
                   {booking.extras.map((e, i) => (
                     <li key={i} className="flex justify-between text-sm">
                       <span className="text-[#6B7280] dark:text-gray-400">{e.name}{e.quantity > 1 ? ` ×${e.quantity}` : ''}</span>
-                      <span className="text-[#1A1A1A] dark:text-gray-200">€{e.price_snapshot.toFixed(2)}</span>
+                      <span className="text-[#1A1A1A] dark:text-gray-200">{formatEUR(e.price_snapshot)}</span>
                     </li>
                   ))}
                 </ul>
@@ -229,7 +230,7 @@ function BookConfirmationContent() {
             {/* Total */}
             <div className="flex items-center justify-between">
               <span className="font-semibold text-[#1A1A1A] dark:text-gray-100">Total Charged</span>
-              <span className="text-xl font-bold text-primary">€{Number(booking.total_price).toFixed(2)}</span>
+              <span className="text-xl font-bold text-primary">{formatEUR(Number(booking.total_price))}</span>
             </div>
           </div>
 

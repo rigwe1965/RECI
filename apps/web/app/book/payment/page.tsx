@@ -8,6 +8,7 @@ import Navbar from '@/components/layout/Navbar'
 import CheckoutStepper from '@/components/booking/CheckoutStepper'
 import OrderSummary from '@/components/booking/OrderSummary'
 import { useBookingStore } from '@/hooks/useBookingStore'
+import { formatEUR } from '@reci/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -75,7 +76,7 @@ function PaymentForm({ bookingId, bookingRef, amount }: PaymentFormProps) {
           </div>
           <div className="flex items-center justify-between mb-6">
             <span className="text-base font-semibold text-[#1A1A1A] dark:text-gray-100">Total due</span>
-            <span className="text-2xl font-bold text-primary">€{amount.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-primary">{formatEUR(amount)}</span>
           </div>
 
           <button
@@ -83,7 +84,7 @@ function PaymentForm({ bookingId, bookingRef, amount }: PaymentFormProps) {
             disabled={!stripe || submitting}
             className="w-full btn-primary py-3 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {submitting ? 'Processing…' : `Pay €${amount.toFixed(2)}`}
+            {submitting ? 'Processing…' : `Pay ${formatEUR(amount)}`}
           </button>
         </div>
       </div>

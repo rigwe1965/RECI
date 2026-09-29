@@ -3,6 +3,7 @@
 import { useBookingStore } from '@/hooks/useBookingStore'
 import type { Extra } from '@/lib/schemas'
 import type { ExtraRecommendation } from '@/app/api/ai/extras-recommend/route'
+import { formatEUR } from '@reci/utils'
 
 interface ExtraSelectorProps {
   extras: Extra[]
@@ -88,7 +89,7 @@ export default function ExtraSelector({ extras, days, recommendations = [] }: Ex
             <span className="text-sm font-semibold text-primary whitespace-nowrap">
               {type === 'radio' && extra.price_per_day === 0
                 ? 'Included'
-                : `€${linePrice(extra).toFixed(2)}${extra.is_one_time_fee ? (type === 'radio' ? '' : ' one-time') : '/day'}`}
+                : `${formatEUR(linePrice(extra))}${extra.is_one_time_fee ? (type === 'radio' ? '' : ' one-time') : '/day'}`}
             </span>
           </div>
           {extra.description && (
