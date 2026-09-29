@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
 import { z } from 'zod'
+import { FUEL_TYPES, TRANSMISSIONS } from '@reci/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,8 +14,8 @@ const PatchVehicleSchema = z.object({
   registration_plate: z.string().min(1).optional(),
   category_id: z.string().uuid().optional(),
   location_id: z.string().uuid().optional(),
-  fuel_type: z.enum(['petrol', 'diesel', 'electric', 'hybrid']).optional(),
-  transmission: z.enum(['manual', 'automatic']).optional(),
+  fuel_type: z.enum(FUEL_TYPES).optional(),
+  transmission: z.enum(TRANSMISSIONS).optional(),
   color: z.string().optional(),
   seats: z.number().int().optional(),
   mileage: z.number().int().optional(),

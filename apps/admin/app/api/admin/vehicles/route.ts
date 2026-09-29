@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminSession } from '@/lib/auth'
 import { z } from 'zod'
 import { adminErrorResponse } from '@/lib/errors'
+import { FUEL_TYPES, TRANSMISSIONS } from '@reci/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,8 +14,8 @@ const CreateVehicleSchema = z.object({
   registration_plate: z.string().min(1),
   category_id: z.string().uuid(),
   location_id: z.string().uuid(),
-  fuel_type: z.enum(['petrol', 'diesel', 'electric', 'hybrid']),
-  transmission: z.enum(['manual', 'automatic']),
+  fuel_type: z.enum(FUEL_TYPES),
+  transmission: z.enum(TRANSMISSIONS),
   color: z.string().min(1),
   seats: z.number().int().min(1).max(20).optional(),
   mileage: z.number().int().min(0).optional(),

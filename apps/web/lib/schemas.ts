@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { FUEL_TYPES, TRANSMISSIONS } from '@reci/types'
 
 export const VehicleCategorySchema = z.object({
   id: z.string().uuid(),
@@ -18,8 +19,8 @@ export const VehicleSchema = z.object({
   model: z.string(),
   year: z.number(),
   registration_plate: z.string(),
-  fuel_type: z.enum(['petrol', 'diesel', 'electric', 'hybrid']),
-  transmission: z.enum(['manual', 'automatic']),
+  fuel_type: z.enum(FUEL_TYPES),
+  transmission: z.enum(TRANSMISSIONS),
   color: z.string(),
   mileage: z.number(),
   is_active: z.boolean(),
@@ -39,8 +40,8 @@ export const SearchParamsSchema = z.object({
   dropoff_date: z.string().optional(),
   category_slug: z.string().optional(),
   passenger_capacity: z.number().int().positive().optional(),
-  fuel_type: z.enum(['petrol', 'diesel', 'electric', 'hybrid']).optional(),
-  transmission: z.enum(['manual', 'automatic']).optional(),
+  fuel_type: z.enum(FUEL_TYPES).optional(),
+  transmission: z.enum(TRANSMISSIONS).optional(),
 })
 
 export const ConversationalSearchResponseSchema = z.object({
@@ -137,7 +138,7 @@ export const BookingConfirmationSchema = z.object({
     make: z.string(),
     model: z.string(),
     year: z.number(),
-    fuel_type: z.enum(['petrol', 'diesel', 'electric', 'hybrid']).optional(),
+    fuel_type: z.enum(FUEL_TYPES).optional(),
     category: z.object({ name: z.string() }).optional(),
   }),
   extras: z.array(
@@ -170,7 +171,7 @@ export const LicenceOCRResponseSchema = z.object({
 export const TripCopilotRequestSchema = z.object({
   booking_id: z.string().uuid(),
   pickup_location: z.string(),
-  fuel_type: z.enum(['petrol', 'diesel', 'electric', 'hybrid']),
+  fuel_type: z.enum(FUEL_TYPES),
   pickup_date: z.string(),
   dropoff_date: z.string(),
   vehicle_name: z.string(),

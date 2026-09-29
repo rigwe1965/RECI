@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { FUEL_TYPES, TRANSMISSIONS } from '@reci/types'
 
 const Schema = z.object({
   make: z.string().min(1, 'Required'),
@@ -13,8 +14,8 @@ const Schema = z.object({
   registration_plate: z.string().min(1, 'Required'),
   category_id: z.string().uuid('Required'),
   location_id: z.string().uuid('Required'),
-  fuel_type: z.enum(['petrol', 'diesel', 'electric', 'hybrid']),
-  transmission: z.enum(['manual', 'automatic']),
+  fuel_type: z.enum(FUEL_TYPES),
+  transmission: z.enum(TRANSMISSIONS),
   color: z.string().min(1, 'Required'),
   seats: z.coerce.number().int().min(1).max(20).optional(),
   mileage: z.coerce.number().int().min(0).optional(),

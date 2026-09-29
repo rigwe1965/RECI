@@ -23,7 +23,11 @@ export type UserRole = 'customer' | 'staff' | 'admin' | 'corporate_manager'
 export const ADMIN_PORTAL_ROLES = ['admin', 'staff'] as const
 export type AdminPortalRole = typeof ADMIN_PORTAL_ROLES[number]
 
-export type FuelType = 'petrol' | 'diesel' | 'electric' | 'hybrid'
+export const FUEL_TYPES = ['petrol', 'diesel', 'electric', 'hybrid'] as const
+export type FuelType = typeof FUEL_TYPES[number]
+
+export const TRANSMISSIONS = ['manual', 'automatic'] as const
+export type Transmission = typeof TRANSMISSIONS[number]
 
 export type InspectionType = 'pickup' | 'return'
 
