@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminOnly } from '@/lib/auth'
 import { z } from 'zod'
+import { ADMIN_PORTAL_ROLES } from '@reci/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,7 +41,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
     .eq('id', params.id)
     .single()
 
-  if (!existing || !['admin', 'staff'].includes(existing.role)) {
+  if (!existing || !ADMIN_PORTAL_ROLES.includes(existing.role)) {
     return NextResponse.json({ error: 'User not found or not an internal user' }, { status: 404 })
   }
 
@@ -81,7 +82,7 @@ export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: s
     .eq('id', params.id)
     .single()
 
-  if (!existing || !['admin', 'staff'].includes(existing.role)) {
+  if (!existing || !ADMIN_PORTAL_ROLES.includes(existing.role)) {
     return NextResponse.json({ error: 'User not found or not an internal user' }, { status: 404 })
   }
 

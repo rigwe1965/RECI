@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { getUserFromRequest } from '@/lib/supabase/server'
+import { ADMIN_PORTAL_ROLES } from '@reci/types'
 
 export async function GET(request: NextRequest) {
   const { user } = await getUserFromRequest(request)
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
     .eq('id', user.id)
     .single()
 
-  if (!profile || !['admin', 'staff'].includes(profile.role)) {
+  if (!profile || !ADMIN_PORTAL_ROLES.includes(profile.role)) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 

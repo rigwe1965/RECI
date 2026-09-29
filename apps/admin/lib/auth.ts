@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
 import { createServerSupabaseClient } from './supabase/server'
 import { createAdminClient } from './supabase/admin'
+import { ADMIN_PORTAL_ROLES, type AdminPortalRole } from '@reci/types'
 
-export type AdminRole = 'admin' | 'staff'
+export type AdminRole = AdminPortalRole
 
 export interface AuthorizedSession {
   authorized: true
@@ -33,7 +34,7 @@ export async function assertAdminSession(): Promise<SessionResult> {
       .eq('id', user.id)
       .single()
 
-    if (!profile || !['admin', 'staff'].includes(profile.role)) {
+    if (!profile || !ADMIN_PORTAL_ROLES.includes(profile.role)) {
       return { authorized: false, response: NextResponse.json({ error: 'Forbidden' }, { status: 403 }) }
     }
 

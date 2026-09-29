@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { assertAdminOnly } from '@/lib/auth'
 import { z } from 'zod'
 import { adminErrorResponse } from '@/lib/errors'
+import { ADMIN_PORTAL_ROLES } from '@reci/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
   let query = supabase
     .from('user_profiles')
     .select('id, email, first_name, last_name, role, password_reset_required, created_at', { count: 'exact' })
-    .in('role', ['admin', 'staff'])
+    .in('role', ADMIN_PORTAL_ROLES)
     .order('created_at', { ascending: false })
     .range(from, to)
 

@@ -9,6 +9,7 @@ import { z } from 'zod'
 import Link from 'next/link'
 import { createBrowserSupabaseClient } from '@/lib/supabase/browser'
 import PasswordInput from '@/components/ui/PasswordInput'
+import { ADMIN_PORTAL_ROLES } from '@reci/types'
 
 const LoginSchema = z.object({
   email: z.string().email('Valid email required'),
@@ -61,7 +62,7 @@ function LoginContent() {
       .eq('id', user.id)
       .single()
 
-    if (!profile || !['admin', 'staff'].includes(profile.role)) {
+    if (!profile || !ADMIN_PORTAL_ROLES.includes(profile.role)) {
       await supabase.auth.signOut()
       setServerError('Access denied. Admin or staff role required.')
       setLoading(false)

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { checkDbRateLimit } from '@/lib/rate-limit'
+import { ADMIN_PORTAL_ROLES } from '@reci/types'
 
 const WINDOW_MS = 15 * 60 * 1000
 const MAX_ATTEMPTS = 3
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
     .eq('email', email.toLowerCase().trim())
     .single()
 
-  if (profile && ['admin', 'staff'].includes(profile.role)) {
+  if (profile && ADMIN_PORTAL_ROLES.includes(profile.role)) {
     // Use anon-key client to trigger Supabase's email sending pipeline
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,

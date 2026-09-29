@@ -20,6 +20,9 @@ export type SignalType = 'normal' | 'high' | 'peak'
 
 export type UserRole = 'customer' | 'staff' | 'admin' | 'corporate_manager'
 
+export const ADMIN_PORTAL_ROLES = ['admin', 'staff'] as const
+export type AdminPortalRole = typeof ADMIN_PORTAL_ROLES[number]
+
 export type FuelType = 'petrol' | 'diesel' | 'electric' | 'hybrid'
 
 export type InspectionType = 'pickup' | 'return'

@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { getUserFromRequest } from '@/lib/supabase/server'
+import { ADMIN_PORTAL_ROLES } from '@reci/types'
 
 async function assertAdmin(request: NextRequest) {
   const { user } = await getUserFromRequest(request)
   if (!user) return null
   const supabase = createAdminClient()
   const { data } = await supabase.from('user_profiles').select('role').eq('id', user.id).single()
-  if (data?.role !== 'admin' && data?.role !== 'staff') return null
+  if (!data || !ADMIN_PORTAL_ROLES.includes(data.role)) return null
   return user
 }
 

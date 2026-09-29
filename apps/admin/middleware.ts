@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { ADMIN_PORTAL_ROLES } from '@reci/types'
 
 const SUPABASE_CONFIGURED =
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -111,7 +112,7 @@ export async function middleware(request: NextRequest) {
     return withCsp(NextResponse.redirect(loginUrl))
   }
 
-  if (!profile || !['admin', 'staff'].includes(profile.role)) {
+  if (!profile || !ADMIN_PORTAL_ROLES.includes(profile.role as (typeof ADMIN_PORTAL_ROLES)[number])) {
     if (pathname.startsWith('/api/')) {
       return withCsp(NextResponse.json({ error: 'Forbidden' }, { status: 403 }))
     }

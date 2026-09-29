@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { getUserFromRequest } from '@/lib/supabase/server'
+import { ADMIN_PORTAL_ROLES } from '@reci/types'
 
 export async function GET(request: NextRequest, props: { params: Promise<{ bookingId: string }> }) {
   const params = await props.params;
@@ -27,7 +28,7 @@ export async function GET(request: NextRequest, props: { params: Promise<{ booki
     .eq('id', user.id)
     .single()
 
-  const isAdmin = profile?.role === 'admin' || profile?.role === 'staff'
+  const isAdmin = !!profile && ADMIN_PORTAL_ROLES.includes(profile.role)
   if (booking.user_id !== user.id && !isAdmin) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
@@ -68,7 +69,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ boo
     .eq('id', user.id)
     .single()
 
-  if (profile?.role !== 'admin' && profile?.role !== 'staff') {
+  if (!profile || !ADMIN_PORTAL_ROLES.includes(profile.role)) {
     return NextResponse.json({ error: 'Admin only' }, { status: 403 })
   }
 
