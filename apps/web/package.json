@@ -14,6 +14,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.2",
     "@hookform/resolvers": "^5.2.2",
+    "@reci/supabase": "workspace:*",
     "@reci/types": "workspace:*",
     "@reci/ui": "workspace:*",
     "@reci/utils": "workspace:*",
