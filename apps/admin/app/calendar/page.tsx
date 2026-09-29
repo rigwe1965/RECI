@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import type { Root } from 'react-dom/client'
 
 interface EventStats {
   confirmed: number
@@ -67,12 +68,25 @@ function computeStats(events: any[], resources: any[]): EventStats {
 
 export default function CalendarPage() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const rootRef = useRef<Root | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [stats, setStats] = useState<EventStats | null>(null)
   const router = useRouter()
 
+  // Separate, mount-lifetime-only effect for the imperative React root —
+  // must not depend on `router` or anything that re-runs the data-fetch
+  // effect below, otherwise it would unmount the root out from under it.
   useEffect(() => {
+    return () => {
+      rootRef.current?.unmount()
+      rootRef.current = null
+    }
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+
     async function init() {
       const [
         { default: FullCalendar },
@@ -88,7 +102,7 @@ export default function CalendarPage() {
         import('react'),
       ])
 
-      if (!containerRef.current) return
+      if (!containerRef.current || cancelled) return
 
       const now = new Date()
       const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
@@ -97,16 +111,25 @@ export default function CalendarPage() {
       const res = await fetch(`/admin/api/admin/calendar?start=${start}&end=${end}`)
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
-        setError(body.error ?? 'Failed to load calendar data')
-        setLoading(false)
+        if (!cancelled) {
+          setError(body.error ?? 'Failed to load calendar data')
+          setLoading(false)
+        }
         return
       }
       const { resources, events } = await res.json()
 
+      if (cancelled) return
       setStats(computeStats(events, resources))
 
-      const root = createRoot(containerRef.current)
-      root.render(
+      // Reuse the existing root across re-invocations (e.g. Strict Mode's
+      // dev-only double-invoke of effects) instead of calling createRoot()
+      // again on the same container, which throws.
+      if (!rootRef.current) {
+        if (!containerRef.current) return
+        rootRef.current = createRoot(containerRef.current)
+      }
+      rootRef.current.render(
         React.createElement(FullCalendar, {
           plugins: [resourceTimelinePlugin, interactionPlugin],
           initialView: 'resourceTimelineMonth',
@@ -133,10 +156,19 @@ export default function CalendarPage() {
           },
         })
       )
-      setLoading(false)
+      if (!cancelled) setLoading(false)
     }
 
-    init().catch((e) => { setError(String(e)); setLoading(false) })
+    init().catch((e) => {
+      if (!cancelled) {
+        setError(String(e))
+        setLoading(false)
+      }
+    })
+
+    return () => {
+      cancelled = true
+    }
   }, [router])
 
   const visibleStats = stats
