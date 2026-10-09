@@ -33,6 +33,21 @@ function blockStatus(start: string, end: string): { label: string; cls: string }
   return { label: 'Active', cls: 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400' }
 }
 
+// /api/admin/vehicles is paginated ({ vehicles, total, page, per_page }, max 50 per page).
+async function fetchAllVehicles(): Promise<any[]> {
+  const PER_PAGE = 50
+  const all: any[] = []
+  for (let page = 1; ; page++) {
+    const res = await fetch(`/admin/api/admin/vehicles?page=${page}&perPage=${PER_PAGE}`)
+    if (!res.ok) break
+    const body = await res.json()
+    const batch = Array.isArray(body?.vehicles) ? body.vehicles : []
+    all.push(...batch)
+    if (batch.length < PER_PAGE || all.length >= (body.total ?? 0)) break
+  }
+  return all
+}
+
 export default function AvailabilityPage() {
   const [blocks, setBlocks] = useState<any[]>([])
   const [vehicles, setVehicles] = useState<any[]>([])
@@ -44,12 +59,12 @@ export default function AvailabilityPage() {
 
   async function load() {
     setLoading(true)
-    const [blocksRes, vehiclesRes] = await Promise.all([
+    const [blocksRes, allVehicles] = await Promise.all([
       fetch('/admin/api/admin/availability-blocks').then((r) => r.json()),
-      fetch('/admin/api/admin/vehicles').then((r) => r.json()),
+      fetchAllVehicles(),
     ])
     setBlocks(Array.isArray(blocksRes) ? blocksRes : [])
-    setVehicles(Array.isArray(vehiclesRes) ? vehiclesRes.filter((v: any) => v.is_active) : [])
+    setVehicles(allVehicles.filter((v: any) => v.is_active))
     setLoading(false)
   }
 
