@@ -349,4 +349,4 @@ echo -n "sk-ant-..." | vercel env add ANTHROPIC_API_KEY production
 The BOM causes `TypeError: Cannot convert argument to a ByteString because the character at index 0 has a value of 65279` in every Supabase/Anthropic HTTP call on Vercel.
 
 Full rebuild spec: `SKILL.md`
-Full system documentation: `docs/RECI_TRANSPORT_DOCS.pdf`
+Full system documentation: `docs/RECI_TRANSPORT_DOCS.md`
