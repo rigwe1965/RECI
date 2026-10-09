@@ -134,7 +134,7 @@ The same `WITH CHECK (true)` pattern also exists on `booking_extras` (`insert_bo
 
 **Description:** Both files publish:
 ```
-Demo admin login: demo@reci-transport.com / RecIDemo2026!
+Demo admin login: demo@reci-transport.com / [REDACTED]
 ```
 `CLAUDE.md:330` lists this directly inside a table titled "Live Production URLs" alongside the actual production Vercel URLs for the customer and admin portals and the actual Supabase project URL — strongly implying this accessible account exists with real `admin` role in the production database, not a sandboxed/staging environment.
 

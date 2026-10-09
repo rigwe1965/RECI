@@ -330,7 +330,7 @@ Two separate Vercel projects (web and admin). See `SKILL.md` section 18 for full
 | Supabase project | `https://ewrknfmpdifdgxlmqbzi.supabase.co` |
 
 **Demo admin login:** removed from this file during a 2026-09-28 security review — the
-credentials here (`demo@reci-transport.com` / `RecIDemo2026!`) had been committed to git
+credentials here (`demo@reci-transport.com` / `[REDACTED]`) had been committed to git
 history and were documented as valid against the *production* admin portal above. If this
 account still exists with `role IN ('admin','staff')`, rotate its password immediately and
 consider downgrading its role or moving demo access to a separate, non-production Supabase

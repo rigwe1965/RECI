@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { safeNextPath } from '@/lib/safe-redirect'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/account/bookings'
+  const next = safeNextPath(searchParams.get('next'))
 
   if (!code) {
     return NextResponse.redirect(new URL('/auth/login?error=oauth_failed', request.url))

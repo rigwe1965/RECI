@@ -219,21 +219,29 @@ export const POST = withErrorHandling(async function POST(request: NextRequest) 
     }
   }
 
-  // Deduct redeemed points atomically — non-blocking
+  // Deduct redeemed points — must be awaited and must succeed. The RPC locks the
+  // loyalty row (FOR UPDATE) and raises if the balance is insufficient, which is
+  // what makes redemption race-safe. If it fires-and-forgets (or its failure is
+  // only logged), the points discount above is granted without ever being paid
+  // for — and on serverless the un-awaited call may never run at all.
   if (user && pointsRedeemed > 0) {
-    supabase.rpc('deduct_loyalty_points', {
+    const { error: deductError } = await supabase.rpc('deduct_loyalty_points', {
       p_user_id: user.id,
       p_points: pointsRedeemed,
       p_booking_id: booking.id,
-    }).then(({ error: deductError }) => {
-      if (deductError) {
-        console.error('[bookings] deduct_loyalty_points failed:', deductError, {
-          bookingId: booking.id,
-          userId: user.id,
-          pointsRedeemed,
-        })
-      }
     })
+    if (deductError) {
+      console.error('[bookings] deduct_loyalty_points failed — cancelling booking:', deductError, {
+        bookingId: booking.id,
+        userId: user.id,
+        pointsRedeemed,
+      })
+      await supabase.from('bookings').update({ status: 'cancelled' }).eq('id', booking.id)
+      return NextResponse.json(
+        { error: 'Loyalty points could not be redeemed. Please retry.' },
+        { status: 409 }
+      )
+    }
   }
 
   // Corporate AI policy check — non-blocking, runs after booking is created

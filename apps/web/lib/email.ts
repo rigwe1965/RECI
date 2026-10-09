@@ -26,6 +26,15 @@ interface BookingEmailData {
   extras: Array<{ name: string; price_snapshot: number; quantity: number }>
 }
 
+function escapeHtml(value: unknown): string {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 function formatDatetime(iso: string): string {
   return new Date(iso).toLocaleString('en-DE', {
     weekday: 'short',
@@ -45,7 +54,7 @@ function buildHtml(data: BookingEmailData): string {
           .map(
             (e) =>
               `<tr>
-                <td style="padding:6px 0;color:#6B7280;font-size:14px;">${e.name}${e.quantity > 1 ? ` ×${e.quantity}` : ''}</td>
+                <td style="padding:6px 0;color:#6B7280;font-size:14px;">${escapeHtml(e.name)}${e.quantity > 1 ? ` ×${e.quantity}` : ''}</td>
                 <td style="padding:6px 0;color:#1A1A1A;font-size:14px;text-align:right;">${formatEUR(e.price_snapshot)}</td>
               </tr>`
           )
@@ -72,7 +81,7 @@ function buildHtml(data: BookingEmailData): string {
         <tr>
           <td style="background:#FFFFFF;padding:32px;border:1px solid #E5E7EB;border-top:none;border-radius:0 0 8px 8px;">
 
-            <p style="margin:0 0 8px;font-size:16px;color:#1A1A1A;">Hi ${data.driver_first_name},</p>
+            <p style="margin:0 0 8px;font-size:16px;color:#1A1A1A;">Hi ${escapeHtml(data.driver_first_name)},</p>
             <p style="margin:0 0 24px;font-size:14px;color:#6B7280;line-height:1.6;">
               Your booking is confirmed. Here's a summary of your reservation.
             </p>
@@ -80,7 +89,7 @@ function buildHtml(data: BookingEmailData): string {
             <!-- Booking Ref -->
             <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:6px;padding:16px;margin-bottom:24px;text-align:center;">
               <p style="margin:0 0 4px;font-size:12px;font-weight:600;color:#407E3C;text-transform:uppercase;letter-spacing:0.5px;">Booking Reference</p>
-              <p style="margin:0;font-size:24px;font-weight:700;color:#1A1A1A;font-family:monospace;">${data.booking_ref}</p>
+              <p style="margin:0;font-size:24px;font-weight:700;color:#1A1A1A;font-family:monospace;">${escapeHtml(data.booking_ref)}</p>
             </div>
 
             <!-- Vehicle -->
@@ -88,7 +97,7 @@ function buildHtml(data: BookingEmailData): string {
               <tr>
                 <td style="padding-bottom:12px;border-bottom:1px solid #E5E7EB;">
                   <p style="margin:0 0 4px;font-size:12px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Vehicle</p>
-                  <p style="margin:0;font-size:15px;font-weight:600;color:#1A1A1A;">${data.vehicle_year} ${data.vehicle_make} ${data.vehicle_model}</p>
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#1A1A1A;">${escapeHtml(data.vehicle_year)} ${escapeHtml(data.vehicle_make)} ${escapeHtml(data.vehicle_model)}</p>
                 </td>
               </tr>
               <tr>
@@ -282,7 +291,7 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
 
   const extrasRows = extras.length
     ? extras.map((e) => `<tr>
-        <td style="padding:6px 0;color:#6B7280;font-size:13px;">${e.name}${e.quantity > 1 ? ` ×${e.quantity}` : ''}</td>
+        <td style="padding:6px 0;color:#6B7280;font-size:13px;">${escapeHtml(e.name)}${e.quantity > 1 ? ` ×${e.quantity}` : ''}</td>
         <td style="padding:6px 0;font-size:13px;text-align:right;">${formatEUR(e.price_snapshot)}</td>
       </tr>`).join('')
     : ''
@@ -300,13 +309,13 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
       <tr>
         <td style="vertical-align:top;width:50%">
           <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;">Invoice to</p>
-          <p style="margin:0;font-size:14px;font-weight:600;color:#1A1A1A;">${corporate.company_name}</p>
-          ${corporate.vat_number ? `<p style="margin:2px 0 0;font-size:12px;color:#6B7280;">VAT: ${corporate.vat_number}</p>` : ''}
-          <p style="margin:4px 0 0;font-size:12px;color:#6B7280;">${corporate.billing_address}</p>
+          <p style="margin:0;font-size:14px;font-weight:600;color:#1A1A1A;">${escapeHtml(corporate.company_name)}</p>
+          ${corporate.vat_number ? `<p style="margin:2px 0 0;font-size:12px;color:#6B7280;">VAT: ${escapeHtml(corporate.vat_number)}</p>` : ''}
+          <p style="margin:4px 0 0;font-size:12px;color:#6B7280;">${escapeHtml(corporate.billing_address)}</p>
         </td>
         <td style="vertical-align:top;text-align:right">
           <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;">Booking ref</p>
-          <p style="margin:0;font-size:14px;font-weight:700;font-family:monospace;color:#1A1A1A;">${booking.booking_ref}</p>
+          <p style="margin:0;font-size:14px;font-weight:700;font-family:monospace;color:#1A1A1A;">${escapeHtml(booking.booking_ref)}</p>
           <p style="margin:4px 0 0;font-size:12px;color:#6B7280;">${new Date(booking.created_at).toLocaleDateString('en-DE')}</p>
         </td>
       </tr>
@@ -315,7 +324,7 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;padding:12px 0;">
       <tr>
         <td style="padding:6px 0;font-size:13px;color:#6B7280;">Vehicle</td>
-        <td style="padding:6px 0;font-size:13px;text-align:right;">${vehicle?.year} ${vehicle?.make} ${vehicle?.model}</td>
+        <td style="padding:6px 0;font-size:13px;text-align:right;">${escapeHtml(vehicle?.year)} ${escapeHtml(vehicle?.make)} ${escapeHtml(vehicle?.model)}</td>
       </tr>
       <tr>
         <td style="padding:6px 0;font-size:13px;color:#6B7280;">Rental period</td>
@@ -323,7 +332,7 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
       </tr>
       <tr>
         <td style="padding:6px 0;font-size:13px;color:#6B7280;">Driver</td>
-        <td style="padding:6px 0;font-size:13px;text-align:right;">${booking.driver_first_name} ${booking.driver_last_name}</td>
+        <td style="padding:6px 0;font-size:13px;text-align:right;">${escapeHtml(booking.driver_first_name)} ${escapeHtml(booking.driver_last_name)}</td>
       </tr>
       <tr>
         <td style="padding:6px 0;font-size:13px;color:#6B7280;">Base rental</td>
@@ -331,7 +340,7 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
       </tr>
       ${extrasRows}
       ${corporate.discount_pct > 0 ? `<tr>
-        <td style="padding:6px 0;font-size:13px;color:#407E3C;">Corporate discount (${corporate.discount_pct}%)</td>
+        <td style="padding:6px 0;font-size:13px;color:#407E3C;">Corporate discount (${escapeHtml(corporate.discount_pct)}%)</td>
         <td style="padding:6px 0;font-size:13px;color:#407E3C;text-align:right;">−${formatEUR(Number(booking.base_price) * corporate.discount_pct / 100)}</td>
       </tr>` : ''}
     </table>

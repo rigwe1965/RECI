@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
+import { safeNextPath } from '@/lib/safe-redirect'
 import PasswordInput from '@/components/ui/PasswordInput'
 
 const LoginSchema = z.object({
@@ -19,7 +20,7 @@ type LoginForm = z.infer<typeof LoginSchema>
 function LoginPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const next = searchParams.get('next') ?? '/account/bookings'
+  const next = safeNextPath(searchParams.get('next'))
   const oauthError = searchParams.get('error') === 'oauth_failed'
 
   const [serverError, setServerError] = useState<string | null>(null)

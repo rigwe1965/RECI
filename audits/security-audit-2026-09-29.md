@@ -63,16 +63,16 @@ All twelve findings from the prior audit were re-checked against the current wor
 **Location:** `docs/RECI_TRANSPORT_PITCH.html:664-668` and `:853-856`
 **Importance: 8/10**
 
-**Description:** The 09-28 audit's Finding #3 removed `demo@reci-transport.com` / `RecIDemo2026!` from `CLAUDE.md` and `docs/RECI_TRANSPORT_DOCS.md`, and flagged `docs/RECI_TRANSPORT_DOCS.pdf` as still containing the credential (a binary export that wasn't regenerated). Today's review found a **third** location the prior audit did not check: `docs/RECI_TRANSPORT_PITCH.html`, which still contains the same credential twice, in plaintext, human-readable HTML:
+**Description:** The 09-28 audit's Finding #3 removed `demo@reci-transport.com` / `[REDACTED]` from `CLAUDE.md` and `docs/RECI_TRANSPORT_DOCS.md`, and flagged `docs/RECI_TRANSPORT_DOCS.pdf` as still containing the credential (a binary export that wasn't regenerated). Today's review found a **third** location the prior audit did not check: `docs/RECI_TRANSPORT_PITCH.html`, which still contains the same credential twice, in plaintext, human-readable HTML:
 
 ```html
 <div class="ci-role">Admin Portal — Demo Login</div>
 <span class="ci-email">demo@reci-transport.com</span>
-<span class="ci-pass">Password: RecIDemo2026!</span>
+<span class="ci-pass">Password: [REDACTED]</span>
 ```
 ```html
 <p>Login with the demo credentials — full admin access, all modules visible. Explore fleet, bookings, pricing and AI damage detection live.</p>
-<p>Email: <strong>demo@reci-transport.com</strong> | Password: <strong>RecIDemo2026!</strong></p>
+<p>Email: <strong>demo@reci-transport.com</strong> | Password: <strong>[REDACTED]</strong></p>
 ```
 
 This is arguably a higher-risk exposure than the PDF: it's a *pitch deck*, explicitly meant to be shared with prospective customers/investors outside the engineering team, it's plaintext and trivially `grep`-able (unlike a PDF, which at least requires opening/extracting), and its own text explicitly advertises "full admin access, all modules visible" as a selling point.
