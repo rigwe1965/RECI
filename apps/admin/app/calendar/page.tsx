@@ -79,8 +79,12 @@ export default function CalendarPage() {
   // effect below, otherwise it would unmount the root out from under it.
   useEffect(() => {
     return () => {
-      rootRef.current?.unmount()
+      const root = rootRef.current
       rootRef.current = null
+      // React forbids unmounting a root synchronously while it is rendering
+      // (this cleanup runs inside a commit / Strict Mode's simulated unmount),
+      // so defer it to the next task.
+      setTimeout(() => root?.unmount(), 0)
     }
   }, [])
 
