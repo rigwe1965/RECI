@@ -17,7 +17,8 @@ const FUEL_BADGES: Record<string, { label: string; cls: string }> = {
 }
 
 async function getVehicle(id: string): Promise<Vehicle | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
+  // INTERNAL_APP_URL: where this server reaches its own API (hosted: the public URL goes through the demo gateway and answers 401 to a server-side fetch)
+  const baseUrl = process.env.INTERNAL_APP_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
   const res = await fetch(`${baseUrl}/api/vehicles/${id}`, { next: { revalidate: 300 } })
   if (!res.ok) return null
   return res.json()

@@ -47,6 +47,10 @@ const { error: priceErr } = await supabase.from('pricing_rules').upsert([
 if (priceErr) { console.error('pricing_rules:', priceErr.message); process.exit(1) }
 console.log('✓ pricing')
 
+// Photos live in the demo project's public storage bucket 'demo-vehicles' (CC BY / CC BY-SA, credits in CREDITS.md in the bucket).
+// Hotlinked Wikimedia URLs were 404 or throttled, and next/image only allows *.supabase.co.
+const photo = (slug) => `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/demo-vehicles/${slug}.jpg`
+
 // ── 2. 20 demo vehicles ─────────────────────────────────────────────────────
 const vehicles = [
   // ECONOMY ─────────────────────────────────────────────────────────────────
@@ -57,7 +61,7 @@ const vehicles = [
     registration_plate: 'B-RT 1001',
     fuel_type: 'petrol', transmission: 'manual', color: 'Silver', mileage: 12450,
     features: ['Bluetooth', 'USB-C', 'Rear camera'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/VW_Polo_VI_Facelift_IMG_3527.jpg/1280px-VW_Polo_VI_Facelift_IMG_3527.jpg'],
+    image_urls: [photo('volkswagen-polo')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000002',
@@ -66,7 +70,7 @@ const vehicles = [
     registration_plate: 'B-RT 1002',
     fuel_type: 'hybrid', transmission: 'automatic', color: 'White', mileage: 4800,
     features: ['Bluetooth', 'Lane assist', 'Apple CarPlay', 'Android Auto'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/2020_Toyota_Yaris_Excel_Hybrid_1.5_Front.jpg/1280px-2020_Toyota_Yaris_Excel_Hybrid_1.5_Front.jpg'],
+    image_urls: [photo('toyota-yaris')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000021',
@@ -75,7 +79,7 @@ const vehicles = [
     registration_plate: 'B-RT 1003',
     fuel_type: 'petrol', transmission: 'manual', color: 'Red', mileage: 6200,
     features: ['Bluetooth', 'USB-C', 'Climate control', 'Rear camera'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Renault_Clio_V_facelift_front_20230618.jpg/1280px-Renault_Clio_V_facelift_front_20230618.jpg'],
+    image_urls: [photo('renault-clio')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000022',
@@ -84,7 +88,7 @@ const vehicles = [
     registration_plate: 'B-RT 1004',
     fuel_type: 'electric', transmission: 'automatic', color: 'Blue', mileage: 2100,
     features: ['Bluetooth', 'Apple CarPlay', 'Android Auto', 'Heated seats', 'One-pedal driving'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Opel_Corsa_Electric_IMG_3108.jpg/1280px-Opel_Corsa_Electric_IMG_3108.jpg'],
+    image_urls: [photo('opel-corsa-e')],
   },
 
   // COMPACT ─────────────────────────────────────────────────────────────────
@@ -95,7 +99,7 @@ const vehicles = [
     registration_plate: 'B-RT 2001',
     fuel_type: 'petrol', transmission: 'automatic', color: 'Black', mileage: 18200,
     features: ['Bluetooth', 'Cruise control', 'Parking sensors', 'Apple CarPlay'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/VW_Golf_8_2.0_TDI_Style_--_2020_--_4328.jpg/1280px-VW_Golf_8_2.0_TDI_Style_--_2020_--_4328.jpg'],
+    image_urls: [photo('volkswagen-golf')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000004',
@@ -104,7 +108,7 @@ const vehicles = [
     registration_plate: 'B-RT 2002',
     fuel_type: 'diesel', transmission: 'manual', color: 'Grey', mileage: 9100,
     features: ['Bluetooth', 'USB-C', 'Rear camera', 'Climate control'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/SEAT_Le%C3%B3n_IV_--_2021_--_1489.jpg/1280px-SEAT_Le%C3%B3n_IV_--_2021_--_1489.jpg'],
+    image_urls: [photo('seat-leon')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000023',
@@ -113,7 +117,7 @@ const vehicles = [
     registration_plate: 'B-RT 2003',
     fuel_type: 'petrol', transmission: 'automatic', color: 'Alpine White', mileage: 5400,
     features: ['Bluetooth', 'Apple CarPlay', 'Android Auto', 'Adaptive cruise', 'Parking assist'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/2019_BMW_118i_M_Sport_automatic_2.0_%28facelift%2C_front%29%2C_Zhejiang_University_Yuquan_Campus%2C_Hangzhou.jpg/1280px-2019_BMW_118i_M_Sport_automatic_2.0_%28facelift%2C_front%29%2C_Zhejiang_University_Yuquan_Campus%2C_Hangzhou.jpg'],
+    image_urls: [photo('bmw-118i')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000024',
@@ -122,7 +126,7 @@ const vehicles = [
     registration_plate: 'B-RT 2004',
     fuel_type: 'diesel', transmission: 'automatic', color: 'Navarra Blue', mileage: 11600,
     features: ['Bluetooth', 'Virtual Cockpit', 'Apple CarPlay', 'Lane assist', 'Heated seats'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Audi_A3_Sportback_40_TFSI_e_8Y_%28cropped%29.jpg/1280px-Audi_A3_Sportback_40_TFSI_e_8Y_%28cropped%29.jpg'],
+    image_urls: [photo('audi-a3-sportback')],
   },
 
   // SUV ─────────────────────────────────────────────────────────────────────
@@ -133,7 +137,7 @@ const vehicles = [
     registration_plate: 'B-RT 3001',
     fuel_type: 'diesel', transmission: 'automatic', color: 'Deep Black', mileage: 22300,
     features: ['Bluetooth', 'Navigation', 'Panoramic roof', 'Heated seats', '4WD'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/2021_Volkswagen_Tiguan_R-Line_2.0_TDI_4MOTION_front_8.3.21.jpg/1280px-2021_Volkswagen_Tiguan_R-Line_2.0_TDI_4MOTION_front_8.3.21.jpg'],
+    image_urls: [photo('volkswagen-tiguan')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000006',
@@ -142,7 +146,7 @@ const vehicles = [
     registration_plate: 'B-RT 3002',
     fuel_type: 'hybrid', transmission: 'automatic', color: 'Pearl White', mileage: 8700,
     features: ['Bluetooth', 'Apple CarPlay', 'Android Auto', 'Adaptive cruise', 'Heated seats'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/2019_Toyota_RAV4_%28AXAP54R%29_GXL_2WD_wagon_%282019-11-29%29_01.jpg/1280px-2019_Toyota_RAV4_%28AXAP54R%29_GXL_2WD_wagon_%282019-11-29%29_01.jpg'],
+    image_urls: [photo('toyota-rav4')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000025',
@@ -151,7 +155,7 @@ const vehicles = [
     registration_plate: 'B-RT 3003',
     fuel_type: 'petrol', transmission: 'automatic', color: 'Black Sapphire', mileage: 7800,
     features: ['Bluetooth', 'Navigation', 'Panoramic sunroof', 'Harman Kardon audio', 'Heated seats', 'AWD'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/BMW_X3_G01_IMG_4098.jpg/1280px-BMW_X3_G01_IMG_4098.jpg'],
+    image_urls: [photo('bmw-x3')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000026',
@@ -160,7 +164,7 @@ const vehicles = [
     registration_plate: 'B-RT 3004',
     fuel_type: 'diesel', transmission: 'automatic', color: 'Polar White', mileage: 9500,
     features: ['Bluetooth', 'MBUX infotainment', 'Apple CarPlay', 'Burmester audio', 'Heated seats', '4MATIC'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Mercedes_GLC_300_W253_IMG_2913.jpg/1280px-Mercedes_GLC_300_W253_IMG_2913.jpg'],
+    image_urls: [photo('mercedes-benz-glc-220d')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000027',
@@ -169,7 +173,7 @@ const vehicles = [
     registration_plate: 'B-RT 3005',
     fuel_type: 'diesel', transmission: 'automatic', color: 'Glacier White', mileage: 14200,
     features: ['Bluetooth', 'Virtual Cockpit', 'Matrix LED lights', 'Bang & Olufsen audio', 'Quattro AWD'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Audi_Q5_II_IMG_3614.jpg/1280px-Audi_Q5_II_IMG_3614.jpg'],
+    image_urls: [photo('audi-q5')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000028',
@@ -178,7 +182,7 @@ const vehicles = [
     registration_plate: 'B-RT 3006',
     fuel_type: 'hybrid', transmission: 'automatic', color: 'Crystal White', mileage: 6300,
     features: ['Bluetooth', 'Google built-in', 'Pilot Assist', 'Bowers & Wilkins audio', 'Air suspension'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Volvo_XC60_T8_Recharge_Inscription_Expression_%28facelift%2C_dark%29%2C_front_8.8.22.jpg/1280px-Volvo_XC60_T8_Recharge_Inscription_Expression_%28facelift%2C_dark%29%2C_front_8.8.22.jpg'],
+    image_urls: [photo('volvo-xc60')],
   },
 
   // VAN ─────────────────────────────────────────────────────────────────────
@@ -189,7 +193,7 @@ const vehicles = [
     registration_plate: 'B-RT 4001',
     fuel_type: 'diesel', transmission: 'manual', color: 'White', mileage: 45600,
     features: ['Bluetooth', 'Rear camera', 'Loading ramp', 'Bulkhead'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/2018_Mercedes-Benz_Sprinter_%28W907%29_313_CDI_MWB_high-roof_panel_van_%282018-10-26%29_01.jpg/1280px-2018_Mercedes-Benz_Sprinter_%28W907%29_313_CDI_MWB_high-roof_panel_van_%282018-10-26%29_01.jpg'],
+    image_urls: [photo('mercedes-benz-sprinter')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000008',
@@ -198,7 +202,7 @@ const vehicles = [
     registration_plate: 'B-RT 4002',
     fuel_type: 'diesel', transmission: 'automatic', color: 'Silver', mileage: 31200,
     features: ['Bluetooth', 'Rear camera', 'Cruise control', 'Tow bar'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/2022_Ford_Transit_cargo_van%2C_front_8.3.22.jpg/1280px-2022_Ford_Transit_cargo_van%2C_front_8.3.22.jpg'],
+    image_urls: [photo('ford-transit')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000029',
@@ -207,7 +211,7 @@ const vehicles = [
     registration_plate: 'B-RT 4003',
     fuel_type: 'diesel', transmission: 'manual', color: 'Reflex Silver', mileage: 13800,
     features: ['Bluetooth', 'App-Connect', 'Rear camera', 'Sliding door both sides', 'Long wheelbase'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/VW_T6.1_Transporter_IMG_3285.jpg/1280px-VW_T6.1_Transporter_IMG_3285.jpg'],
+    image_urls: [photo('volkswagen-transporter-t6-1')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000030',
@@ -216,7 +220,7 @@ const vehicles = [
     registration_plate: 'B-RT 4004',
     fuel_type: 'diesel', transmission: 'automatic', color: 'Arctic White', mileage: 19700,
     features: ['Bluetooth', 'Rear camera', 'Lane departure warning', 'Emergency brake assist'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/2021_Renault_Trafic_%28X82_Phase_III%29_30_L2H1_2.0_dCi_van_%282021-11-05%29_01.jpg/1280px-2021_Renault_Trafic_%28X82_Phase_III%29_30_L2H1_2.0_dCi_van_%282021-11-05%29_01.jpg'],
+    image_urls: [photo('renault-trafic')],
   },
 
   // PREMIUM ─────────────────────────────────────────────────────────────────
@@ -227,7 +231,7 @@ const vehicles = [
     registration_plate: 'B-RT 5001',
     fuel_type: 'petrol', transmission: 'automatic', color: 'Obsidian Black', mileage: 4200,
     features: ['Bluetooth', 'MBUX', 'Burmester 3D audio', 'Massaging seats', 'Ambient lighting', 'Head-up display', 'Night vision'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Mercedes-Benz_W214_IMG_3009.jpg/1280px-Mercedes-Benz_W214_IMG_3009.jpg'],
+    image_urls: [photo('mercedes-benz-e-300')],
   },
   {
     id: 'e0000000-0000-0000-0000-000000000032',
@@ -236,7 +240,7 @@ const vehicles = [
     registration_plate: 'B-RT 5002',
     fuel_type: 'diesel', transmission: 'automatic', color: 'Mineral White', mileage: 5900,
     features: ['Bluetooth', 'iDrive 8.5', 'Bowers & Wilkins audio', 'Heated & ventilated seats', 'Gesture control', 'Active suspension'],
-    image_urls: ['https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW_G60_520d_xDrive_front_20230919.jpg/1280px-BMW_G60_520d_xDrive_front_20230919.jpg'],
+    image_urls: [photo('bmw-520d')],
   },
 ]
 
