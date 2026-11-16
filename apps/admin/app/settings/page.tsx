@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createBrowserSupabaseClient } from '@/lib/supabase/browser'
+import AiModelCard from './ai-model-card'
 
 const PasswordSchema = z.object({
   new_password: z.string().min(12, 'Minimum 12 characters'),
@@ -118,6 +119,8 @@ export default function SettingsPage() {
           </button>
         </form>
       </div>
+
+      <AiModelCard />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { resolveAiModel } from '@reci/utils'
+import { getAiModel } from '@/lib/ai-model'
 import { NextRequest, NextResponse } from 'next/server'
 import { activeBookingFilter } from '@reci/utils'
 import Anthropic from '@anthropic-ai/sdk'
@@ -324,7 +324,7 @@ export async function POST(request: NextRequest) {
     try {
       response = await anthropic.messages.create(
         {
-          model: resolveAiModel('chat'),
+          model: await getAiModel('chat'),
           max_tokens: 1024,
           system: SYSTEM_PROMPT,
           tools: TOOLS,

@@ -45,16 +45,67 @@ export function isAiModel(id: unknown): id is (typeof AI_MODEL_CHOICES)[number] 
   return typeof id === 'string' && (AI_MODEL_CHOICES as readonly string[]).includes(id)
 }
 
+/** What an admin may pick in the admin portal (Settings > AI model). Empty = keep the built-in models. */
+export const ADMIN_AI_MODEL_CHOICES = ['claude-haiku-5-5', 'claude-sonnet-5-5', 'claude-opus-5-5'] as const
+export type AdminAiModel = (typeof ADMIN_AI_MODEL_CHOICES)[number]
+
+/** The row in app_settings that holds the admin's choice. */
+export const AI_MODEL_SETTING_KEY = 'ai_model'
+
+/**
+ * Features the admin's choice applies to. The two background features (extras suggestions run on every extras page
+ * load; maintenance notes are a small summary) stay on their small default model so a big model cannot multiply cost.
+ */
+export const ADMIN_MODEL_PURPOSES: readonly AiPurpose[] = ['chat', 'search', 'trip', 'corporate', 'vision']
+
+/** A stored value that is not one of the admin choices (a retired model, a hand edit) means "no choice". */
+export function parseStoredAiModel(value: unknown): AdminAiModel | null {
+  return typeof value === 'string' && (ADMIN_AI_MODEL_CHOICES as readonly string[]).includes(value) ? (value as AdminAiModel) : null
+}
+
+/**
+ * Order of precedence: the server setting for one feature (AI_MODEL_CHAT ...), then the admin's saved choice,
+ * then AI_MODEL, then the built-in model. `stored` is the admin's saved choice, if any.
+ */
 export function resolveAiModel(
   purpose: AiPurpose,
   env: Record<string, string | undefined> = process.env,
   warn: (message: string) => void = console.warn,
+  stored: string | null = null,
 ): string {
-  for (const name of [AI_MODEL_ENV[purpose], 'AI_MODEL']) {
+  const fromEnv = (name: string): string | null => {
     const raw = env[name]?.trim()
-    if (!raw) continue
+    if (!raw) return null
     if (isAiModel(raw)) return raw
-    warn(`[ai] ${name}="${raw}" is not a supported Claude model; using ${AI_MODEL_DEFAULTS[purpose]} for ${purpose}.`)
+    warn(`[ai] ${name}="${raw}" is not a supported Claude model; ignoring it for ${purpose}.`)
+    return null
   }
-  return AI_MODEL_DEFAULTS[purpose]
+  const own = fromEnv(AI_MODEL_ENV[purpose])
+  if (own) return own
+  const chosen = ADMIN_MODEL_PURPOSES.includes(purpose) ? parseStoredAiModel(stored) : null
+  if (chosen) return chosen
+  return fromEnv('AI_MODEL') ?? AI_MODEL_DEFAULTS[purpose]
+}
+
+/**
+ * Reads the admin's saved model choice through `read`, remembering it for a minute so a busy site does not query the
+ * database on every AI request. It never throws: when `read` fails it keeps the last good value (or "no choice") and
+ * waits a few seconds before asking again, so a database hiccup or a table that does not exist yet cannot break AI.
+ */
+export function createStoredModelReader(
+  read: () => Promise<unknown>,
+  opts: { freshMs?: number; retryMs?: number; now?: () => number } = {},
+): () => Promise<AdminAiModel | null> {
+  const { freshMs = 60_000, retryMs = 15_000, now = Date.now } = opts
+  let cache: { at: number; ttl: number; value: AdminAiModel | null } | null = null
+  return async () => {
+    const t = now()
+    if (cache && t - cache.at < cache.ttl) return cache.value
+    try {
+      cache = { at: t, ttl: freshMs, value: parseStoredAiModel(await read()) }
+    } catch {
+      cache = { at: t, ttl: retryMs, value: cache?.value ?? null }
+    }
+    return cache.value
+  }
 }

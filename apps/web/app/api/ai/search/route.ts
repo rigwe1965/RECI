@@ -1,4 +1,4 @@
-import { resolveAiModel } from '@reci/utils'
+import { getAiModel } from '@/lib/ai-model'
 import { NextRequest, NextResponse } from 'next/server'
 import anthropic from '@/lib/anthropic'
 import { ConversationalSearchResponseSchema } from '@/lib/schemas'
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
   try {
     const message = await anthropic.messages.create(
       {
-        model: resolveAiModel('search'),
+        model: await getAiModel('search'),
         max_tokens: 512,
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: query }],
