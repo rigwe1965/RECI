@@ -26,6 +26,8 @@ CI (`.github/workflows/ci.yml`): quality → build on every push/PR; e2e on PRs 
 
 **Brand.** The company name, city, time zone and contact addresses come from `brand` (`packages/utils/src/brand.ts`, set by `NEXT_PUBLIC_BRAND_*`), never typed into a page, e-mail or AI prompt. Unset, it is RECI Transport / Berlin. `apps/web/__tests__/brand-guard.test.ts` fails if `RECI` or an unlisted `Berlin` is typed back in.
 
+**Licence.** Only for sold white-label copies: `LICENCE_ENFORCEMENT=1` plus `LICENCE_KEY` limit how many active vehicles can be added (`apps/admin/lib/licence.ts`, logic in `packages/utils/src/licence.ts`, server-only import `@reci/utils/licence`). Unset (RECI's own site) it does nothing and never queries. It only refuses ADDING a vehicle (POST, or reactivating a retired one); nothing existing is ever switched off. Tests replay the shared vectors in `src/fixtures/licence-test-vectors.json`.
+
 **Anthropic singleton.** Never `new Anthropic()` in a handler — `import anthropic from '@/lib/anthropic'`.
 
 **next/image.** External hostnames must be in `next.config.mjs` `images.remotePatterns` (currently `**.supabase.co`, `images.unsplash.com`); a missing one crashes to the root error boundary. Use `unoptimized` on external images (optimizer proxy triggers rate limits). Vehicle images are Unsplash — Wikimedia blocks Vercel referers.

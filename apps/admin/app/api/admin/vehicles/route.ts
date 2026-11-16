@@ -1,3 +1,4 @@
+import { getLicenceStatus, licenceRefusal } from '@/lib/licence'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { withAdminAuth } from '@/lib/with-admin-auth'
@@ -44,6 +45,10 @@ export const GET = withAdminAuth(async (request: NextRequest) => {
 export const POST = withAdminAuth(async (request: NextRequest) => {
   const parsed = await parseJsonBody(request, CreateVehicleSchema)
   if (!parsed.ok) return parsed.response
+
+  // Adding a vehicle is the one thing a licence can refuse. Unless LICENCE_ENFORCEMENT=1 this passes without a query.
+  const licence = await getLicenceStatus()
+  if (!licence.canAddVehicle) return NextResponse.json(licenceRefusal(licence), { status: 403 })
 
   const supabase = createAdminClient()
   const { data, error } = await supabase
