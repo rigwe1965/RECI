@@ -1,3 +1,4 @@
+import { resolveAiModel } from '@reci/utils'
 import anthropic from '@/lib/anthropic'
 import { z } from 'zod'
 import { createAdminClient } from '@/lib/supabase/admin-server'
@@ -99,7 +100,7 @@ ${bookingContext}`
   try {
     const response = await anthropic.messages.create(
       {
-        model: 'claude-sonnet-4-6',
+        model: resolveAiModel('corporate'),
         max_tokens: 256,
         system: systemPrompt,
         messages: [{ role: 'user', content: userMessage }],

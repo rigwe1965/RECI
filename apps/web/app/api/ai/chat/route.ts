@@ -1,3 +1,4 @@
+import { resolveAiModel } from '@reci/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { activeBookingFilter } from '@reci/utils'
 import Anthropic from '@anthropic-ai/sdk'
@@ -323,7 +324,7 @@ export async function POST(request: NextRequest) {
     try {
       response = await anthropic.messages.create(
         {
-          model: 'claude-sonnet-4-6',
+          model: resolveAiModel('chat'),
           max_tokens: 1024,
           system: SYSTEM_PROMPT,
           tools: TOOLS,

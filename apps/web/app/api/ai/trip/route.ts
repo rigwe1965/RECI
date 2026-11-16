@@ -1,3 +1,4 @@
+import { resolveAiModel } from '@reci/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import anthropic from '@/lib/anthropic'
 import { TripCopilotRequestSchema, TripCopilotResponseSchema } from '@/lib/schemas'
@@ -66,7 +67,7 @@ Please provide a route summary from Berlin, fuel cost estimate, 3 recommended st
   try {
     const message = await anthropic.messages.create(
       {
-        model: 'claude-sonnet-4-6',
+        model: resolveAiModel('trip'),
         max_tokens: 1024,
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: userMessage }],
