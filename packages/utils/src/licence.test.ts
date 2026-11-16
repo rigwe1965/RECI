@@ -72,6 +72,8 @@ describe('licenceStatus', () => {
     expect(await licenceStatus(env, async () => 9, now, KEY)).toMatchObject({ state: 'active', canAddVehicle: true, vehicleLimit: 10, customer: 'Acme Rentals (test)' })
     const full = await licenceStatus(env, async () => 10, now, KEY)
     expect(full.canAddVehicle).toBe(false)
+    expect(full.banner).toBe('Your licence covers 10 vehicles and all 10 are in use. Contact the supplier to add more.')
+    expect((await licenceStatus(env, async () => 9, now, KEY)).banner).toBeNull()
   })
 
   it('a fleet already over the limit is only told, never reduced', async () => {

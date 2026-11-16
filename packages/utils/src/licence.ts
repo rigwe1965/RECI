@@ -168,12 +168,16 @@ export async function licenceStatus(
   const vehicles = await countVehicles()
   const e = evaluate(checked.licence, now, { vehicles })
   const limit = checked.licence.limits.vehicles
+  const canAddVehicle = limit === undefined ? e.state !== 'lapsed' : e.canAdd.vehicles
+  // Exactly at the limit is not "over", so evaluate() has nothing to say; say why adding is refused.
+  const atLimit = typeof limit === 'number' && vehicles === limit && e.state !== 'lapsed'
+  const banner = e.banner ?? (atLimit ? `Your licence covers ${limit} vehicles and all ${limit} are in use. Contact the supplier to add more.` : null)
   return {
     enforced: true,
     state: e.state,
-    banner: e.banner,
+    banner,
     // A licence with no vehicle limit at all means unlimited vehicles; only a lapsed one still refuses.
-    canAddVehicle: limit === undefined ? e.state !== 'lapsed' : e.canAdd.vehicles,
+    canAddVehicle,
     customer: checked.licence.customer,
     tier: checked.licence.tier,
     endsOn: e.endsOn,
