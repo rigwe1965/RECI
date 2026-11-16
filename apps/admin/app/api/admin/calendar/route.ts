@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { withAdminAuth } from '@/lib/with-admin-auth'
 import { adminErrorResponse } from '@/lib/errors'
+import { normalizeIsoOffset } from '@reci/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,8 +18,9 @@ const STATUS_COLORS: Record<string, string> = {
 
 export const GET = withAdminAuth(async (request: NextRequest) => {
   const { searchParams } = request.nextUrl
-  const start = searchParams.get('start')
-  const end = searchParams.get('end')
+  // A '+' in a timezone offset (+01:00) arrives as a space when the caller did not encode it; read it back as '+'.
+  const start = normalizeIsoOffset(searchParams.get('start'))
+  const end = normalizeIsoOffset(searchParams.get('end'))
 
   if (!start || !end) {
     return NextResponse.json({ error: 'start and end required' }, { status: 400 })
