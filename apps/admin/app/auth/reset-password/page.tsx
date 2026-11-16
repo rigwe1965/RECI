@@ -1,12 +1,11 @@
 'use client'
 
 import { Suspense, useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { createBrowserSupabaseClient } from '@/lib/supabase/browser'
 import PasswordInput from '@/components/ui/PasswordInput'
 
 function ResetPasswordContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const required = searchParams.get('required') === 'true'
 
@@ -66,7 +65,9 @@ function ResetPasswordContent() {
     }
 
     setSuccess(true)
-    setTimeout(() => router.push('/dashboard'), 2000)
+    // Full page load, not router.push: the client router may have cached the earlier "bounce back to the reset screen" answer for /dashboard
+    // (the sidebar prefetches it while the flag is still set) and would reuse it, leaving the user stuck on this screen.
+    setTimeout(() => window.location.assign('/admin/dashboard'), 1500)
   }
 
   return (

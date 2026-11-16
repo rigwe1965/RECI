@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { activeBookingFilter } from '@reci/utils'
 import Anthropic from '@anthropic-ai/sdk'
 import anthropic from '@/lib/anthropic'
 import { createClient } from '@/lib/supabase/server'
@@ -115,6 +116,7 @@ async function toolSearchVehicles(input: ToolInput): Promise<SearchResult> {
         .from('bookings')
         .select('vehicle_id')
         .not('status', 'in', '("cancelled")')
+        .or(activeBookingFilter())
         .lt('pickup_datetime', dropoffTs)
         .gt('dropoff_datetime', pickupTs),
       supabase

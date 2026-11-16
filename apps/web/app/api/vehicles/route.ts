@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { activeBookingFilter } from '@reci/utils'
 import { getUserFromRequest } from '@/lib/supabase/server'
 
 export const revalidate = 60
@@ -109,6 +110,7 @@ export async function GET(request: NextRequest) {
       .from('bookings')
       .select('vehicle_id')
       .not('status', 'in', '("cancelled")')
+      .or(activeBookingFilter())
       .lt('pickup_datetime', dropoffTs)
       .gt('dropoff_datetime', pickupTs)
 
