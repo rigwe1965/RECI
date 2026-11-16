@@ -4,6 +4,7 @@ import { useState } from 'react'
 import AdminNav from './AdminNav'
 import TopBar from './TopBar'
 import ToastProvider from './ToastProvider'
+import LicenceBanner from './LicenceBanner'
 
 interface AdminShellProps {
   userEmail: string
@@ -41,6 +42,7 @@ export default function AdminShell({ userEmail, userRole, children }: AdminShell
         {/* Main content */}
         <main className="flex-1 overflow-auto min-h-screen bg-[#F9FAFB] dark:bg-gray-950">
           <TopBar onMenuOpen={() => setSidebarOpen(true)} />
+          <LicenceBanner userRole={userRole} />
           {children}
         </main>
       </div>

@@ -1,4 +1,5 @@
 import { adminErrorResponse } from '@/lib/errors'
+import { getLicenceStatus, licenceRefusal } from '@/lib/licence'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { withAdminAuth } from '@/lib/with-admin-auth'
@@ -46,6 +47,16 @@ export const PATCH = withAdminAuth(async (request: NextRequest, props: { params:
   if (!parsed.ok) return parsed.response
 
   const supabase = createAdminClient()
+
+  // Bringing a retired vehicle back is adding one, so a licence limit applies. Nothing else here is ever refused.
+  if (parsed.data.is_active === true) {
+    const licence = await getLicenceStatus()
+    if (!licence.canAddVehicle) {
+      const { data: current } = await supabase.from('vehicles').select('is_active').eq('id', params.id).maybeSingle()
+      if (current && current.is_active === false) return NextResponse.json(licenceRefusal(licence), { status: 403 })
+    }
+  }
+
   const { data, error } = await supabase
     .from('vehicles')
     .update(parsed.data)
