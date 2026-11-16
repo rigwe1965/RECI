@@ -20,7 +20,6 @@ function sources(dir: string, out: string[] = []): string[] {
 
 /** Places that still name Berlin, and why. Add a file here only for a real reason. */
 const BERLIN_ALLOWED: Record<string, string> = {
-  'web/components/layout/Footer.tsx': 'the three collection points and opening hours are RECI data, to become settings',
   'web/app/privacy/page.tsx': 'names the Berlin data protection authority, which is a legal fact for a Berlin business',
   'admin/app/integrations/page.tsx': 'describes a third-party key-cabinet network in Berlin',
   'web/app/admin/api-keys/page.tsx': 'an example name in an input hint',
