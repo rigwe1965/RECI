@@ -112,7 +112,7 @@ export default function CalendarPage() {
       const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
       const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString()
 
-      const res = await fetch(`/admin/api/admin/calendar?start=${start}&end=${end}`)
+      const res = await fetch(`/admin/api/admin/calendar?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`)
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
         if (!cancelled) {
@@ -152,7 +152,7 @@ export default function CalendarPage() {
             if (!bookingId.startsWith('block-')) router.push(`/bookings/${bookingId}`)
           },
           datesSet: async (info: any) => {
-            const r = await fetch(`/admin/api/admin/calendar?start=${info.startStr}&end=${info.endStr}`)
+            const r = await fetch(`/admin/api/admin/calendar?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`)
             if (r.ok) {
               const d = await r.json()
               setStats(computeStats(d.events, d.resources))
