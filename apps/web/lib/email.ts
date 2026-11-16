@@ -1,6 +1,6 @@
+import { brand, formatEUR } from '@reci/utils'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin-server'
-import { formatEUR } from '@reci/utils'
 
 function getResend(): Resend {
   if (!process.env.RESEND_API_KEY) {
@@ -9,7 +9,7 @@ function getResend(): Resend {
   return new Resend(process.env.RESEND_API_KEY)
 }
 
-const FROM = process.env.RESEND_FROM_EMAIL ?? 'bookings@recitransport.de'
+const FROM = process.env.RESEND_FROM_EMAIL ?? brand.bookingsEmail
 
 interface BookingEmailData {
   booking_id: string
@@ -43,7 +43,7 @@ function formatDatetime(iso: string): string {
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'Europe/Berlin',
+    timeZone: brand.timeZone,
   })
 }
 
@@ -72,7 +72,7 @@ function buildHtml(data: BookingEmailData): string {
         <!-- Header -->
         <tr>
           <td style="background:#407E3C;border-radius:8px 8px 0 0;padding:24px 32px;">
-            <p style="margin:0;font-size:22px;font-weight:700;color:#FFFFFF;letter-spacing:-0.5px;">RECI Transport</p>
+            <p style="margin:0;font-size:22px;font-weight:700;color:#FFFFFF;letter-spacing:-0.5px;">${brand.name}</p>
             <p style="margin:4px 0 0;font-size:13px;color:rgba(255,255,255,0.75);">Booking Confirmed</p>
           </td>
         </tr>
@@ -138,20 +138,20 @@ function buildHtml(data: BookingEmailData): string {
             <div style="border-left:3px solid #407E3C;padding-left:16px;margin-bottom:24px;">
               <p style="margin:0 0 8px;font-size:14px;font-weight:600;color:#1A1A1A;">What happens next</p>
               <ul style="margin:0;padding:0 0 0 16px;font-size:13px;color:#6B7280;line-height:1.8;">
-                <li>Your vehicle will be ready at RECI HQ, Berlin at the pick-up time.</li>
+                <li>Your vehicle will be ready at ${brand.hqName} at the pick-up time.</li>
                 <li>Please bring your driving licence and this confirmation email.</li>
                 <li>Questions? Reply to this email or call us at +49 30 0000 0000.</li>
               </ul>
             </div>
 
-            <p style="margin:0;font-size:13px;color:#6B7280;line-height:1.6;">Safe travels,<br><strong style="color:#1A1A1A;">RECI Transport Team</strong></p>
+            <p style="margin:0;font-size:13px;color:#6B7280;line-height:1.6;">Safe travels,<br><strong style="color:#1A1A1A;">${brand.name} Team</strong></p>
           </td>
         </tr>
 
         <!-- Footer -->
         <tr>
           <td style="padding:16px 0;text-align:center;">
-            <p style="margin:0;font-size:12px;color:#9CA3AF;">RECI Transport Ltd · Berlin, Germany</p>
+            <p style="margin:0;font-size:12px;color:#9CA3AF;">${brand.emailLegalName} · ${brand.city}, ${brand.country}</p>
           </td>
         </tr>
 
@@ -301,7 +301,7 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F9FAFB;padding:32px 16px;"><tr><td>
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
   <tr><td style="background:#407E3C;border-radius:8px 8px 0 0;padding:24px 32px;">
-    <p style="margin:0;font-size:22px;font-weight:700;color:#fff;">RECI Transport</p>
+    <p style="margin:0;font-size:22px;font-weight:700;color:#fff;">${brand.name}</p>
     <p style="margin:4px 0 0;font-size:13px;color:rgba(255,255,255,0.75);">Corporate Invoice</p>
   </td></tr>
   <tr><td style="background:#fff;padding:32px;border:1px solid #E5E7EB;border-top:none;border-radius:0 0 8px 8px;">
@@ -360,7 +360,7 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
       </tr>
     </table>
 
-    <p style="font-size:12px;color:#6B7280;margin:0;">RECI Transport Ltd · Berlin, Germany · bookings@recitransport.de</p>
+    <p style="font-size:12px;color:#6B7280;margin:0;">${brand.emailLegalName} · ${brand.city}, ${brand.country} · ${brand.bookingsEmail}</p>
   </td></tr>
 </table>
 </td></tr></table>
@@ -370,14 +370,14 @@ export async function sendCorporateInvoice(bookingId: string): Promise<void> {
     const result = await getResend().emails.send({
       from: FROM,
       to: corporate.billing_email,
-      subject: `Invoice — ${booking.booking_ref} — RECI Transport`,
+      subject: `Invoice — ${booking.booking_ref} — ${brand.name}`,
       html,
     })
 
     await supabase.from('email_logs').insert({
       booking_id: bookingId,
       to_email: corporate.billing_email,
-      subject: `Invoice — ${booking.booking_ref} — RECI Transport`,
+      subject: `Invoice — ${booking.booking_ref} — ${brand.name}`,
       template: 'corporate_invoice',
       resend_id: result.data?.id ?? null,
       status: 'sent',

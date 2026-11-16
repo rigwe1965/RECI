@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useEffect, useState } from 'react'
 
 interface ApiKey {
@@ -60,7 +61,7 @@ export default function ApiKeysPage() {
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-2">White-label API Keys</h1>
       <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-8">
-        Issue API keys for external partners to access RECI&apos;s AI endpoints. Limit: 100 req/day per key.
+        Issue API keys for external partners to access {brand.shortName}&apos;s AI endpoints. Limit: 100 req/day per key.
       </p>
 
       {/* Generate new key */}

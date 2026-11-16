@@ -1,5 +1,6 @@
 'use client'
 
+import { brand, formatEUR } from '@reci/utils'
 import { Suspense } from 'react'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -10,7 +11,6 @@ import TripCopilot from '@/components/booking/TripCopilot'
 import DigitalCheckIn from '@/components/booking/DigitalCheckIn'
 import { useBookingStore } from '@/hooks/useBookingStore'
 import type { BookingConfirmation } from '@/lib/schemas'
-import { formatEUR } from '@reci/utils'
 
 function formatDatetime(iso: string): string {
   return new Date(iso).toLocaleString('en-DE', {
@@ -20,7 +20,7 @@ function formatDatetime(iso: string): string {
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'Europe/Berlin',
+    timeZone: brand.timeZone,
   })
 }
 
@@ -240,7 +240,7 @@ function BookConfirmationContent() {
             <ul className="space-y-2 text-sm text-[#6B7280] dark:text-gray-400">
               <li className="flex gap-2">
                 <span className="text-[#407E3C] mt-0.5">•</span>
-                Your vehicle will be ready at <strong className="text-[#1A1A1A] dark:text-gray-200">RECI HQ, Berlin</strong> at the pick-up time.
+                Your vehicle will be ready at <strong className="text-[#1A1A1A] dark:text-gray-200">{brand.hqName}</strong> at the pick-up time.
               </li>
               <li className="flex gap-2">
                 <span className="text-[#407E3C] mt-0.5">•</span>
@@ -257,7 +257,7 @@ function BookConfirmationContent() {
           <div className="mb-6">
             <TripCopilot
               bookingId={booking.id}
-              pickupLocation="RECI HQ, Berlin"
+              pickupLocation={brand.hqName}
               fuelType={(booking.vehicle.fuel_type as 'petrol' | 'diesel' | 'electric' | 'hybrid') ?? 'petrol'}
               pickupDate={booking.pickup_datetime}
               dropoffDate={booking.dropoff_datetime}

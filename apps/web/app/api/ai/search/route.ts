@@ -1,10 +1,11 @@
+import { brand } from '@reci/utils'
 import { getAiModel } from '@/lib/ai-model'
 import { NextRequest, NextResponse } from 'next/server'
 import anthropic from '@/lib/anthropic'
 import { ConversationalSearchResponseSchema } from '@/lib/schemas'
 import { checkDbRateLimit } from '@/lib/rate-limit'
 
-const SYSTEM_PROMPT = `You are a vehicle rental search assistant for RECI Transport.
+const SYSTEM_PROMPT = `You are a vehicle rental search assistant for ${brand.name}.
 Extract structured search parameters from natural language queries.
 
 Today's date: ${new Date().toISOString().split('T')[0]}
@@ -30,7 +31,7 @@ Rules:
 - Confidence < 0.5 if query is very ambiguous
 - message language must match user's language (German query → German reply)
 - Return null for fields you cannot determine
-- Do NOT include pickup_location_id (always Berlin HQ for now)`
+- Do NOT include pickup_location_id (always ${brand.city} HQ for now)`
 
 export async function POST(request: NextRequest) {
   if (!process.env.ANTHROPIC_API_KEY) {

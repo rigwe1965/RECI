@@ -1,7 +1,8 @@
+import { brand } from '@reci/utils'
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-export const alt = 'RECI Transport — AI-Powered Vehicle Rental in Berlin'
+export const alt = `${brand.name} — AI-Powered Vehicle Rental in ${brand.city}`
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -89,7 +90,7 @@ export default function OGImage() {
               letterSpacing: '-0.5px',
             }}
           >
-            RECI Transport
+            {brand.name}
           </span>
         </div>
 
@@ -113,7 +114,7 @@ export default function OGImage() {
             }}
           >
             <span style={{ color: '#ffffff' }}>Vehicle Rental</span>
-            <span style={{ color: '#407E3C' }}>in Berlin.</span>
+            <span style={{ color: '#407E3C' }}>in {brand.city}.</span>
           </div>
 
           <p

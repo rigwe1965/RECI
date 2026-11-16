@@ -1,10 +1,10 @@
+import { brand, isPendingHoldExpired } from '@reci/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe, createPaymentIntentWithRetry } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { CreatePaymentIntentSchema } from '@/lib/schemas'
 import { checkDbRateLimit } from '@/lib/rate-limit'
 import { parseJsonBody } from '@reci/api'
-import { isPendingHoldExpired } from '@reci/utils'
 
 export async function POST(request: NextRequest) {
   const ip =
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
         booking_id: booking.id,
         booking_ref: booking.booking_ref,
       },
-      description: `RECI Transport — ${booking.booking_ref}`,
+      description: `${brand.name} — ${booking.booking_ref}`,
     },
     booking.id
   )

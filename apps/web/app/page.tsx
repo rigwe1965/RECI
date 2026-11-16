@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useEffect, useState } from 'react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
@@ -42,7 +43,7 @@ export default function HomePage() {
           <div className="max-w-2xl">
             <span className="inline-flex items-center gap-2 text-[#5a9e56] text-sm font-semibold uppercase tracking-widest mb-4">
               <span className="w-6 h-px bg-[#5a9e56]" />
-              Berlin&apos;s AI-Native Rental
+              {brand.city}&apos;s AI-Native Rental
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
               Find your<br />
@@ -63,7 +64,7 @@ export default function HomePage() {
               { label: 'Insurance included' },
               { label: 'Free cancellation up to 48h' },
               { label: 'Instant confirmation' },
-              { label: '3 Berlin pickup locations' },
+              { label: `3 ${brand.city} pickup locations` },
             ].map(({ label }) => (
               <span key={label} className="flex items-center gap-1.5 text-xs text-white/80 font-medium">
                 <span className="w-1 h-1 rounded-full bg-[#5a9e56] shrink-0" />

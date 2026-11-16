@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -92,7 +93,7 @@ export default function RegisterPage() {
   return (
     <div className="card">
       <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-1">Create account</h1>
-      <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-6">Join RECI Transport</p>
+      <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-6">Join {brand.name}</p>
 
       <button
         onClick={handleGoogle}

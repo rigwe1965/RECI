@@ -1,10 +1,10 @@
 'use client'
 
+import { brand, formatEUR } from '@reci/utils'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { formatEUR } from '@reci/utils'
 
 interface CorporateAccount {
   id: string
@@ -126,7 +126,7 @@ export default function CorporatePage() {
           </dl>
 
           <p className="mt-6 text-xs text-[#6B7280] dark:text-gray-400">
-            To update account details, discount rates, or travel policy — contact your RECI account manager.
+            To update account details, discount rates, or travel policy — contact your {brand.shortName} account manager.
           </p>
         </div>
       </div>

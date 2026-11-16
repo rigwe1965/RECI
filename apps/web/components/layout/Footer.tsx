@@ -1,3 +1,4 @@
+import { brand } from '@reci/utils'
 import Link from 'next/link'
 
 export default function Footer() {
@@ -12,13 +13,13 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <div className="w-7 h-7 rounded-lg bg-[#407E3C] flex items-center justify-center text-white font-bold text-sm">R</div>
-              <span className="font-bold text-[#1A1A1A] dark:text-gray-100 text-sm">RECI Transport</span>
+              <span className="font-bold text-[#1A1A1A] dark:text-gray-100 text-sm">{brand.name}</span>
             </div>
             <p className="text-xs text-[#6B7280] dark:text-gray-400 leading-relaxed">
-              Berlin&apos;s AI-native vehicle rental. Cars, vans, and trucks with instant confirmation.
+              {brand.city}&apos;s AI-native vehicle rental. Cars, vans, and trucks with instant confirmation.
             </p>
             <p className="text-xs text-[#9CA3AF] dark:text-gray-500 mt-3">
-              RECI Transport GmbH<br />
+              {brand.legalName}<br />
               Mitte, Berlin, Germany
             </p>
           </div>
@@ -38,8 +39,8 @@ export default function Footer() {
             <h4 className="text-xs font-bold text-[#1A1A1A] dark:text-gray-100 uppercase tracking-widest mb-3">Support</h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="mailto:support@recitransport.de" className="text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
-                  support@recitransport.de
+                <a href={`mailto:${brand.contactEmail}`} className="text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
+                  {brand.contactEmail}
                 </a>
               </li>
               <li className="text-[#6B7280] dark:text-gray-400">+49 30 1234 5678</li>
@@ -62,7 +63,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-[#F3F4F6] dark:border-gray-700">
           <span className="text-xs text-[#9CA3AF] dark:text-gray-500">
-            © {year} RECI Transport GmbH, Berlin
+            © {year} {brand.legalName}, {brand.city}
           </span>
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-1">
             <Link href="/privacy" className="text-xs text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
@@ -74,7 +75,7 @@ export default function Footer() {
             <Link href="/terms" className="text-xs text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
               Legal
             </Link>
-            <a href="mailto:support@recitransport.de" className="text-xs text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
+            <a href={`mailto:${brand.contactEmail}`} className="text-xs text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
               Contact
             </a>
           </nav>

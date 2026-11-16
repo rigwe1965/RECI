@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useBookingStore } from '@/hooks/useBookingStore'
@@ -227,10 +228,10 @@ export default function AgentChat({ onSearchParams }: AgentChatProps) {
       {messages.length === 0 && !loading && (
         <div className="flex flex-wrap gap-2 mb-3">
           {[
-            'Van for moving this weekend in Berlin',
+            `Van for moving this weekend in ${brand.city}`,
             'Automatic car, pickup Mitte, 3 days',
             'Electric vehicle, next Friday to Sunday',
-            '7-seater for a family trip from Berlin',
+            `7-seater for a family trip from ${brand.city}`,
           ].map((chip) => (
             <button
               key={chip}

@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { Suspense } from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -83,7 +84,7 @@ function LoginContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100">RECI Admin</h1>
+          <h1 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100">{brand.shortName} Admin</h1>
           <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-1">Staff access only</p>
         </div>
 

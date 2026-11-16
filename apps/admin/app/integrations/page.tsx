@@ -1,5 +1,7 @@
 'use client'
 
+import { brand } from '@reci/utils'
+
 const INTEGRATIONS = [
   {
     category: 'Keyless Entry',
@@ -31,7 +33,7 @@ const INTEGRATIONS = [
       },
       {
         name: 'Rewire Security',
-        description: 'SaaS GPS fleet platform with API. Connects directly to RECI admin to auto-update vehicle location and mileage after each trip.',
+        description: `SaaS GPS fleet platform with API. Connects directly to ${brand.shortName} admin to auto-update vehicle location and mileage after each trip.`,
         status: 'coming_soon',
         benefits: ['No self-hosted infrastructure', 'Auto-mileage sync to bookings', 'Insurance-grade tamper evidence'],
       },
@@ -43,7 +45,7 @@ const INTEGRATIONS = [
     items: [
       {
         name: 'Geotab GO9',
-        description: 'Plug-in OBD-II dongle that reads mileage, fuel level, engine faults, harsh braking, and speeding events. Data syncs to RECI after each trip end.',
+        description: `Plug-in OBD-II dongle that reads mileage, fuel level, engine faults, harsh braking, and speeding events. Data syncs to ${brand.shortName} after each trip end.`,
         status: 'coming_soon',
         benefits: ['Auto-mileage on return — no manual staff entry', 'Fuel level disputes eliminated', 'Engine fault early warning'],
       },
@@ -51,7 +53,7 @@ const INTEGRATIONS = [
         name: 'Bouncie',
         description: 'Consumer-grade OBD tracker with a REST API. Lower cost per vehicle for smaller fleets, with trip-level mileage and fuel data.',
         status: 'coming_soon',
-        benefits: ['~$8/month per vehicle', 'REST API for RECI integration', 'Trip start/end webhooks'],
+        benefits: ['~$8/month per vehicle', `REST API for ${brand.shortName} integration`, 'Trip start/end webhooks'],
       },
     ],
   },
@@ -63,7 +65,7 @@ export default function IntegrationsPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight">Hardware Integrations</h1>
         <p className="text-sm text-[#6B7280] mt-1.5 max-w-2xl">
-          RECI is designed to connect with fleet hardware. These integrations will automate mileage tracking, keyless entry, and GPS — eliminating manual staff inputs and reducing operational costs.
+          {brand.shortName} is designed to connect with fleet hardware. These integrations will automate mileage tracking, keyless entry, and GPS — eliminating manual staff inputs and reducing operational costs.
         </p>
       </div>
 

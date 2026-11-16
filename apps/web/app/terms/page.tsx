@@ -1,9 +1,10 @@
+import { brand } from '@reci/utils'
 import type { Metadata } from 'next'
 import Navbar from '@/components/layout/Navbar'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — RECI Transport',
-  description: 'Terms and conditions for using the RECI Transport vehicle rental platform.',
+  title: `Terms of Service — ${brand.name}`,
+  description: `Terms and conditions for using the ${brand.name} vehicle rental platform.`,
 }
 
 export default function TermsPage() {
@@ -20,7 +21,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">1. Parties</h2>
-            <p>These terms form a contract between <strong>RECI Transport GmbH</strong> (&quot;RECI&quot;, &quot;we&quot;) and the person or entity (&quot;you&quot;, &quot;customer&quot;) accessing this platform to book vehicles.</p>
+            <p>These terms form a contract between <strong>{brand.legalName}</strong> (&quot;{brand.shortName}&quot;, &quot;we&quot;) and the person or entity (&quot;you&quot;, &quot;customer&quot;) accessing this platform to book vehicles.</p>
           </section>
 
           <section>
@@ -38,7 +39,7 @@ export default function TermsPage() {
             <ul className="list-disc pl-5 space-y-1">
               <li>A booking is confirmed once payment is successfully processed and you receive a booking reference</li>
               <li>Prices are quoted in EUR inclusive of VAT</li>
-              <li>Payment is processed by Stripe. Card details are never stored on RECI systems</li>
+              <li>Payment is processed by Stripe. Card details are never stored on {brand.shortName} systems</li>
               <li>Pricing shown at time of booking is the price charged. Dynamic demand pricing may change between sessions</li>
               <li>Corporate accounts are invoiced per agreed corporate agreement</li>
             </ul>
@@ -86,23 +87,23 @@ export default function TermsPage() {
               <li>Points are awarded at €1 spent = 1 point</li>
               <li>Points expire 12 months after earning if no account activity</li>
               <li>Points have no cash value and are non-transferable</li>
-              <li>RECI reserves the right to modify the loyalty programme with 30 days notice</li>
+              <li>{brand.shortName} reserves the right to modify the loyalty programme with 30 days notice</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">9. Limitation of Liability</h2>
-            <p>To the maximum extent permitted by German law, RECI&apos;s total liability to you is capped at the amount paid for the booking giving rise to the claim. RECI is not liable for indirect, consequential, or incidental damages.</p>
+            <p>To the maximum extent permitted by German law, {brand.shortName}&apos;s total liability to you is capped at the amount paid for the booking giving rise to the claim. {brand.shortName} is not liable for indirect, consequential, or incidental damages.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">10. Governing Law</h2>
-            <p>These terms are governed by German law. Disputes shall be subject to the exclusive jurisdiction of the courts of Berlin, Germany.</p>
+            <p>These terms are governed by German law. Disputes shall be subject to the exclusive jurisdiction of the courts of {brand.city}, {brand.country}.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">11. Contact</h2>
-            <p>RECI Transport GmbH · Berlin, Germany · <a href="mailto:legal@recitransport.de" className="text-[#407E3C] hover:underline">legal@recitransport.de</a></p>
+            <p>{brand.legalName} · {brand.city}, {brand.country} · <a href={`mailto:${brand.legalEmail}`} className="text-[#407E3C] hover:underline">{brand.legalEmail}</a></p>
           </section>
 
         </div>

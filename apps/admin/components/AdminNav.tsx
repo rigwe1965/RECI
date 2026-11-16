@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -106,7 +107,7 @@ export default function AdminNav({ userEmail, userRole, onClose }: { userEmail: 
             </svg>
           </div>
           <div>
-            <p className="text-white font-bold text-sm leading-none">RECI</p>
+            <p className="text-white font-bold text-sm leading-none">{brand.shortName}</p>
             <p className="text-white/40 text-[10px] leading-none mt-0.5">Admin Portal</p>
           </div>
         </div>

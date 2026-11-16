@@ -1,6 +1,6 @@
+import { brand, activeBookingFilter } from '@reci/utils'
 import { getAiModel } from '@/lib/ai-model'
 import { NextRequest, NextResponse } from 'next/server'
-import { activeBookingFilter } from '@reci/utils'
 import Anthropic from '@anthropic-ai/sdk'
 import anthropic from '@/lib/anthropic'
 import { createClient } from '@/lib/supabase/server'
@@ -222,7 +222,7 @@ const TOOLS: Anthropic.Tool[] = [
   {
     name: 'get_categories',
     description:
-      'Get all vehicle categories available at RECI Transport with descriptions and capacities. Call when user asks what types of vehicles are offered, or when you need category info to answer a question.',
+      `Get all vehicle categories available at ${brand.name} with descriptions and capacities. Call when user asks what types of vehicles are offered, or when you need category info to answer a question.`,
     input_schema: {
       type: 'object' as const,
       properties: {},
@@ -232,7 +232,7 @@ const TOOLS: Anthropic.Tool[] = [
   {
     name: 'search_faq',
     description:
-      'Search RECI Transport policy and FAQ knowledge base. Call this for ANY question about: cancellation, payment, deposit, insurance, CDW, driver age, licence requirements, fuel policy, mileage limits, opening hours, pickup/return rules, corporate accounts, damage, late returns. Do NOT guess policy details — always retrieve them.',
+      `Search ${brand.name} policy and FAQ knowledge base. Call this for ANY question about: cancellation, payment, deposit, insurance, CDW, driver age, licence requirements, fuel policy, mileage limits, opening hours, pickup/return rules, corporate accounts, damage, late returns. Do NOT guess policy details — always retrieve them.`,
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -246,7 +246,7 @@ const TOOLS: Anthropic.Tool[] = [
   },
 ]
 
-const SYSTEM_PROMPT = `You are an intelligent rental assistant for RECI Transport, a car rental company based in Berlin.
+const SYSTEM_PROMPT = `You are an intelligent rental assistant for ${brand.name}, a car rental company based in ${brand.city}.
 
 You have real-time access to fleet inventory AND policy/FAQ knowledge via tools. Use them — never guess.
 
@@ -262,7 +262,7 @@ Rules:
 - After showing results, offer to help narrow down or proceed to booking
 
 Today: ${new Date().toISOString().split('T')[0]}
-Location: Berlin HQ (all vehicles)`
+Location: ${brand.city} HQ (all vehicles)`
 
 export type ChatMessage = { role: 'user' | 'assistant'; content: string }
 

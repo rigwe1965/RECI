@@ -1,3 +1,4 @@
+import { brand } from '@reci/utils'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { headers } from 'next/headers'
@@ -21,24 +22,24 @@ const BASE_URL = process.env.NEXT_PUBLIC_APP_URL?.startsWith('http://localhost')
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'RECI Transport — AI-Powered Vehicle Rental in Berlin',
-    template: '%s — RECI Transport',
+    default: `${brand.name} — AI-Powered Vehicle Rental in ${brand.city}`,
+    template: `%s — ${brand.name}`,
   },
-  description: 'Book cars, vans, and trucks in Berlin with AI-powered search. Instant confirmation, flexible extras, corporate accounts available.',
-  keywords: ['car rental Berlin', 'vehicle hire Berlin', 'AI car rental', 'van rental Berlin', 'truck hire Berlin'],
-  authors: [{ name: 'RECI Transport GmbH' }],
+  description: `Book cars, vans, and trucks in ${brand.city} with AI-powered search. Instant confirmation, flexible extras, corporate accounts available.`,
+  keywords: [`car rental ${brand.city}`, `vehicle hire ${brand.city}`, 'AI car rental', `van rental ${brand.city}`, `truck hire ${brand.city}`],
+  authors: [{ name: `${brand.legalName}` }],
   openGraph: {
     type: 'website',
     locale: 'en_DE',
     url: BASE_URL,
-    siteName: 'RECI Transport',
-    title: 'RECI Transport — AI-Powered Vehicle Rental in Berlin',
-    description: 'Book cars, vans, and trucks in Berlin with AI-powered search. Instant confirmation, flexible extras, corporate accounts available.',
+    siteName: `${brand.name}`,
+    title: `${brand.name} — AI-Powered Vehicle Rental in ${brand.city}`,
+    description: `Book cars, vans, and trucks in ${brand.city} with AI-powered search. Instant confirmation, flexible extras, corporate accounts available.`,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'RECI Transport — AI-Powered Vehicle Rental in Berlin',
-    description: 'Book vehicles in Berlin with AI-powered search.',
+    title: `${brand.name} — AI-Powered Vehicle Rental in ${brand.city}`,
+    description: `Book vehicles in ${brand.city} with AI-powered search.`,
   },
   robots: {
     index: true,

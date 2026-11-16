@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useTheme } from '@/components/ThemeProvider'
 
 function ThemeToggle() {
@@ -34,7 +35,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         >
           R
         </div>
-        <span className="font-semibold text-[#1A1A1A] dark:text-gray-100 text-xl">RECI Transport</span>
+        <span className="font-semibold text-[#1A1A1A] dark:text-gray-100 text-xl">{brand.name}</span>
       </div>
       <div className="w-full max-w-md">{children}</div>
     </div>
