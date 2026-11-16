@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { activeBookingFilter } from '@reci/utils'
 import { createClient } from '@/lib/supabase/server'
 
 export async function GET(_request: NextRequest, props: { params: Promise<{ id: string }> }) {
@@ -11,7 +12,8 @@ export async function GET(_request: NextRequest, props: { params: Promise<{ id: 
       .from('bookings')
       .select('pickup_datetime, dropoff_datetime')
       .eq('vehicle_id', vehicleId)
-      .not('status', 'in', '("cancelled")'),
+      .not('status', 'in', '("cancelled")')
+      .or(activeBookingFilter()),
     supabase
       .from('availability_blocks')
       .select('start_date, end_date')

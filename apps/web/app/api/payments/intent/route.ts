@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin-server'
 import { CreatePaymentIntentSchema } from '@/lib/schemas'
 import { checkDbRateLimit } from '@/lib/rate-limit'
 import { parseJsonBody } from '@reci/api'
+import { isPendingHoldExpired } from '@reci/utils'
 
 export async function POST(request: NextRequest) {
   const ip =
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
   // Fetch booking — must exist and be pending
   const { data: booking, error: bookingErr } = await supabase
     .from('bookings')
-    .select('id, booking_ref, status, total_price, driver_email')
+    .select('id, booking_ref, status, total_price, driver_email, created_at')
     .eq('id', booking_id)
     .single()
 
@@ -37,6 +38,11 @@ export async function POST(request: NextRequest) {
       { error: `Booking is already ${booking.status}` },
       { status: 409 }
     )
+  }
+
+  // An unpaid booking holds its car for 30 minutes; after that the car may have been booked by someone else, so take no payment.
+  if (isPendingHoldExpired(booking.created_at)) {
+    return NextResponse.json({ error: 'This booking has expired. Please start a new booking.' }, { status: 410 })
   }
 
   // Check if a PaymentIntent already exists for this booking (idempotency)
