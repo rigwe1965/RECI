@@ -52,8 +52,8 @@ async function getKpis() {
   ])
 
   const [{ count: pendingLicences }, { count: pendingDamage }] = await Promise.all([
-    supabase.from('licence_verifications').select('*', { count: 'exact', head: true }).eq('status', 'pending').is('admin_override', null),
-    supabase.from('vehicle_inspections').select('*', { count: 'exact', head: true }).eq('ai_damage_report->>pending_review', 'true').is('admin_override', null),
+    supabase.from('licence_verifications').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+    supabase.from('vehicle_inspections').select('*', { count: 'exact', head: true }).eq('ai_damage_report->>pending_review', 'true').is('admin_override_at', null),
   ])
 
   const { data: demandSignals } = await supabase
