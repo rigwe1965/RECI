@@ -20,7 +20,7 @@ export default function Footer() {
             </p>
             <p className="text-xs text-[#9CA3AF] dark:text-gray-500 mt-3">
               {brand.legalName}<br />
-              Mitte, Berlin, Germany
+              {brand.addressLine}
             </p>
           </div>
 
@@ -28,9 +28,9 @@ export default function Footer() {
           <div>
             <h4 className="text-xs font-bold text-[#1A1A1A] dark:text-gray-100 uppercase tracking-widest mb-3">Pickup Locations</h4>
             <ul className="space-y-2 text-xs text-[#6B7280] dark:text-gray-400">
-              <li>Berlin Mitte — Mon–Sun 07:00–22:00</li>
-              <li>Berlin Schönefeld Airport — Daily 06:00–23:00</li>
-              <li>Berlin Friedrichshain — Mon–Sat 08:00–20:00</li>
+              {brand.pickupLocations.map((loc) => (
+                <li key={loc}>{loc}</li>
+              ))}
             </ul>
           </div>
 
@@ -43,8 +43,8 @@ export default function Footer() {
                   {brand.contactEmail}
                 </a>
               </li>
-              <li className="text-[#6B7280] dark:text-gray-400">+49 30 1234 5678</li>
-              <li className="text-[#6B7280] dark:text-gray-400">Mon–Sun · 08:00–20:00 CET</li>
+              {brand.phone && <li className="text-[#6B7280] dark:text-gray-400">{brand.phone}</li>}
+              {brand.supportHours && <li className="text-[#6B7280] dark:text-gray-400">{brand.supportHours}</li>}
             </ul>
           </div>
 

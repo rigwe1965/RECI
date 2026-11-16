@@ -19,6 +19,14 @@ describe('brandFrom', () => {
       privacyEmail: 'privacy@recitransport.de',
       corporateEmail: 'corporate@reci-transport.de',
       faqBookingsEmail: 'bookings@reci-transport.de',
+      addressLine: 'Mitte, Berlin, Germany',
+      phone: '+49 30 1234 5678',
+      supportHours: 'Mon–Sun · 08:00–20:00 CET',
+      pickupLocations: [
+        'Berlin Mitte — Mon–Sun 07:00–22:00',
+        'Berlin Schönefeld Airport — Daily 06:00–23:00',
+        'Berlin Friedrichshain — Mon–Sat 08:00–20:00',
+      ],
     })
   })
 
@@ -68,6 +76,27 @@ describe('brandFrom', () => {
   it('one bookings address set moves both places that quote it', () => {
     const b = brandFrom({ NEXT_PUBLIC_BRAND_BOOKINGS_EMAIL: 'book@acme.example' })
     expect(b.faqBookingsEmail).toBe('book@acme.example')
+  })
+})
+
+describe('footer details', () => {
+  it('collection points come from a | separated list, blanks dropped', () => {
+    const b = brandFrom({ NEXT_PUBLIC_BRAND_PICKUP_LOCATIONS: ' Hamburg Hafen — Daily 08:00–20:00 | | Hamburg Airport — Daily 06:00–23:00 ' })
+    expect(b.pickupLocations).toEqual(['Hamburg Hafen — Daily 08:00–20:00', 'Hamburg Airport — Daily 06:00–23:00'])
+  })
+
+  it('a renamed business never shows the RECI address, phone, hours or branches when it has set none', () => {
+    const b = brandFrom({ NEXT_PUBLIC_BRAND_NAME: 'Acme Rentals', NEXT_PUBLIC_BRAND_CITY: 'Hamburg' })
+    expect(b.addressLine).toBe('Hamburg, Germany')
+    expect(b.phone).toBe('')
+    expect(b.supportHours).toBe('')
+    expect(b.pickupLocations).toEqual(['Acme Rentals HQ, Hamburg'])
+    expect(JSON.stringify({ ...b, timeZone: '' })).not.toMatch(/Berlin|RECI|\+49/)
+  })
+
+  it('explicit phone, hours and address win', () => {
+    const b = brandFrom({ NEXT_PUBLIC_BRAND_NAME: 'Acme', NEXT_PUBLIC_BRAND_PHONE: '+44 1', NEXT_PUBLIC_BRAND_SUPPORT_HOURS: '9-5', NEXT_PUBLIC_BRAND_ADDRESS_LINE: '1 High St' })
+    expect([b.phone, b.supportHours, b.addressLine]).toEqual(['+44 1', '9-5', '1 High St'])
   })
 })
 
