@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { ADMIN_PORTAL_ROLES } from '@reci/types'
+import { isClearResetPath } from '@reci/utils'
 
 const SUPABASE_CONFIGURED =
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -15,9 +16,9 @@ function buildCspHeader(nonce: string): string {
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
+    "font-src 'self' data: https://fonts.gstatic.com", // data: = the calendar's built-in icon font (arrows)
     "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com",
-    "connect-src 'self' https://*.supabase.co https://o*.ingest.sentry.io",
+    "connect-src 'self' https://*.supabase.co https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io",
     "object-src 'none'",
     "base-uri 'self'",
   ].join('; ')
@@ -123,7 +124,9 @@ export async function middleware(request: NextRequest) {
   }
 
   // Force password reset for admin-created accounts on first login
-  if (profile.password_reset_required && !pathname.startsWith('/auth/reset-password')) {
+  // The one API call a forced user must be able to make is the one that clears the flag (it checks the caller is that user).
+  // Blocking it left every admin-created account stuck on the reset screen for good.
+  if (profile.password_reset_required && !pathname.startsWith('/auth/reset-password') && !isClearResetPath(pathname, request.method)) {
     if (pathname.startsWith('/api/')) {
       return withCsp(NextResponse.json({ error: 'Password reset required' }, { status: 403 }))
     }

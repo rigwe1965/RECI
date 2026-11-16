@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { activeBookingFilter } from '@reci/utils'
 import { timingSafeEqual } from 'crypto'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 
@@ -60,6 +61,7 @@ export async function POST(request: NextRequest) {
     .from('bookings')
     .select('vehicle_id, pickup_datetime, dropoff_datetime')
     .not('status', 'in', '("cancelled","no_show")')
+    .or(activeBookingFilter())
     .lt('pickup_datetime', windowEnd.toISOString())
     .gt('dropoff_datetime', today.toISOString())
     .in('vehicle_id', allVehicleIds.length > 0 ? allVehicleIds : ['00000000-0000-0000-0000-000000000000'])

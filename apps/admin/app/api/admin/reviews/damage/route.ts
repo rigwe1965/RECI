@@ -26,7 +26,7 @@ export async function GET(_req: NextRequest) {
       { count: 'exact' }
     )
     .eq('ai_damage_report->>pending_review', 'true')
-    .is('admin_override', null)
+    .is('admin_override_at', null) // a staff decision stamps this; admin_override itself defaults to FALSE
     .order('created_at', { ascending: true })
     .limit(50)
 

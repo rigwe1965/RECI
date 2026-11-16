@@ -3,7 +3,7 @@ import { getUserFromRequest } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
 import { checkDbRateLimit } from '@/lib/rate-limit'
 import { CreateBookingSchema } from '@/lib/schemas'
-import { calculatePrice } from '@reci/utils'
+import { calculatePrice, activeBookingFilter } from '@reci/utils'
 import { runCorporateAgent } from '@/lib/corporate-agent'
 import { withErrorHandling } from '@/lib/api-handler'
 import { parseJsonBody } from '@reci/api'
@@ -49,6 +49,7 @@ export const POST = withErrorHandling(async function POST(request: NextRequest) 
       .select('id')
       .eq('vehicle_id', data.vehicle_id)
       .not('status', 'in', '("cancelled")')
+      .or(activeBookingFilter()) // an unpaid booking holds the car for 30 minutes only
       .lt('pickup_datetime', data.dropoff_datetime)
       .gt('dropoff_datetime', data.pickup_datetime),
     supabase
