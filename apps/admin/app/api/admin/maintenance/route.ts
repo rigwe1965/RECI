@@ -1,3 +1,4 @@
+import { resolveAiModel } from '@reci/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { withAdminAuth } from '@/lib/with-admin-auth'
@@ -58,7 +59,7 @@ async function generateAiNote(vehicles: FlaggedVehicle[]): Promise<Map<string, s
 
   try {
     const msg = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: resolveAiModel('maintenance'),
       max_tokens: 800,
       messages: [{
         role: 'user',

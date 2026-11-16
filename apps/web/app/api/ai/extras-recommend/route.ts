@@ -1,3 +1,4 @@
+import { resolveAiModel } from '@reci/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import anthropic from '@/lib/anthropic'
 import { getUserFromRequest } from '@/lib/supabase/server'
@@ -85,7 +86,7 @@ ${extras.map((e) => `- id="${e.id}" name="${e.name}" group="${e.exclusive_group 
   try {
     const message = await anthropic.messages.create(
       {
-        model: 'claude-haiku-4-5-20251001', // Fast + cheap — this runs on every extras page load
+        model: resolveAiModel('extras'), // Fast + cheap by default: this runs on every extras page load
         max_tokens: 512,
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: tripProfile }],
