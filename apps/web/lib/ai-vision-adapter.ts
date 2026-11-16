@@ -1,5 +1,5 @@
 import anthropic from '@/lib/anthropic'
-import { resolveAiModel } from '@reci/utils'
+import { getAiModel } from '@/lib/ai-model'
 
 type ImageSource =
   | { type: 'url'; url: string }
@@ -25,7 +25,7 @@ export async function callVisionAI(params: VisionCallParams): Promise<string> {
   // Default: Anthropic
   const message = await anthropic.messages.create(
     {
-      model: resolveAiModel('vision'),
+      model: await getAiModel('vision'),
       max_tokens: params.maxTokens,
       system: params.systemPrompt,
       messages: params.messages as Parameters<typeof anthropic.messages.create>[0]['messages'],
