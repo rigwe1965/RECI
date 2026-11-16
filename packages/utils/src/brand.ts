@@ -31,6 +31,14 @@ export interface Brand {
   corporateEmail: string
   /** Address quoted in the FAQ. It has always differed from bookingsEmail (a different domain). */
   faqBookingsEmail: string
+  /** Second line of the footer address: "Mitte, Berlin, Germany". */
+  addressLine: string
+  /** Support phone shown in the footer. Empty hides the line. */
+  phone: string
+  /** Support hours shown in the footer. Empty hides the line. */
+  supportHours: string
+  /** Collection points, one footer line each, hours included: "Berlin Mitte — Mon–Sun 07:00–22:00". */
+  pickupLocations: string[]
 }
 
 export type BrandEnv = Record<string, string | undefined>
@@ -51,6 +59,14 @@ const DEFAULTS: Brand = {
   privacyEmail: 'privacy@recitransport.de',
   corporateEmail: 'corporate@reci-transport.de',
   faqBookingsEmail: 'bookings@reci-transport.de',
+  addressLine: 'Mitte, Berlin, Germany',
+  phone: '+49 30 1234 5678',
+  supportHours: 'Mon–Sun · 08:00–20:00 CET',
+  pickupLocations: [
+    'Berlin Mitte — Mon–Sun 07:00–22:00',
+    'Berlin Schönefeld Airport — Daily 06:00–23:00',
+    'Berlin Friedrichshain — Mon–Sat 08:00–20:00',
+  ],
 }
 
 const KEYS: Record<keyof Brand, string> = {
@@ -69,6 +85,10 @@ const KEYS: Record<keyof Brand, string> = {
   privacyEmail: 'NEXT_PUBLIC_BRAND_PRIVACY_EMAIL',
   corporateEmail: 'NEXT_PUBLIC_BRAND_CORPORATE_EMAIL',
   faqBookingsEmail: 'NEXT_PUBLIC_BRAND_BOOKINGS_EMAIL',
+  addressLine: 'NEXT_PUBLIC_BRAND_ADDRESS_LINE',
+  phone: 'NEXT_PUBLIC_BRAND_PHONE',
+  supportHours: 'NEXT_PUBLIC_BRAND_SUPPORT_HOURS',
+  pickupLocations: 'NEXT_PUBLIC_BRAND_PICKUP_LOCATIONS',
 }
 
 /** A valid IANA zone, or false. A wrong zone would make every date in the app throw, so it is checked, not trusted. */
@@ -99,6 +119,11 @@ export function brandFrom(env: BrandEnv): Brand {
   const n = name ?? DEFAULTS.name
   const c = city ?? DEFAULTS.city
   const zone = get('timeZone')
+  const changed = renamed || city !== undefined
+  const hq = get('hqName') ?? (changed ? `${n} HQ, ${c}` : DEFAULTS.hqName)
+  const rawPickups = get('pickupLocations')
+  const pickupList = rawPickups ? rawPickups.split('|').map((x) => x.trim()).filter(Boolean) : []
+  const pickups = pickupList.length ? pickupList : undefined
   return {
     name: n,
     shortName: get('shortName') ?? (renamed ? n : DEFAULTS.shortName),
@@ -107,7 +132,7 @@ export function brandFrom(env: BrandEnv): Brand {
     city: c,
     country: get('country') ?? DEFAULTS.country,
     timeZone: zone && validTimeZone(zone) ? zone : DEFAULTS.timeZone,
-    hqName: get('hqName') ?? (renamed || city !== undefined ? `${n} HQ, ${c}` : DEFAULTS.hqName),
+    hqName: hq,
     supportEmail: get('supportEmail') ?? DEFAULTS.supportEmail,
     contactEmail: get('contactEmail') ?? DEFAULTS.contactEmail,
     bookingsEmail: get('bookingsEmail') ?? DEFAULTS.bookingsEmail,
@@ -115,6 +140,12 @@ export function brandFrom(env: BrandEnv): Brand {
     privacyEmail: get('privacyEmail') ?? DEFAULTS.privacyEmail,
     corporateEmail: get('corporateEmail') ?? DEFAULTS.corporateEmail,
     faqBookingsEmail: get('faqBookingsEmail') ?? DEFAULTS.faqBookingsEmail,
+    // A business that has set its own name or city must never show RECI's Berlin address, phone or branches:
+    // the address and collection points follow the city, and a phone or hours left unset are hidden.
+    addressLine: get('addressLine') ?? (changed ? `${c}, ${get('country') ?? DEFAULTS.country}` : DEFAULTS.addressLine),
+    phone: get('phone') ?? (renamed ? '' : DEFAULTS.phone),
+    supportHours: get('supportHours') ?? (renamed ? '' : DEFAULTS.supportHours),
+    pickupLocations: pickups ?? (changed ? [hq] : DEFAULTS.pickupLocations),
   }
 }
 
@@ -125,7 +156,7 @@ export function brandFrom(env: BrandEnv): Brand {
 export function brandLeftovers(env: BrandEnv): (keyof Brand)[] {
   const b = brandFrom(env)
   if (b.name === DEFAULTS.name) return []
-  return (Object.keys(DEFAULTS) as (keyof Brand)[]).filter((k) => b[k] === DEFAULTS[k] && k !== 'country' && k !== 'timeZone')
+  return (Object.keys(DEFAULTS) as (keyof Brand)[]).filter((k) => JSON.stringify(b[k]) === JSON.stringify(DEFAULTS[k]) && k !== 'country' && k !== 'timeZone')
 }
 /**
  * The brand of this deployment. Each variable is named in full so Next.js can put the value into browser code.
@@ -145,4 +176,8 @@ export const brand: Brand = brandFrom({
   NEXT_PUBLIC_BRAND_LEGAL_EMAIL: process.env.NEXT_PUBLIC_BRAND_LEGAL_EMAIL,
   NEXT_PUBLIC_BRAND_PRIVACY_EMAIL: process.env.NEXT_PUBLIC_BRAND_PRIVACY_EMAIL,
   NEXT_PUBLIC_BRAND_CORPORATE_EMAIL: process.env.NEXT_PUBLIC_BRAND_CORPORATE_EMAIL,
+  NEXT_PUBLIC_BRAND_ADDRESS_LINE: process.env.NEXT_PUBLIC_BRAND_ADDRESS_LINE,
+  NEXT_PUBLIC_BRAND_PHONE: process.env.NEXT_PUBLIC_BRAND_PHONE,
+  NEXT_PUBLIC_BRAND_SUPPORT_HOURS: process.env.NEXT_PUBLIC_BRAND_SUPPORT_HOURS,
+  NEXT_PUBLIC_BRAND_PICKUP_LOCATIONS: process.env.NEXT_PUBLIC_BRAND_PICKUP_LOCATIONS,
 })
