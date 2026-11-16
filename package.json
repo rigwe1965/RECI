@@ -19,5 +19,11 @@
   "packageManager": "pnpm@9.15.0",
   "engines": {
     "node": ">=20"
+  },
+  "pnpm": {
+    "overrides": {
+      "qs": ">=6.16.1 <7",
+      "dompurify": ">=3.4.17 <4"
+    }
   }
 }
