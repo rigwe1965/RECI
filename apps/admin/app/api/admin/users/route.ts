@@ -51,46 +51,30 @@ export const POST = withAdminAuth(async (request: NextRequest) => {
 
   const supabase = createAdminClient()
 
-  // Check if auth user already exists for this email
+  // Never take over an existing account: replacing the password and role of someone who already has a login (for example a
+  // customer) would lock them out and hand their account to a new owner. Existing emails are refused; Supabase also rejects
+  // duplicates, which covers installs with more than one page of users.
   const { data: { users: existingUsers } } = await supabase.auth.admin.listUsers({ perPage: 1000 })
-  const existingAuthUser = existingUsers.find((u) => u.email === parsed.data.email)
-
-  let userId: string
-
-  if (existingAuthUser) {
-    // User already exists — update their password and set reset flag
-    userId = existingAuthUser.id
-    const { error: updateError } = await supabase.auth.admin.updateUserById(userId, {
-      password: tempPassword,
-      email_confirm: true,
-      user_metadata: {
-        first_name: parsed.data.first_name,
-        last_name: parsed.data.last_name,
-      },
-      // Keep the JWT's app_metadata.role claim in sync with user_profiles.role
-      // (documented "Two-Layer Check" in CLAUDE.md) — set via service role only.
-      app_metadata: { role: parsed.data.role },
-    })
-    if (updateError) {
-      return NextResponse.json({ error: updateError.message }, { status: 400 })
-    }
-  } else {
-    // New user — create auth entry (email_confirm=true skips verification email)
-    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-      email: parsed.data.email,
-      password: tempPassword,
-      email_confirm: true,
-      user_metadata: {
-        first_name: parsed.data.first_name,
-        last_name: parsed.data.last_name,
-      },
-      app_metadata: { role: parsed.data.role },
-    })
-    if (authError) {
-      return NextResponse.json({ error: authError.message }, { status: 400 })
-    }
-    userId = authData.user.id
+  if (existingUsers.some((u) => u.email?.toLowerCase() === parsed.data.email.toLowerCase())) {
+    return NextResponse.json({ error: 'An account with this email already exists. Use a different email address.' }, { status: 409 })
   }
+
+  // New user — create auth entry (email_confirm=true skips verification email)
+  const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+    email: parsed.data.email,
+    password: tempPassword,
+    email_confirm: true,
+    user_metadata: {
+      first_name: parsed.data.first_name,
+      last_name: parsed.data.last_name,
+    },
+    // Keep the JWT's app_metadata.role claim in sync with user_profiles.role (documented "Two-Layer Check" in CLAUDE.md).
+    app_metadata: { role: parsed.data.role },
+  })
+  if (authError) {
+    return NextResponse.json({ error: authError.message }, { status: authError.status === 422 ? 409 : 400 })
+  }
+  const userId = authData.user.id
 
   // Update profile — role + names + force reset flag
   const { error: profileError } = await supabase
@@ -104,10 +88,8 @@ export const POST = withAdminAuth(async (request: NextRequest) => {
     .eq('id', userId)
 
   if (profileError) {
-    // Compensating action for new users only — existing users keep their original state
-    if (!existingAuthUser) {
-      await supabase.auth.admin.deleteUser(userId)
-    }
+    // Compensating action: remove the auth user we just created
+    await supabase.auth.admin.deleteUser(userId)
     return adminErrorResponse('admin/users', profileError)
   }
 
