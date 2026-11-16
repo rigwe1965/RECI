@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { ADMIN_PORTAL_ROLES } from '@reci/types'
+import { isClearResetPath } from '@reci/utils'
 
 const SUPABASE_CONFIGURED =
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -123,7 +124,9 @@ export async function middleware(request: NextRequest) {
   }
 
   // Force password reset for admin-created accounts on first login
-  if (profile.password_reset_required && !pathname.startsWith('/auth/reset-password')) {
+  // The one API call a forced user must be able to make is the one that clears the flag (it checks the caller is that user).
+  // Blocking it left every admin-created account stuck on the reset screen for good.
+  if (profile.password_reset_required && !pathname.startsWith('/auth/reset-password') && !isClearResetPath(pathname, request.method)) {
     if (pathname.startsWith('/api/')) {
       return withCsp(NextResponse.json({ error: 'Password reset required' }, { status: 403 }))
     }
