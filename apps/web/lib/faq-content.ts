@@ -1,3 +1,5 @@
+
+import { brand } from '@reci/utils'
 export interface FaqItem {
   id: string
   category: string
@@ -29,7 +31,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     category: 'Booking',
     question: 'Can I change my booking dates or vehicle?',
     answer:
-      'Yes. Changes are free if made more than 24 hours before pickup, subject to availability. Changes within 24 hours may incur a €15 amendment fee. Contact us at bookings@reci-transport.de or through your account page.',
+      `Yes. Changes are free if made more than 24 hours before pickup, subject to availability. Changes within 24 hours may incur a €15 amendment fee. Contact us at ${brand.faqBookingsEmail} or through your account page.`,
     keywords: ['change', 'modify', 'amend', 'update', 'dates', 'extend'],
   },
   {
@@ -37,7 +39,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     category: 'Booking',
     question: 'What is the cancellation policy?',
     answer:
-      'Free cancellation up to 48 hours before pickup. Cancellations 24–48 hours before: 25% charge. Cancellations under 24 hours: 50% charge. No-shows: 100% charge. To cancel, go to My Bookings in your account or email bookings@reci-transport.de.',
+      `Free cancellation up to 48 hours before pickup. Cancellations 24–48 hours before: 25% charge. Cancellations under 24 hours: 50% charge. No-shows: 100% charge. To cancel, go to My Bookings in your account or email ${brand.faqBookingsEmail}.`,
     keywords: ['cancel', 'cancellation', 'refund', 'policy', 'charge', 'no-show'],
   },
   {
@@ -185,8 +187,8 @@ export const FAQ_ITEMS: FaqItem[] = [
     category: 'Pickup & Return',
     question: 'Where do I pick up my vehicle?',
     answer:
-      'All vehicles are collected from RECI Transport HQ in Berlin. The exact address and directions are in your confirmation email. Free parking is available for your personal vehicle during the rental period.',
-    keywords: ['pickup', 'location', 'address', 'where', 'collect', 'Berlin', 'HQ'],
+      `All vehicles are collected from ${brand.name} HQ in ${brand.city}. The exact address and directions are in your confirmation email. Free parking is available for your personal vehicle during the rental period.`,
+    keywords: ['pickup', 'location', 'address', 'where', 'collect', `${brand.city}`, 'HQ'],
   },
   {
     id: 'pickup-hours',
@@ -229,7 +231,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     category: 'Corporate',
     question: 'Do you offer corporate accounts?',
     answer:
-      'Yes. Corporate accounts get negotiated rates, monthly invoicing, dedicated account management, and access to the full fleet including vans. Apply via the Corporate section in your account or email corporate@reci-transport.de.',
+      `Yes. Corporate accounts get negotiated rates, monthly invoicing, dedicated account management, and access to the full fleet including vans. Apply via the Corporate section in your account or email ${brand.corporateEmail}.`,
     keywords: ['corporate', 'business', 'company', 'account', 'B2B', 'fleet', 'invoice'],
   },
 ]

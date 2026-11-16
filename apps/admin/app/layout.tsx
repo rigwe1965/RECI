@@ -1,3 +1,4 @@
+import { brand } from '@reci/utils'
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
@@ -12,8 +13,8 @@ const SUPABASE_CONFIGURED =
   process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder.supabase.co'
 
 export const metadata: Metadata = {
-  title: 'RECI Admin',
-  description: 'RECI Transport fleet and operations dashboard.',
+  title: `${brand.shortName} Admin`,
+  description: `${brand.name} fleet and operations dashboard.`,
 }
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

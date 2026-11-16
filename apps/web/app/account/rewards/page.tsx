@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
@@ -84,7 +85,7 @@ export default function RewardsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100">RECI Rewards</h1>
+      <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100">{brand.shortName} Rewards</h1>
 
       {/* Balance card */}
       <div

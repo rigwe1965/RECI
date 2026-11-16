@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { Suspense } from 'react'
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -64,7 +65,7 @@ function LoginPageContent() {
   return (
     <div className="card">
       <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-1">Sign in</h1>
-      <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-6">Welcome back to RECI Transport</p>
+      <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-6">Welcome back to {brand.name}</p>
 
       {oauthError && (
         <p className="mb-4 text-sm text-[#DC2626] bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded px-3 py-2">

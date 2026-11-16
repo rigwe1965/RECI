@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useEffect, useState } from 'react'
 import { DemandGauge } from '@reci/ui'
 
@@ -73,7 +74,7 @@ export default function DemandCard() {
 
       {lastUpdate && (
         <p className="text-xs text-[#9CA3AF] dark:text-gray-500 mt-4">
-          Last computed: {new Date(lastUpdate).toLocaleString('en-DE', { timeZone: 'Europe/Berlin' })}
+          Last computed: {new Date(lastUpdate).toLocaleString('en-DE', { timeZone: brand.timeZone })}
         </p>
       )}
     </div>

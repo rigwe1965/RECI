@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -94,7 +95,7 @@ export default function SearchWidget({ initialValues, onSearch }: SearchWidgetPr
           </label>
           <select {...register('pickup_location_id')} className={inputCls}>
             {locations.length === 0 && (
-              <option value="a1b2c3d4-0000-0000-0000-000000000001">Berlin HQ</option>
+              <option value="a1b2c3d4-0000-0000-0000-000000000001">{brand.city} HQ</option>
             )}
             {locations.map((loc) => (
               <option key={loc.id} value={loc.id}>{loc.city}</option>

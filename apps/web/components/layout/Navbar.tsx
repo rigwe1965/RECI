@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -39,7 +40,7 @@ export default function Navbar() {
             R
           </div>
           <div className="leading-none">
-            <span className="font-bold text-[#1A1A1A] dark:text-gray-100 text-base tracking-tight">RECI</span>
+            <span className="font-bold text-[#1A1A1A] dark:text-gray-100 text-base tracking-tight">{brand.shortName}</span>
             <span className="font-normal text-[#6B7280] dark:text-gray-400 text-base tracking-tight"> Transport</span>
           </div>
         </Link>

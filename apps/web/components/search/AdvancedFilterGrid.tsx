@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useEffect, useState } from 'react'
 import { useVehicleSearch } from '@/hooks/useVehicleSearch'
 import type { SearchParams } from '@/lib/schemas'
@@ -59,7 +60,7 @@ export default function AdvancedFilterGrid() {
         <div>
           <label className={labelCls}>Pick-up Location</label>
           <select value={pickupLocationId} onChange={e => setPickupLocationId(e.target.value)} className={inputCls}>
-            {locations.length === 0 && <option value="a1b2c3d4-0000-0000-0000-000000000001">Berlin HQ</option>}
+            {locations.length === 0 && <option value="a1b2c3d4-0000-0000-0000-000000000001">{brand.city} HQ</option>}
             {locations.map(loc => <option key={loc.id} value={loc.id}>{loc.city}</option>)}
           </select>
         </div>

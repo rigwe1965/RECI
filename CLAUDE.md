@@ -24,6 +24,8 @@ CI (`.github/workflows/ci.yml`): quality → build on every push/PR; e2e on PRs 
 
 ## Key Rules
 
+**Brand.** The company name, city, time zone and contact addresses come from `brand` (`packages/utils/src/brand.ts`, set by `NEXT_PUBLIC_BRAND_*`), never typed into a page, e-mail or AI prompt. Unset, it is RECI Transport / Berlin. `apps/web/__tests__/brand-guard.test.ts` fails if `RECI` or an unlisted `Berlin` is typed back in.
+
 **Anthropic singleton.** Never `new Anthropic()` in a handler — `import anthropic from '@/lib/anthropic'`.
 
 **next/image.** External hostnames must be in `next.config.mjs` `images.remotePatterns` (currently `**.supabase.co`, `images.unsplash.com`); a missing one crashes to the root error boundary. Use `unoptimized` on external images (optimizer proxy triggers rate limits). Vehicle images are Unsplash — Wikimedia blocks Vercel referers.

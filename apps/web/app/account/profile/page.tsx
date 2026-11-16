@@ -1,5 +1,6 @@
 'use client'
 
+import { brand } from '@reci/utils'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -43,7 +44,7 @@ export default function ProfilePage() {
       router.push('/?deleted=1')
     } else {
       const data = await res.json().catch(() => ({}))
-      setDeleteError(data.error ?? 'Deletion failed. Contact support@reci-transport.com.')
+      setDeleteError(data.error ?? `Deletion failed. Contact ${brand.supportEmail}.`)
       setDeleting(false)
     }
   }

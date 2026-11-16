@@ -1,10 +1,11 @@
+import { brand } from '@reci/utils'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navbar from '@/components/layout/Navbar'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — RECI Transport',
-  description: 'How RECI Transport collects, uses, and protects your personal data under GDPR.',
+  title: `Privacy Policy — ${brand.name}`,
+  description: `How ${brand.name} collects, uses, and protects your personal data under GDPR.`,
 }
 
 export default function PrivacyPage() {
@@ -21,7 +22,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">1. Controller</h2>
-            <p>RECI Transport GmbH, Berlin, Germany (<strong>we / us / our</strong>) is the data controller for personal data processed through this website and mobile app. Contact: <a href="mailto:privacy@recitransport.de" className="text-[#407E3C] hover:underline">privacy@recitransport.de</a></p>
+            <p>{brand.legalName}, {brand.city}, {brand.country} (<strong>we / us / our</strong>) is the data controller for personal data processed through this website and mobile app. Contact: <a href={`mailto:${brand.privacyEmail}`} className="text-[#407E3C] hover:underline">{brand.privacyEmail}</a></p>
           </section>
 
           <section>
@@ -90,7 +91,7 @@ export default function PrivacyPage() {
               <li><strong>Objection</strong> — object to processing based on legitimate interest</li>
               <li><strong>Withdraw consent</strong> — for any processing based on consent</li>
             </ul>
-            <p className="mt-3">Exercise rights: <a href="mailto:privacy@recitransport.de" className="text-[#407E3C] hover:underline">privacy@recitransport.de</a> or via your <Link href="/account/profile" className="text-[#407E3C] hover:underline">Account Settings</Link>.</p>
+            <p className="mt-3">Exercise rights: <a href={`mailto:${brand.privacyEmail}`} className="text-[#407E3C] hover:underline">{brand.privacyEmail}</a> or via your <Link href="/account/profile" className="text-[#407E3C] hover:underline">Account Settings</Link>.</p>
             <p className="mt-2">You may also lodge a complaint with the Berlin data protection authority: <strong>Berliner Beauftragte für Datenschutz und Informationsfreiheit</strong>.</p>
           </section>
 

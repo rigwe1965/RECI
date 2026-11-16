@@ -1,3 +1,4 @@
+import { brand } from '@reci/utils'
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin-server'
@@ -23,7 +24,7 @@ export async function DELETE() {
 
   if (activeBookings && activeBookings.length > 0) {
     return NextResponse.json(
-      { error: 'Account cannot be deleted while bookings are pending, confirmed, or active. Contact support@reci-transport.com.' },
+      { error: `Account cannot be deleted while bookings are pending, confirmed, or active. Contact ${brand.supportEmail}.` },
       { status: 409 }
     )
   }
