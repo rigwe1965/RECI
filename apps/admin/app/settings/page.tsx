@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { createBrowserSupabaseClient } from '@/lib/supabase/browser'
 
 const PasswordSchema = z.object({
-  new_password: z.string().min(8, 'Minimum 8 characters'),
+  new_password: z.string().min(12, 'Minimum 12 characters'),
   confirm_password: z.string().min(1, 'Required'),
 }).refine((d) => d.new_password === d.confirm_password, {
   message: 'Passwords do not match',
