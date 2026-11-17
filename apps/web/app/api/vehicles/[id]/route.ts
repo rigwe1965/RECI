@@ -10,7 +10,7 @@ export async function GET(_request: NextRequest, props: { params: Promise<{ id: 
   // Same placeholder-only guard as the list route: local dev and CI have no database.
   if (process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://placeholder.supabase.co') {
     const mock = MOCK_VEHICLES.find(v => v.id === params.id)
-    return mock ? NextResponse.json(mock) : NextResponse.json({ error: 'Vehicle not found' }, { status: 404 })
+    return mock ? NextResponse.json({ color: 'Silver', mileage: 12000, ...mock }) : NextResponse.json({ error: 'Vehicle not found' }, { status: 404 })
   }
 
   const supabase = await createClient()
