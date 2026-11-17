@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { MOCK_VEHICLES } from '@/lib/mock-vehicles'
 
 export const revalidate = 3600
 
 export async function GET(_request: NextRequest, props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
+
+  // Same placeholder-only guard as the list route: local dev and CI have no database.
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://placeholder.supabase.co') {
+    const mock = MOCK_VEHICLES.find(v => v.id === params.id)
+    return mock ? NextResponse.json({ color: 'Silver', mileage: 12000, ...mock }) : NextResponse.json({ error: 'Vehicle not found' }, { status: 404 })
+  }
+
   const supabase = await createClient()
 
   const { data, error } = await supabase
