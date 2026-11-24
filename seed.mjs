@@ -44,7 +44,8 @@ const { error: vErr } = await supabase.from('vehicles').upsert([
 if (vErr) { console.error('vehicles:', vErr.message); process.exit(1) }
 console.log('vehicles ok')
 
-const { error: exErr } = await supabase.from('extras').upsert([
+// extras has no unique name (its id is random), so upsert() added 10 more copies on every run: update the ones that exist, insert the missing ones.
+const extraRows = [
   { name: 'Basic Insurance', description: 'Third-party liability.', price_per_day: 0.00, is_one_time_fee: false, exclusive_group: 'insurance', sort_order: 1 },
   { name: 'Full Insurance', description: 'Zero-excess comprehensive cover.', price_per_day: 18.00, is_one_time_fee: false, exclusive_group: 'insurance', sort_order: 2 },
   { name: 'GPS Navigation', description: 'Portable Garmin satnav.', price_per_day: 8.00, is_one_time_fee: false, exclusive_group: null, sort_order: 3 },
@@ -53,7 +54,18 @@ const { error: exErr } = await supabase.from('extras').upsert([
   { name: 'Additional Driver', description: 'Register a second driver.', price_per_day: 15.00, is_one_time_fee: false, exclusive_group: null, sort_order: 6 },
   { name: 'Fuel Option', description: 'Return empty - we refuel at market rate.', price_per_day: 45.00, is_one_time_fee: true, exclusive_group: null, sort_order: 7 },
   { name: 'Chauffeur', description: 'Professional driver for the full duration.', price_per_day: 120.00, is_one_time_fee: false, exclusive_group: null, sort_order: 8 },
-])
+]
+const { data: haveExtras, error: haveErr } = await supabase.from('extras').select('name')
+let exErr = haveErr
+if (!exErr) {
+  const have = new Set((haveExtras ?? []).map((e) => e.name))
+  const missing = extraRows.filter((e) => !have.has(e.name))
+  if (missing.length) exErr = (await supabase.from('extras').insert(missing)).error
+  for (const e of extraRows.filter((x) => have.has(x.name))) {
+    if (exErr) break
+    exErr = (await supabase.from('extras').update(e).eq('name', e.name)).error
+  }
+}
 if (exErr) { console.error('extras:', exErr.message); process.exit(1) }
 console.log('extras ok')
 console.log('Seed complete.')
