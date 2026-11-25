@@ -314,6 +314,7 @@ export async function POST(request: NextRequest) {
     content: m.content,
   }))
 
+  const model = await getAiModel('chat') // one model for the whole conversation turn, and the one that is logged
   let finalReply = ''
   let foundVehicles: VehicleResult[] = []
   let foundSearchParams: SearchResult['search_params'] | undefined
@@ -324,7 +325,7 @@ export async function POST(request: NextRequest) {
     try {
       response = await anthropic.messages.create(
         {
-          model: await getAiModel('chat'),
+          model,
           max_tokens: 1024,
           system: SYSTEM_PROMPT,
           tools: TOOLS,
@@ -409,6 +410,7 @@ export async function POST(request: NextRequest) {
 
   void logAICall({
     context: 'chat_agent',
+    modelUsed: model,
     decision: {
       tool_called: foundVehicles.length > 0 ? 'search_vehicles' : 'none',
       results_count: foundVehicles.length,

@@ -1,20 +1,24 @@
 /**
- * Which Claude model each AI feature uses. A deployment picks models with environment variables; with none set,
- * every feature uses exactly the model it always did. Only models Anthropic's Models API lists with image input,
+ * Which Claude model each AI feature uses. A deployment picks models with environment variables (or an admin picks
+ * one in the admin portal); with none set, each feature uses its default below. Only models Anthropic's Models API lists with image input,
  * PDF input and tool use are accepted (checked 2026-11-16), so a typo can never send a request to a model that
  * would reject it: an unknown value is ignored with a warning and the feature keeps working on its default.
  */
 export type AiPurpose = 'chat' | 'search' | 'trip' | 'corporate' | 'extras' | 'maintenance' | 'vision'
 
-/** What each feature used before models became selectable. */
+/**
+ * The model each feature uses when nothing is set. Customer-facing features use Sonnet 5.5; the two background features
+ * use Haiku 5.5, the cheapest model. (Until 2026-11-25 these were Sonnet 4.6 and Haiku 4.5, which still can be set.)
+ * None of these features forces a tool_choice, which Sonnet 5.5 would refuse.
+ */
 export const AI_MODEL_DEFAULTS: Record<AiPurpose, string> = {
-  chat: 'claude-sonnet-4-6',
-  search: 'claude-sonnet-4-6',
-  trip: 'claude-sonnet-4-6',
-  corporate: 'claude-sonnet-4-6',
-  extras: 'claude-haiku-4-5-20251001', // runs on every extras page load: keep it cheap
-  maintenance: 'claude-haiku-4-5-20251001',
-  vision: 'claude-sonnet-4-6',
+  chat: 'claude-sonnet-5-5',
+  search: 'claude-sonnet-5-5',
+  trip: 'claude-sonnet-5-5',
+  corporate: 'claude-sonnet-5-5',
+  extras: 'claude-haiku-5-5', // runs on every extras page load: keep it cheap
+  maintenance: 'claude-haiku-5-5',
+  vision: 'claude-sonnet-5-5',
 }
 
 export const AI_MODEL_CHOICES = [

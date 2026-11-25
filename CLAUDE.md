@@ -52,12 +52,12 @@ Vehicle detail → `/book/[vehicleId]` → `/book/extras` → `/book/driver` →
 
 | Feature | Route | Model |
 |---|---|---|
-| Conversational search | `POST /api/ai/search` | claude-sonnet-4-6 |
-| Extras recommendations | `POST /api/ai/extras-recommend` | claude-haiku-4-5-20251001 |
-| Trip co-pilot | `POST /api/ai/trip` | claude-sonnet-4-6 |
+| Conversational search | `POST /api/ai/search` | claude-sonnet-5-5 (default) |
+| Extras recommendations | `POST /api/ai/extras-recommend` | claude-haiku-5-5 (default) |
+| Trip co-pilot | `POST /api/ai/trip` | claude-sonnet-5-5 (default) |
 | Licence OCR / Damage detection | `POST /api/ai/licence`, `/api/ai/damage` | via vision adapter |
-| Corporate policy agent | `lib/corporate-agent.ts` | claude-sonnet-4-6 |
-| Maintenance notes | admin `maintenance` route | claude-haiku-4-5-20251001 |
+| Corporate policy agent | `lib/corporate-agent.ts` | claude-sonnet-5-5 (default) |
+| Maintenance notes | admin `maintenance` route | claude-haiku-5-5 (default) |
 
 All AI calls are server-side and must fail gracefully — never block a page on AI.
 
