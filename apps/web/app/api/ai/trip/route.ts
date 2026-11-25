@@ -63,12 +63,13 @@ Fuel type: ${fuel_type}
 
 Please provide a route summary from ${brand.city}, fuel cost estimate, 3 recommended stops, parking tips, and any relevant fuel notes.`
 
+  const model = await getAiModel('trip')
   let rawText: string
 
   try {
     const message = await anthropic.messages.create(
       {
-        model: await getAiModel('trip'),
+        model,
         max_tokens: 1024,
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: userMessage }],
@@ -103,6 +104,7 @@ Please provide a route summary from ${brand.city}, fuel cost estimate, 3 recomme
   void logAICall({
     bookingId: booking_id,
     context: 'trip_copilot',
+    modelUsed: model,
     decision: { fuel_type, vehicle_name },
   })
 

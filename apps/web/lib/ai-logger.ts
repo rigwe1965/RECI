@@ -23,7 +23,7 @@ export function logAICall(entry: AILogEntry): void {
       booking_id: entry.bookingId ?? null,
       context: entry.context,
       decision: entry.decision,
-      model_used: entry.modelUsed ?? 'claude-sonnet-4-6',
+      model_used: entry.modelUsed ?? null, // unknown rather than a guess (it used to record every call as claude-sonnet-4-6)
       confidence: entry.confidence ?? null,
       input_hash: entry.inputHash ?? null,
       // Required by existing schema
