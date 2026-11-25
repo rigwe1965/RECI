@@ -9,6 +9,9 @@ All notable changes to RECI Transport. Follows [Keep a Changelog](https://keepac
 - White-label branding settings (`NEXT_PUBLIC_BRAND_*`), footer settings and a per-deployment vehicle licence (off unless `LICENCE_ENFORCEMENT=1`).
 
 ### Fixed
+- `.env.example` listed `SENTRY_DSN` and `NEXT_PUBLIC_ADMIN_URL`, which nothing reads: the apps read `NEXT_PUBLIC_SENTRY_DSN` (so error monitoring stayed off when set as documented) and `ADMIN_URL`. Both corrected.
+- The licence settings (`LICENCE_ENFORCEMENT`, `LICENCE_KEY`) were documented in the root `.env.example`, but only the admin app reads them and each Next.js app loads only its own `.env.local`; they are now in `apps/admin/.env.example`, with the admin app's `ANTHROPIC_API_KEY` (maintenance assistant).
+- Settings the code reads were missing from the examples: `INTERNAL_APP_URL`, `AI_VISION_PROVIDER`/`AI_VISION_BASE_URL`/`AI_VISION_API_KEY`, and `ADMIN_EMAIL`/`ADMIN_PASSWORD` for `create_admin.mjs`. `packages/utils/src/env-example.test.ts` now fails when an app reads a setting its own `.env.example` does not list, or an example lists a setting nothing uses.
 - The seed scripts (`seed.mjs`, `seed_demo.mjs`, root and `apps/web`) added every extra again on each run (the `extras` table has no unique name, so `upsert()` had nothing to match): a demo seeded 16 times showed each extra 16 times. They now update the extras that exist and insert only the missing ones.
 
 ### Changed
