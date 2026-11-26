@@ -8,6 +8,7 @@ import DriverForm from '@/components/booking/DriverForm'
 import OrderSummary from '@/components/booking/OrderSummary'
 import { useBookingStore } from '@/hooks/useBookingStore'
 import type { DriverDetails } from '@/lib/schemas'
+import { apiErrorMessage } from '@reci/utils'
 
 export default function BookDriverPage() {
   const router = useRouter()
@@ -64,7 +65,7 @@ export default function BookDriverPage() {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error ?? 'Booking failed')
+        setError(apiErrorMessage(data, 'Booking failed'))
         setSubmitting(false)
         return
       }

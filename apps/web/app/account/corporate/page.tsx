@@ -1,6 +1,6 @@
 'use client'
 
-import { brand, formatEUR } from '@reci/utils'
+import { brand, formatEUR, apiErrorMessage } from '@reci/utils'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -46,7 +46,7 @@ export default function CorporatePage() {
     fetch('/api/corporate')
       .then((r) => r.json())
       .then((data) => {
-        if (data.error) { setError(data.error); return }
+        if (data.error) { setError(apiErrorMessage(data, 'Something went wrong')); return }
         setAccount(data.account)
         setAppStatus(data.application_status ?? 'none')
       })
@@ -64,7 +64,7 @@ export default function CorporatePage() {
     })
     const data = await res.json()
     setSubmitting(false)
-    if (!res.ok) { setError(data.error ?? 'Failed'); return }
+    if (!res.ok) { setError(apiErrorMessage(data, 'Failed')); return }
     setSuccess(true)
   }
 

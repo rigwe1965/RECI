@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { apiErrorMessage } from '@reci/utils'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -92,7 +93,7 @@ function LicenceCard({ item, onAction }: { item: LicenceReview; onAction: () => 
       })
       if (!res.ok) {
         const d = await res.json().catch(() => ({}))
-        setError(d.error ?? 'Action failed. Please try again.')
+        setError(apiErrorMessage(d, 'Action failed. Please try again.'))
         return
       }
       setDone(true)
@@ -201,7 +202,7 @@ function DamageCard({ item, onAction }: { item: DamageReview; onAction: () => vo
       })
       if (!res.ok) {
         const d = await res.json().catch(() => ({}))
-        setError(d.error ?? 'Action failed. Please try again.')
+        setError(apiErrorMessage(d, 'Action failed. Please try again.'))
         return
       }
       setDone(true)

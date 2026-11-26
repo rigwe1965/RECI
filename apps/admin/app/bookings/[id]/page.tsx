@@ -3,7 +3,7 @@
 import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { formatEUR } from '@reci/utils'
+import { formatEUR, apiErrorMessage } from '@reci/utils'
 
 const STATUS_BADGE: Record<string, string> = {
   pending:        'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
@@ -77,7 +77,7 @@ export default function BookingDetailPage(props: { params: Promise<{ id: string 
     })
     const data = await res.json()
     if (!res.ok) {
-      setSaveError(data.error ?? 'Failed to update')
+      setSaveError(apiErrorMessage(data, 'Failed to update'))
     } else {
       setBooking({ ...booking, ...data })
     }

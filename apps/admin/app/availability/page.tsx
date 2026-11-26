@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { apiErrorMessage } from '@reci/utils'
 
 function AvailabilitySkeleton() {
   return (
@@ -78,7 +79,7 @@ export default function AvailabilityPage() {
       body: JSON.stringify(form),
     })
     const d = await res.json()
-    if (!res.ok) setError(d.error ?? 'Failed')
+    if (!res.ok) setError(apiErrorMessage(d, 'Failed'))
     else { setForm({ vehicle_id: '', start_date: '', end_date: '', reason: '' }); load() }
     setSaving(false)
   }

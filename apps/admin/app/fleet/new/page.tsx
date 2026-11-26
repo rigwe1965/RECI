@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { FUEL_TYPES, TRANSMISSIONS } from '@reci/types'
+import { apiErrorMessage } from '@reci/utils'
 
 const Schema = z.object({
   make: z.string().min(1, 'Required'),
@@ -56,7 +57,7 @@ export default function NewVehiclePage() {
       body: JSON.stringify(data),
     })
     const result = await res.json()
-    if (!res.ok) { setServerError(result.error ?? 'Failed to create vehicle'); return }
+    if (!res.ok) { setServerError(apiErrorMessage(result, 'Failed to create vehicle')); return }
     router.push('/fleet')
   }
 

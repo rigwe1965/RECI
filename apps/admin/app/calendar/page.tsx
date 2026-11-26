@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Root } from 'react-dom/client'
+import { apiErrorMessage } from '@reci/utils'
 
 interface EventStats {
   confirmed: number
@@ -116,7 +117,7 @@ export default function CalendarPage() {
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
         if (!cancelled) {
-          setError(body.error ?? 'Failed to load calendar data')
+          setError(apiErrorMessage(body, 'Failed to load calendar data'))
           setLoading(false)
         }
         return
