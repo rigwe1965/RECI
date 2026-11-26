@@ -135,8 +135,8 @@ export default async function DashboardPage() {
 
       {/* Header */}
       <div className="mb-7">
-        <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight">Dashboard</h1>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-text dark:text-gray-100 tracking-tight">Dashboard</h1>
+        <p className="text-sm text-text-muted dark:text-gray-400 mt-1">
           {new Date().toLocaleDateString('en-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </div>
@@ -178,16 +178,16 @@ export default async function DashboardPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
         {cards.map((card) => (
-          <div key={card.label} className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-5 shadow-sm">
+          <div key={card.label} className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-5 shadow-xs">
             <div className="flex items-start justify-between mb-3">
-              <p className="text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider leading-tight">{card.label}</p>
+              <p className="text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider leading-tight">{card.label}</p>
               <div className={`${card.iconBg} w-8 h-8 rounded-lg flex items-center justify-center shrink-0`}>
                 <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={card.icon} />
                 </svg>
               </div>
             </div>
-            <p className="text-3xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight">{card.format(card.value as number)}</p>
+            <p className="text-3xl font-bold text-text dark:text-gray-100 tracking-tight">{card.format(card.value as number)}</p>
           </div>
         ))}
       </div>
@@ -196,14 +196,14 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
         {/* Recent Bookings */}
-        <div className="lg:col-span-2 bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
+        <div className="lg:col-span-2 bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl shadow-xs overflow-hidden">
           <div className="px-5 py-3.5 border-b border-[#F3F4F6] dark:border-gray-800 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100">Recent Bookings</h2>
-            <Link href="/bookings" className="text-xs font-medium text-[#407E3C] hover:text-[#356834] transition-colors">View all →</Link>
+            <h2 className="text-sm font-semibold text-text dark:text-gray-100">Recent Bookings</h2>
+            <Link href="/bookings" className="text-xs font-medium text-[#407E3C] hover:text-primary-hover transition-colors">View all →</Link>
           </div>
           <div className="divide-y divide-[#F3F4F6] dark:divide-gray-800">
             {kpis.recent_bookings.length === 0 ? (
-              <p className="px-5 py-10 text-sm text-[#6B7280] dark:text-gray-400 text-center">No bookings yet.</p>
+              <p className="px-5 py-10 text-sm text-text-muted dark:text-gray-400 text-center">No bookings yet.</p>
             ) : kpis.recent_bookings.map((b: any) => {
               const v = Array.isArray(b.vehicle) ? b.vehicle[0] : b.vehicle
               const s = STATUS_STYLES[b.status] ?? STATUS_STYLES.completed
@@ -217,12 +217,12 @@ export default async function DashboardPage() {
                         {b.status}
                       </span>
                     </div>
-                    <p className="text-sm text-[#1A1A1A] dark:text-gray-200 font-medium truncate">
+                    <p className="text-sm text-text dark:text-gray-200 font-medium truncate">
                       {b.driver_first_name} {b.driver_last_name}
-                      {v && <span className="text-[#6B7280] dark:text-gray-400 font-normal"> · {v.make} {v.model}</span>}
+                      {v && <span className="text-text-muted dark:text-gray-400 font-normal"> · {v.make} {v.model}</span>}
                     </p>
                   </div>
-                  <p className="text-sm font-bold text-[#1A1A1A] dark:text-gray-100 shrink-0">€{Number(b.total_price).toFixed(0)}</p>
+                  <p className="text-sm font-bold text-text dark:text-gray-100 shrink-0">€{Number(b.total_price).toFixed(0)}</p>
                 </Link>
               )
             })}
@@ -231,8 +231,8 @@ export default async function DashboardPage() {
 
         {/* Sidebar */}
         <div className="space-y-4">
-          <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl shadow-sm p-5">
-            <h2 className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">Quick Actions</h2>
+          <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl shadow-xs p-5">
+            <h2 className="text-sm font-semibold text-text dark:text-gray-100 mb-3">Quick Actions</h2>
             <div className="space-y-2">
               {[
                 { href: '/bookings', label: 'All Bookings', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', primary: true },
@@ -246,7 +246,7 @@ export default async function DashboardPage() {
                   href={href}
                   className={`flex items-center gap-3 w-full px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     primary
-                      ? 'bg-[#407E3C] hover:bg-[#356834] text-white shadow-sm'
+                      ? 'bg-[#407E3C] hover:bg-primary-hover text-white shadow-xs'
                       : 'bg-[#F9FAFB] dark:bg-gray-800 hover:bg-[#F3F4F6] dark:hover:bg-gray-700 text-[#374151] dark:text-gray-300 border border-[#E5E7EB] dark:border-gray-700'
                   }`}
                 >
@@ -259,8 +259,8 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl shadow-sm p-5">
-            <h2 className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">Status Overview</h2>
+          <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl shadow-xs p-5">
+            <h2 className="text-sm font-semibold text-text dark:text-gray-100 mb-3">Status Overview</h2>
             <div className="space-y-2.5">
               {[
                 { label: 'Active', value: kpis.active_bookings, color: 'bg-blue-500' },
@@ -269,8 +269,8 @@ export default async function DashboardPage() {
               ].map(({ label, value, color }) => (
                 <div key={label} className="flex items-center gap-3">
                   <div className={`w-2 h-2 rounded-full ${color} shrink-0`} />
-                  <span className="text-sm text-[#6B7280] dark:text-gray-400 flex-1">{label}</span>
-                  <span className="text-sm font-bold text-[#1A1A1A] dark:text-gray-100">{value}</span>
+                  <span className="text-sm text-text-muted dark:text-gray-400 flex-1">{label}</span>
+                  <span className="text-sm font-bold text-text dark:text-gray-100">{value}</span>
                 </div>
               ))}
             </div>

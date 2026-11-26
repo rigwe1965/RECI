@@ -18,9 +18,9 @@ const STATUS_STYLES: Record<string, string> = {
   pending: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800',
   confirmed: 'bg-[#F0FDF4] dark:bg-green-900/20 text-[#407E3C] border-[#BBF7D0] dark:border-green-800',
   active: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-  completed: 'bg-[#F9FAFB] dark:bg-gray-800 text-[#6B7280] dark:text-gray-400 border-[#E5E7EB] dark:border-gray-600',
-  cancelled: 'bg-red-50 dark:bg-red-900/20 text-[#DC2626] border-red-200 dark:border-red-800',
-  no_show: 'bg-red-50 dark:bg-red-900/20 text-[#DC2626] border-red-200 dark:border-red-800',
+  completed: 'bg-[#F9FAFB] dark:bg-gray-800 text-text-muted dark:text-gray-400 border-[#E5E7EB] dark:border-gray-600',
+  cancelled: 'bg-red-50 dark:bg-red-900/20 text-error border-red-200 dark:border-red-800',
+  no_show: 'bg-red-50 dark:bg-red-900/20 text-error border-red-200 dark:border-red-800',
 }
 
 function formatDate(iso: string) {
@@ -59,13 +59,13 @@ export default function AccountBookingsPage() {
   }
 
   if (error) {
-    return <div className="card text-center py-10 text-[#DC2626]">{error}</div>
+    return <div className="card text-center py-10 text-error">{error}</div>
   }
 
   if (bookings.length === 0) {
     return (
       <div className="card text-center py-12">
-        <p className="text-[#6B7280] dark:text-gray-400 mb-4">No bookings yet.</p>
+        <p className="text-text-muted dark:text-gray-400 mb-4">No bookings yet.</p>
         <Link href="/" className="btn-primary px-6 py-2 text-sm inline-block">
           Search vehicles
         </Link>
@@ -75,7 +75,7 @@ export default function AccountBookingsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100">My Bookings</h1>
+      <h1 className="text-xl font-bold text-text dark:text-gray-100">My Bookings</h1>
       {bookings.map((b) => {
         const v = getVehicle(b.vehicle)
         return (
@@ -83,17 +83,17 @@ export default function AccountBookingsPage() {
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-sm font-semibold text-[#1A1A1A] dark:text-gray-100">{b.booking_ref}</span>
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded border text-xs font-medium capitalize ${STATUS_STYLES[b.status] ?? STATUS_STYLES.pending}`}>
+                  <span className="font-mono text-sm font-semibold text-text dark:text-gray-100">{b.booking_ref}</span>
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-sm border text-xs font-medium capitalize ${STATUS_STYLES[b.status] ?? STATUS_STYLES.pending}`}>
                     {b.status}
                   </span>
                 </div>
                 {v && (
-                  <p className="text-sm font-medium text-[#1A1A1A] dark:text-gray-200">
+                  <p className="text-sm font-medium text-text dark:text-gray-200">
                     {v.year} {v.make} {v.model}
                   </p>
                 )}
-                <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-1">
+                <p className="text-xs text-text-muted dark:text-gray-400 mt-1">
                   {formatDate(b.pickup_datetime)} → {formatDate(b.dropoff_datetime)}
                 </p>
               </div>
@@ -118,7 +118,7 @@ export default function AccountBookingsPage() {
                 {(b.status === 'completed' || b.status === 'active') && (
                   <Link
                     href={`/account/bookings/${b.id}/inspect-return`}
-                    className="text-xs text-[#6B7280] dark:text-gray-400 hover:underline block"
+                    className="text-xs text-text-muted dark:text-gray-400 hover:underline block"
                   >
                     Return inspection →
                   </Link>

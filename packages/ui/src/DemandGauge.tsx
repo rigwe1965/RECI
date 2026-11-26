@@ -16,10 +16,10 @@ export function DemandGauge({ label, remaining, signal, pct }: DemandGaugeProps)
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
-        <span className="text-xs font-medium text-[#1A1A1A] dark:text-gray-100">{label}</span>
+        <span className="text-xs font-medium text-text dark:text-gray-100">{label}</span>
         <div className="flex items-center gap-2">
           {remaining != null && signal !== 'normal' && (
-            <span className="text-xs text-[#6B7280] dark:text-gray-400">{remaining} left</span>
+            <span className="text-xs text-text-muted dark:text-gray-400">{remaining} left</span>
           )}
           <span className={`text-xs font-semibold ${colors.label}`}>{pct}%</span>
         </div>

@@ -70,12 +70,12 @@ export default function ConversationalSearch({ onResult }: ConversationalSearchP
           placeholder='e.g. "I need a van for moving next Saturday, 3 days"'
           disabled={loading}
           maxLength={500}
-          className="flex-1 border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] dark:text-gray-100 placeholder:text-[#9CA3AF] dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-shadow bg-[#F9FAFB] dark:bg-gray-800"
+          className="flex-1 border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-text dark:text-gray-100 placeholder:text-[#9CA3AF] dark:placeholder-gray-500 focus:outline-hidden focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-shadow bg-[#F9FAFB] dark:bg-gray-800"
         />
         <button
           type="submit"
           disabled={loading || !query.trim()}
-          className="flex items-center gap-2 bg-[#407E3C] hover:bg-[#356834] disabled:opacity-40 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
+          className="flex items-center gap-2 bg-[#407E3C] hover:bg-primary-hover disabled:opacity-40 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
         >
           {loading ? (
             <>
@@ -88,7 +88,7 @@ export default function ConversationalSearch({ onResult }: ConversationalSearchP
         </button>
       </form>
       {feedback && (
-        <p className={`mt-1.5 text-xs font-medium ${feedback.type === 'success' ? 'text-[#16A34A]' : feedback.type === 'warn' ? 'text-[#D97706]' : 'text-[#DC2626]'}`}>
+        <p className={`mt-1.5 text-xs font-medium ${feedback.type === 'success' ? 'text-success' : feedback.type === 'warn' ? 'text-[#D97706]' : 'text-error'}`}>
           {feedback.type === 'success' ? '✓ ' : '⚠ '}{feedback.text}
         </p>
       )}

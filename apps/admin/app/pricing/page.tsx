@@ -15,10 +15,10 @@ function PricingSkeleton() {
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <label className="block text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-1.5">{children}</label>
+  return <label className="block text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-1.5">{children}</label>
 }
 
-const inputCls = 'w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-[#1A1A1A] dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors'
+const inputCls = 'w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-text dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors'
 
 function getOverrideStatus(start: string, end: string): { label: string; cls: string } {
   const now = new Date()
@@ -105,14 +105,14 @@ export default function PricingPage() {
     if (confirmId === id) {
       return (
         <div className="flex items-center justify-end gap-2">
-          <span className="text-xs text-[#6B7280] dark:text-gray-400">Delete?</span>
+          <span className="text-xs text-text-muted dark:text-gray-400">Delete?</span>
           <button onClick={onConfirm} className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">Yes</button>
           <button onClick={() => setConfirmId(null)} className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#F3F4F6] dark:bg-gray-800 text-[#374151] dark:text-gray-300 hover:bg-[#E5E7EB] dark:hover:bg-gray-700 transition-colors">No</button>
         </div>
       )
     }
     return (
-      <button onClick={() => setConfirmId(id)} className="text-xs text-[#DC2626] dark:text-red-400 font-medium px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
+      <button onClick={() => setConfirmId(id)} className="text-xs text-error dark:text-red-400 font-medium px-2 py-1 rounded-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
         Delete
       </button>
     )
@@ -121,8 +121,8 @@ export default function PricingPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight">Pricing</h1>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-1">Base rates per category and seasonal surcharges</p>
+        <h1 className="text-2xl font-bold text-text dark:text-gray-100 tracking-tight">Pricing</h1>
+        <p className="text-sm text-text-muted dark:text-gray-400 mt-1">Base rates per category and seasonal surcharges</p>
       </div>
 
       {error && (
@@ -137,15 +137,15 @@ export default function PricingPage() {
       {/* Base Rates */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-base font-semibold text-[#1A1A1A] dark:text-gray-100">Base Rates</h2>
-          <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-0.5">Per-category daily rate. Latest effective date wins.</p>
+          <h2 className="text-base font-semibold text-text dark:text-gray-100">Base Rates</h2>
+          <p className="text-xs text-text-muted dark:text-gray-400 mt-0.5">Per-category daily rate. Latest effective date wins.</p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl overflow-hidden shadow-xs">
           {loading ? (
             <div className="p-4"><PricingSkeleton /></div>
           ) : rules.length === 0 ? (
-            <p className="px-5 py-10 text-center text-sm text-[#6B7280] dark:text-gray-400">No base rates configured.</p>
+            <p className="px-5 py-10 text-center text-sm text-text-muted dark:text-gray-400">No base rates configured.</p>
           ) : (
             <table className="w-full text-sm">
               <thead>
@@ -161,9 +161,9 @@ export default function PricingPage() {
                   const isCurrent = latestPerCategory[r.category_id] === r.effective_from
                   return (
                     <tr key={r.id} className="border-b border-[#F3F4F6] dark:border-gray-800 last:border-0">
-                      <td className="px-4 py-3 font-medium text-[#1A1A1A] dark:text-gray-100">{cat?.name ?? r.category_id}</td>
+                      <td className="px-4 py-3 font-medium text-text dark:text-gray-100">{cat?.name ?? r.category_id}</td>
                       <td className="px-4 py-3 font-bold text-[#407E3C]">{formatEUR(Number(r.base_rate_per_day))}</td>
-                      <td className="px-4 py-3 text-[#6B7280] dark:text-gray-400 text-xs font-mono">{r.effective_from?.split('T')[0]}</td>
+                      <td className="px-4 py-3 text-text-muted dark:text-gray-400 text-xs font-mono">{r.effective_from?.split('T')[0]}</td>
                       <td className="px-4 py-3">
                         {isCurrent ? (
                           <span className="inline-flex items-center gap-1 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full">
@@ -184,8 +184,8 @@ export default function PricingPage() {
           )}
         </div>
 
-        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-5 shadow-sm">
-          <p className="text-xs font-bold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-4">Add Base Rate</p>
+        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-5 shadow-xs">
+          <p className="text-xs font-bold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-4">Add Base Rate</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <Label>Category</Label>
@@ -209,12 +209,12 @@ export default function PricingPage() {
             <button
               onClick={addRule}
               disabled={saving || !newRule.category_id || !newRule.base_rate_per_day}
-              className="bg-[#407E3C] hover:bg-[#356834] text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-40 shadow-sm"
+              className="bg-[#407E3C] hover:bg-primary-hover text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-40 shadow-xs"
             >
               {saving ? 'Saving…' : 'Add rate'}
             </button>
             {newRule.base_rate_per_day && newRule.category_id && (
-              <p className="text-xs text-[#6B7280] dark:text-gray-400">Preview: {formatEUR(Number(newRule.base_rate_per_day || 0))}/day</p>
+              <p className="text-xs text-text-muted dark:text-gray-400">Preview: {formatEUR(Number(newRule.base_rate_per_day || 0))}/day</p>
             )}
           </div>
         </div>
@@ -223,15 +223,15 @@ export default function PricingPage() {
       {/* Seasonal Overrides */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-base font-semibold text-[#1A1A1A] dark:text-gray-100">Seasonal Overrides</h2>
-          <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-0.5">Surcharge % applied on top of base rate during date ranges.</p>
+          <h2 className="text-base font-semibold text-text dark:text-gray-100">Seasonal Overrides</h2>
+          <p className="text-xs text-text-muted dark:text-gray-400 mt-0.5">Surcharge % applied on top of base rate during date ranges.</p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl overflow-hidden shadow-xs">
           {loading ? (
             <div className="p-4"><PricingSkeleton /></div>
           ) : overrides.length === 0 ? (
-            <p className="px-5 py-10 text-center text-sm text-[#6B7280] dark:text-gray-400">No seasonal overrides.</p>
+            <p className="px-5 py-10 text-center text-sm text-text-muted dark:text-gray-400">No seasonal overrides.</p>
           ) : (
             <table className="w-full text-sm">
               <thead>
@@ -246,8 +246,8 @@ export default function PricingPage() {
                   const { label, cls } = getOverrideStatus(o.start_date, o.end_date)
                   return (
                     <tr key={o.id} className="border-b border-[#F3F4F6] dark:border-gray-800 last:border-0">
-                      <td className="px-4 py-3 font-medium text-[#1A1A1A] dark:text-gray-100">{o.name}</td>
-                      <td className="px-4 py-3 text-[#6B7280] dark:text-gray-400 text-xs whitespace-nowrap">{fmtDate(o.start_date)} – {fmtDate(o.end_date)}</td>
+                      <td className="px-4 py-3 font-medium text-text dark:text-gray-100">{o.name}</td>
+                      <td className="px-4 py-3 text-text-muted dark:text-gray-400 text-xs whitespace-nowrap">{fmtDate(o.start_date)} – {fmtDate(o.end_date)}</td>
                       <td className="px-4 py-3 font-bold text-[#F97316]">+{o.surcharge_pct}%</td>
                       <td className="px-4 py-3">
                         <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full ${cls}`}>{label}</span>
@@ -263,8 +263,8 @@ export default function PricingPage() {
           )}
         </div>
 
-        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-5 shadow-sm">
-          <p className="text-xs font-bold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-4">Add Override</p>
+        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-5 shadow-xs">
+          <p className="text-xs font-bold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-4">Add Override</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label>Override name</Label>
@@ -291,12 +291,12 @@ export default function PricingPage() {
             <button
               onClick={addOverride}
               disabled={saving || !newOverride.name || !newOverride.start_date || !newOverride.end_date || !newOverride.surcharge_pct}
-              className="bg-[#407E3C] hover:bg-[#356834] text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-40 shadow-sm"
+              className="bg-[#407E3C] hover:bg-primary-hover text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-40 shadow-xs"
             >
               {saving ? 'Saving…' : 'Add override'}
             </button>
             {newOverride.surcharge_pct && (
-              <p className="text-xs text-[#6B7280] dark:text-gray-400">+{newOverride.surcharge_pct}% surcharge applied</p>
+              <p className="text-xs text-text-muted dark:text-gray-400">+{newOverride.surcharge_pct}% surcharge applied</p>
             )}
           </div>
         </div>

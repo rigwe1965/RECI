@@ -70,7 +70,7 @@ export default function RewardsPage() {
   if (error) {
     return (
       <div className="card text-center py-12">
-        <p className="text-[#DC2626] font-medium mb-4">{error}</p>
+        <p className="text-error font-medium mb-4">{error}</p>
         <Link href="/auth/login" className="btn-primary px-6 py-2 text-sm inline-block">Sign in</Link>
       </div>
     )
@@ -85,7 +85,7 @@ export default function RewardsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100">{brand.shortName} Rewards</h1>
+      <h1 className="text-2xl font-bold text-text dark:text-gray-100">{brand.shortName} Rewards</h1>
 
       {/* Balance card */}
       <div
@@ -114,13 +114,13 @@ export default function RewardsPage() {
 
       {/* Tier progress */}
       <div className="card">
-        <h2 className="font-semibold text-[#1A1A1A] dark:text-gray-100 mb-4">Tier Progress</h2>
+        <h2 className="font-semibold text-text dark:text-gray-100 mb-4">Tier Progress</h2>
 
         {next_tier ? (
           <>
             <div className="flex items-center justify-between text-sm mb-2">
-              <span className="font-medium text-[#1A1A1A] dark:text-gray-200">{tier?.name ?? 'Bronze'}</span>
-              <span className="text-[#6B7280] dark:text-gray-400">{points_to_next_tier.toLocaleString()} pts to {next_tier.name}</span>
+              <span className="font-medium text-text dark:text-gray-200">{tier?.name ?? 'Bronze'}</span>
+              <span className="text-text-muted dark:text-gray-400">{points_to_next_tier.toLocaleString()} pts to {next_tier.name}</span>
               <span className="font-medium" style={{ color: next_tier.color_hex }}>{next_tier.name}</span>
             </div>
             <div className="w-full bg-[#F3F4F6] dark:bg-gray-700 rounded-full h-3 overflow-hidden">
@@ -129,14 +129,14 @@ export default function RewardsPage() {
                 style={{ width: `${progressPct}%`, backgroundColor: next_tier.color_hex }}
               />
             </div>
-            <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-2">{progressPct}% of the way to {next_tier.name}</p>
+            <p className="text-xs text-text-muted dark:text-gray-400 mt-2">{progressPct}% of the way to {next_tier.name}</p>
           </>
         ) : (
           <div className="flex items-center gap-3 p-3 bg-[#F0FDF4] dark:bg-green-900/20 border border-[#BBF7D0] dark:border-green-800 rounded-lg">
             <span className="w-8 h-8 rounded-full bg-[#407E3C] flex items-center justify-center text-white text-xs font-bold shrink-0">P</span>
             <div>
               <p className="font-semibold text-[#407E3C]">Platinum member</p>
-              <p className="text-xs text-[#6B7280] dark:text-gray-400">You&apos;ve reached our highest tier. Thank you!</p>
+              <p className="text-xs text-text-muted dark:text-gray-400">You&apos;ve reached our highest tier. Thank you!</p>
             </div>
           </div>
         )}
@@ -144,22 +144,22 @@ export default function RewardsPage() {
 
       {/* Tiers overview */}
       <div className="card">
-        <h2 className="font-semibold text-[#1A1A1A] dark:text-gray-100 mb-4">All Tiers</h2>
+        <h2 className="font-semibold text-text dark:text-gray-100 mb-4">All Tiers</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {tiers.map((t) => {
             const isCurrent = t.id === tier?.id
             return (
               <div
                 key={t.id}
-                className={`rounded-xl p-3 border-2 transition-all ${isCurrent ? 'shadow-sm' : 'opacity-60'}`}
+                className={`rounded-xl p-3 border-2 transition-all ${isCurrent ? 'shadow-xs' : 'opacity-60'}`}
                 style={{
                   borderColor: isCurrent ? t.color_hex : 'transparent',
                   backgroundColor: t.color_hex + '12',
                 }}
               >
                 <div className="text-2xl mb-1">{TIER_ICONS[t.slug]}</div>
-                <p className="font-semibold text-sm text-[#1A1A1A] dark:text-gray-100">{t.name}</p>
-                <p className="text-xs text-[#6B7280] dark:text-gray-400">{t.min_lifetime_points.toLocaleString()}+ pts</p>
+                <p className="font-semibold text-sm text-text dark:text-gray-100">{t.name}</p>
+                <p className="text-xs text-text-muted dark:text-gray-400">{t.min_lifetime_points.toLocaleString()}+ pts</p>
                 {isCurrent && (
                   <span className="inline-block mt-1 text-xs font-semibold px-1.5 py-0.5 rounded-full text-white" style={{ backgroundColor: t.color_hex }}>
                     Current
@@ -167,7 +167,7 @@ export default function RewardsPage() {
                 )}
                 <ul className="mt-2 space-y-0.5">
                   {t.perks.slice(0, 2).map((perk, i) => (
-                    <li key={i} className="text-xs text-[#6B7280] dark:text-gray-400 flex gap-1">
+                    <li key={i} className="text-xs text-text-muted dark:text-gray-400 flex gap-1">
                       <span style={{ color: t.color_hex }}>·</span> {perk}
                     </li>
                   ))}
@@ -180,11 +180,11 @@ export default function RewardsPage() {
 
       {/* Transaction history */}
       <div className="card">
-        <h2 className="font-semibold text-[#1A1A1A] dark:text-gray-100 mb-4">Points History</h2>
+        <h2 className="font-semibold text-text dark:text-gray-100 mb-4">Points History</h2>
 
         {transactions.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-[#6B7280] dark:text-gray-400 text-sm">No transactions yet.</p>
+            <p className="text-text-muted dark:text-gray-400 text-sm">No transactions yet.</p>
             <Link href="/" className="btn-primary mt-4 px-6 py-2 text-sm inline-block">Book a car to earn points</Link>
           </div>
         ) : (
@@ -193,18 +193,18 @@ export default function RewardsPage() {
               <li key={tx.id} className="py-3 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${
-                    tx.type === 'earned' ? 'bg-[#F0FDF4] text-[#407E3C]' : 'bg-red-50 text-[#DC2626]'
+                    tx.type === 'earned' ? 'bg-[#F0FDF4] text-[#407E3C]' : 'bg-red-50 text-error'
                   }`}>
                     {tx.type === 'earned' ? '↑' : '↓'}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-[#1A1A1A] dark:text-gray-200">
+                    <p className="text-sm font-medium text-text dark:text-gray-200">
                       {tx.note ?? (tx.type === 'earned' ? 'Points earned' : 'Points redeemed')}
                     </p>
-                    <p className="text-xs text-[#6B7280] dark:text-gray-400">{formatDate(tx.created_at)}</p>
+                    <p className="text-xs text-text-muted dark:text-gray-400">{formatDate(tx.created_at)}</p>
                   </div>
                 </div>
-                <span className={`text-sm font-bold ${tx.points > 0 ? 'text-[#407E3C]' : 'text-[#DC2626]'}`}>
+                <span className={`text-sm font-bold ${tx.points > 0 ? 'text-[#407E3C]' : 'text-error'}`}>
                   {tx.points > 0 ? '+' : ''}{tx.points.toLocaleString()} pts
                 </span>
               </li>

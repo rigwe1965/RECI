@@ -27,7 +27,7 @@ export default function CheckoutStepper({ current }: CheckoutStepperProps) {
                   <span
                     className={`
                       w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold shrink-0
-                      ${done ? 'bg-primary text-white' : active ? 'bg-primary text-white ring-4 ring-primary/20' : 'bg-[#E5E7EB] dark:bg-gray-700 text-[#6B7280] dark:text-gray-400'}
+                      ${done ? 'bg-primary text-white' : active ? 'bg-primary text-white ring-4 ring-primary/20' : 'bg-[#E5E7EB] dark:bg-gray-700 text-text-muted dark:text-gray-400'}
                     `}
                   >
                     {done ? (
@@ -40,7 +40,7 @@ export default function CheckoutStepper({ current }: CheckoutStepperProps) {
                   </span>
                   <span
                     className={`text-sm font-medium hidden sm:block ${
-                      active ? 'text-primary' : done ? 'text-[#1A1A1A] dark:text-gray-100' : 'text-[#6B7280] dark:text-gray-400'
+                      active ? 'text-primary' : done ? 'text-text dark:text-gray-100' : 'text-text-muted dark:text-gray-400'
                     }`}
                   >
                     {label}

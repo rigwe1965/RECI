@@ -46,8 +46,8 @@ export default function DigitalCheckIn({ bookingRef, driverName, licenceVerified
             </svg>
           </span>
           <div className="text-left">
-            <p className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100">Digital Check-in</p>
-            <p className="text-xs text-[#6B7280] dark:text-gray-400">Show QR at pickup · Skip the counter</p>
+            <p className="text-sm font-semibold text-text dark:text-gray-100">Digital Check-in</p>
+            <p className="text-xs text-text-muted dark:text-gray-400">Show QR at pickup · Skip the counter</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ export default function DigitalCheckIn({ bookingRef, driverName, licenceVerified
           <div className="flex flex-col sm:flex-row gap-6">
             {/* Left: checklist */}
             <div className="flex-1">
-              <p className="text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-3">
+              <p className="text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-3">
                 Pre-arrival checklist
               </p>
               <ul className="space-y-2.5">
@@ -76,7 +76,7 @@ export default function DigitalCheckIn({ bookingRef, driverName, licenceVerified
                   return (
                     <li key={item.id}>
                       <label className={`flex items-center gap-3 ${item.auto ? 'cursor-default' : 'cursor-pointer group'}`}>
-                        <span className={`flex-shrink-0 w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
+                        <span className={`shrink-0 w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
                           done
                             ? 'bg-[#407E3C] border-[#407E3C]'
                             : 'border-[#D1D5DB] dark:border-gray-600 group-hover:border-[#407E3C]'
@@ -88,7 +88,7 @@ export default function DigitalCheckIn({ bookingRef, driverName, licenceVerified
                           )}
                         </span>
                         <span
-                          className={`text-sm transition-colors ${done ? 'text-[#407E3C] line-through' : 'text-[#1A1A1A] dark:text-gray-200'}`}
+                          className={`text-sm transition-colors ${done ? 'text-[#407E3C] line-through' : 'text-text dark:text-gray-200'}`}
                           onClick={() => toggle(item.id)}
                         >
                           {item.label}

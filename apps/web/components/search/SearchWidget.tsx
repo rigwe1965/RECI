@@ -28,8 +28,8 @@ interface SearchWidgetProps {
   onSearch?: () => void
 }
 
-const inputCls = "w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2.5 text-sm text-[#1A1A1A] dark:text-gray-100 placeholder:text-[#9CA3AF] dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-shadow bg-white dark:bg-gray-800"
-const labelCls = "block text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wide mb-1.5"
+const inputCls = "w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2.5 text-sm text-text dark:text-gray-100 placeholder:text-[#9CA3AF] dark:placeholder-gray-500 focus:outline-hidden focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-shadow bg-white dark:bg-gray-800"
+const labelCls = "block text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wide mb-1.5"
 
 export default function SearchWidget({ initialValues, onSearch }: SearchWidgetProps) {
   const { search, setParams } = useVehicleSearch()
@@ -102,7 +102,7 @@ export default function SearchWidget({ initialValues, onSearch }: SearchWidgetPr
             ))}
           </select>
           {errors.pickup_location_id && (
-            <p className="text-[#DC2626] text-xs mt-1">{errors.pickup_location_id.message}</p>
+            <p className="text-error text-xs mt-1">{errors.pickup_location_id.message}</p>
           )}
         </div>
 
@@ -115,7 +115,7 @@ export default function SearchWidget({ initialValues, onSearch }: SearchWidgetPr
             Pick-up Date
           </label>
           <input type="date" min={today} {...register('pickup_date')} className={inputCls} />
-          {errors.pickup_date && <p className="text-[#DC2626] text-xs mt-1">{errors.pickup_date.message}</p>}
+          {errors.pickup_date && <p className="text-error text-xs mt-1">{errors.pickup_date.message}</p>}
         </div>
 
         {/* Drop-off */}
@@ -127,7 +127,7 @@ export default function SearchWidget({ initialValues, onSearch }: SearchWidgetPr
             Drop-off Date
           </label>
           <input type="date" min={today} {...register('dropoff_date')} className={inputCls} />
-          {errors.dropoff_date && <p className="text-[#DC2626] text-xs mt-1">{errors.dropoff_date.message}</p>}
+          {errors.dropoff_date && <p className="text-error text-xs mt-1">{errors.dropoff_date.message}</p>}
         </div>
 
         {/* Category + Search */}
@@ -150,7 +150,7 @@ export default function SearchWidget({ initialValues, onSearch }: SearchWidgetPr
           </div>
           <button
             type="submit"
-            className="flex-shrink-0 bg-[#407E3C] hover:bg-[#356834] text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
+            className="shrink-0 bg-[#407E3C] hover:bg-primary-hover text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
           >
             Search
           </button>

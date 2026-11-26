@@ -45,7 +45,7 @@ export default function HomePage() {
               <span className="w-6 h-px bg-[#5a9e56]" />
               {brand.city}&apos;s AI-Native Rental
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight sm:leading-none mb-4">
               Find your<br />
               <span className="text-[#5a9e56]">perfect vehicle</span>
             </h1>
@@ -85,7 +85,7 @@ export default function HomePage() {
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 searchMode === 'ai'
                   ? 'bg-[#407E3C] text-white'
-                  : 'text-[#6B7280] dark:text-gray-400 hover:bg-[#F3F4F6] dark:hover:bg-gray-800'
+                  : 'text-text-muted dark:text-gray-400 hover:bg-[#F3F4F6] dark:hover:bg-gray-800'
               }`}
             >
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -96,7 +96,7 @@ export default function HomePage() {
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 searchMode === 'filters'
                   ? 'bg-[#407E3C] text-white'
-                  : 'text-[#6B7280] dark:text-gray-400 hover:bg-[#F3F4F6] dark:hover:bg-gray-800'
+                  : 'text-text-muted dark:text-gray-400 hover:bg-[#F3F4F6] dark:hover:bg-gray-800'
               }`}
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -143,7 +143,7 @@ export default function HomePage() {
       {/* Results */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100">Available Vehicles</h2>
+          <h2 className="text-xl font-semibold text-text dark:text-gray-100">Available Vehicles</h2>
         </div>
         <div className="mb-6">
           <CategoryFilter />

@@ -91,12 +91,12 @@ export default function ProfilePage() {
   }
 
   if (error && !profile) {
-    return <div className="card text-center py-10 text-[#DC2626]">{error}</div>
+    return <div className="card text-center py-10 text-error">{error}</div>
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100">Profile</h1>
+      <h1 className="text-xl font-bold text-text dark:text-gray-100">Profile</h1>
 
       <div className="card">
         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[#E5E7EB] dark:border-gray-700">
@@ -104,11 +104,11 @@ export default function ProfilePage() {
             {(profile?.email ?? '?')[0].toUpperCase()}
           </div>
           <div>
-            <p className="font-medium text-[#1A1A1A] dark:text-gray-100">{profile?.email}</p>
+            <p className="font-medium text-text dark:text-gray-100">{profile?.email}</p>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs text-[#6B7280] dark:text-gray-400 capitalize">{profile?.role?.replace('_', ' ')}</span>
+              <span className="text-xs text-text-muted dark:text-gray-400 capitalize">{profile?.role?.replace('_', ' ')}</span>
               {profile?.licence_verified && (
-                <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-[#F0FDF4] dark:bg-green-900/30 text-[#407E3C]">
+                <span className="inline-flex items-center px-1.5 py-0.5 rounded-sm text-xs font-medium bg-[#F0FDF4] dark:bg-green-900/30 text-[#407E3C]">
                   Verified Driver
                 </span>
               )}
@@ -119,34 +119,34 @@ export default function ProfilePage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">First name</label>
+              <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">First name</label>
               <input className="input w-full" {...register('first_name')} />
-              {errors.first_name && <p className="mt-1 text-xs text-[#DC2626]">{errors.first_name.message}</p>}
+              {errors.first_name && <p className="mt-1 text-xs text-error">{errors.first_name.message}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">Last name</label>
+              <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">Last name</label>
               <input className="input w-full" {...register('last_name')} />
-              {errors.last_name && <p className="mt-1 text-xs text-[#DC2626]">{errors.last_name.message}</p>}
+              {errors.last_name && <p className="mt-1 text-xs text-error">{errors.last_name.message}</p>}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">Phone</label>
+            <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">Phone</label>
             <input className="input w-full" type="tel" {...register('phone')} />
-            {errors.phone && <p className="mt-1 text-xs text-[#DC2626]">{errors.phone.message}</p>}
+            {errors.phone && <p className="mt-1 text-xs text-error">{errors.phone.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">Email</label>
+            <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">Email</label>
             <input className="input w-full bg-[#F9FAFB] dark:bg-gray-700" value={profile?.email ?? ''} disabled />
-            <p className="mt-1 text-xs text-[#6B7280] dark:text-gray-400">Email cannot be changed here.</p>
+            <p className="mt-1 text-xs text-text-muted dark:text-gray-400">Email cannot be changed here.</p>
           </div>
 
           {error && (
-            <p className="text-sm text-[#DC2626] bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded px-3 py-2">{error}</p>
+            <p className="text-sm text-error bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-sm px-3 py-2">{error}</p>
           )}
           {saved && (
-            <p className="text-sm text-[#407E3C] bg-[#F0FDF4] dark:bg-green-900/20 border border-[#BBF7D0] dark:border-green-800 rounded px-3 py-2">
+            <p className="text-sm text-[#407E3C] bg-[#F0FDF4] dark:bg-green-900/20 border border-[#BBF7D0] dark:border-green-800 rounded-sm px-3 py-2">
               Profile saved.
             </p>
           )}
@@ -162,17 +162,17 @@ export default function ProfilePage() {
       </div>
       {/* GDPR — right to erasure */}
       <div className="card border border-red-200 dark:border-red-900">
-        <h2 className="text-base font-semibold text-[#DC2626] mb-1">Delete account</h2>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-4">
+        <h2 className="text-base font-semibold text-error mb-1">Delete account</h2>
+        <p className="text-sm text-text-muted dark:text-gray-400 mb-4">
           Permanently deletes your account and personal data. Booking records are anonymised (retained for legal compliance). This cannot be undone.
         </p>
         {deleteError && (
-          <p className="text-sm text-[#DC2626] bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded px-3 py-2 mb-3">{deleteError}</p>
+          <p className="text-sm text-error bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-sm px-3 py-2 mb-3">{deleteError}</p>
         )}
         {!deleteConfirm ? (
           <button
             onClick={() => setDeleteConfirm(true)}
-            className="px-4 py-2 text-sm font-medium text-[#DC2626] border border-red-300 dark:border-red-700 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+            className="px-4 py-2 text-sm font-medium text-error border border-red-300 dark:border-red-700 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
           >
             Delete my account
           </button>
@@ -181,13 +181,13 @@ export default function ProfilePage() {
             <button
               onClick={handleDeleteAccount}
               disabled={deleting}
-              className="px-4 py-2 text-sm font-semibold bg-[#DC2626] hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm font-semibold bg-error hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
             >
               {deleting ? 'Deleting…' : 'Confirm — delete permanently'}
             </button>
             <button
               onClick={() => { setDeleteConfirm(false); setDeleteError(null) }}
-              className="text-sm text-[#6B7280] hover:text-[#374151] dark:hover:text-gray-200"
+              className="text-sm text-text-muted hover:text-[#374151] dark:hover:text-gray-200"
             >
               Cancel
             </button>

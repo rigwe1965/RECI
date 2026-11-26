@@ -10,6 +10,7 @@ All notable changes to RECI Transport. Follows [Keep a Changelog](https://keepac
 
 ### Changed
 - Mobile app: Expo SDK 52 → 58 (React Native 0.88, React 19.3, expo-router 58, Stripe React Native 0.81, `@expo/vector-icons` 15). The app now bundles under pnpm (`expo export` failed before: Metro overrides broke module resolution, and the `@/` import alias had no `tsconfig.json`). `apps/mobile` has a `type-check` script, so CI type-checks it. Splash colour moved to the `expo-splash-screen` plugin; the `icon` entry pointed at a file that never existed and was removed. Clears the remaining Dependabot alerts (all in Expo 52 build tools).
+- Tailwind CSS 3 → 4 for the web and admin apps (`@tailwindcss/postcss`, CSS-first config). The design tokens moved from `packages/config/tailwind/index.ts` to `packages/config/tailwind/theme.css`, which both apps import. Pages compared before and after in screenshots: no visible change.
 - React 18 → 19 for the web and admin apps (`react`, `react-dom` and their types 19.3), with `@stripe/react-stripe-js` 2.9 → 3.11 (2.x does not support React 19). `@reci/ui` accepts React 18 or 19. The mobile app stays on React 18 until the Expo SDK upgrade.
 
 ### Fixed

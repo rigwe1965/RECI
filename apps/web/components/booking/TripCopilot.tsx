@@ -70,11 +70,11 @@ export default function TripCopilot({
             <path d="M3 12h18M3 6h18M3 18h18"/>
           </svg>
           <div>
-            <p className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100">Plan Your Trip</p>
-            <p className="text-xs text-[#6B7280] dark:text-gray-400">Route guide, fuel estimate & top stops</p>
+            <p className="text-sm font-semibold text-text dark:text-gray-100">Plan Your Trip</p>
+            <p className="text-xs text-text-muted dark:text-gray-400">Route guide, fuel estimate & top stops</p>
           </div>
         </div>
-        <svg className="w-4 h-4 text-[#6B7280]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -86,7 +86,7 @@ export default function TripCopilot({
     return (
       <div className="w-full flex items-center gap-3 px-4 py-4 bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-card">
         <span className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin shrink-0" />
-        <p className="text-sm text-[#6B7280]">Planning your trip…</p>
+        <p className="text-sm text-text-muted">Planning your trip…</p>
       </div>
     )
   }
@@ -95,7 +95,7 @@ export default function TripCopilot({
   if (state.kind === 'error') {
     return (
       <div className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-card">
-        <p className="text-sm text-[#6B7280]">
+        <p className="text-sm text-text-muted">
           Trip planning unavailable —{' '}
           <a
             href="https://www.adac.de"
@@ -124,9 +124,9 @@ export default function TripCopilot({
           <svg className="w-4 h-4 text-[#407E3C] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <path d="M3 12h18M3 6h18M3 18h18"/>
           </svg>
-          <p className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100">Your Trip Plan</p>
+          <p className="text-sm font-semibold text-text dark:text-gray-100">Your Trip Plan</p>
         </div>
-        <svg className="w-4 h-4 text-[#6B7280] rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-4 h-4 text-text-muted rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -134,19 +134,19 @@ export default function TripCopilot({
       <div className="px-4 pb-4 space-y-4 border-t border-[#E5E7EB] dark:border-gray-700">
         {/* Route summary */}
         <div className="pt-3">
-          <p className="text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-1">Route</p>
-          <p className="text-sm text-[#1A1A1A] dark:text-gray-200">{data.route_summary}</p>
+          <p className="text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-1">Route</p>
+          <p className="text-sm text-text dark:text-gray-200">{data.route_summary}</p>
         </div>
 
         {/* Fuel cost */}
         {data.estimated_fuel_cost_eur != null && (
           <div className="flex items-center gap-2">
-            <svg className="w-4 h-4 text-[#6B7280] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M3 22V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16"/><path d="M14 10h2a2 2 0 0 1 2 2v3a2 2 0 0 0 2 2 2 2 0 0 0 2-2V8l-3-3"/><path d="M3 22h13"/><rect x="5" y="10" width="6" height="4"/></svg>
+            <svg className="w-4 h-4 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M3 22V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16"/><path d="M14 10h2a2 2 0 0 1 2 2v3a2 2 0 0 0 2 2 2 2 0 0 0 2-2V8l-3-3"/><path d="M3 22h13"/><rect x="5" y="10" width="6" height="4"/></svg>
             <div>
-              <p className="text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider">Est. Fuel Cost</p>
-              <p className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100">
+              <p className="text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider">Est. Fuel Cost</p>
+              <p className="text-sm font-semibold text-text dark:text-gray-100">
                 ~€{data.estimated_fuel_cost_eur.toFixed(0)}
-                <span className="text-xs font-normal text-[#6B7280] ml-1">(estimate)</span>
+                <span className="text-xs font-normal text-text-muted ml-1">(estimate)</span>
               </p>
             </div>
           </div>
@@ -195,16 +195,16 @@ export default function TripCopilot({
         {/* Top stops */}
         {data.top_stops.length > 0 && (
           <div>
-            <p className="text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-2">Recommended Stops</p>
+            <p className="text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-2">Recommended Stops</p>
             <div className="space-y-2">
               {data.top_stops.map((stop, i) => (
                 <div key={i} className="flex gap-3">
-                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#F0FDF4] border border-[#BBF7D0] text-[#407E3C] text-xs font-bold flex items-center justify-center">
+                  <span className="shrink-0 w-5 h-5 rounded-full bg-[#F0FDF4] border border-[#BBF7D0] text-[#407E3C] text-xs font-bold flex items-center justify-center">
                     {i + 1}
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-[#1A1A1A] dark:text-gray-100">{stop.name}</p>
-                    <p className="text-xs text-[#6B7280] dark:text-gray-400">{stop.description}</p>
+                    <p className="text-sm font-medium text-text dark:text-gray-100">{stop.name}</p>
+                    <p className="text-xs text-text-muted dark:text-gray-400">{stop.description}</p>
                   </div>
                 </div>
               ))}
@@ -214,8 +214,8 @@ export default function TripCopilot({
 
         {/* Parking */}
         <div>
-          <p className="text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-1">Parking Tips</p>
-          <p className="text-sm text-[#6B7280] dark:text-gray-400">{data.parking_tips}</p>
+          <p className="text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-1">Parking Tips</p>
+          <p className="text-sm text-text-muted dark:text-gray-400">{data.parking_tips}</p>
         </div>
       </div>
     </div>

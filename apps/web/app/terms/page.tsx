@@ -14,18 +14,18 @@ export default function TermsPage() {
     <div className="min-h-screen bg-[#F9FAFB] dark:bg-gray-950">
       <Navbar />
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1 className="text-3xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-2">Terms of Service</h1>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-10">Last updated: {updated}</p>
+        <h1 className="text-3xl font-bold text-text dark:text-gray-100 mb-2">Terms of Service</h1>
+        <p className="text-sm text-text-muted dark:text-gray-400 mb-10">Last updated: {updated}</p>
 
         <div className="prose prose-gray dark:prose-invert max-w-none space-y-8 text-[#374151] dark:text-gray-300">
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">1. Parties</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">1. Parties</h2>
             <p>These terms form a contract between <strong>{brand.legalName}</strong> (&quot;{brand.shortName}&quot;, &quot;we&quot;) and the person or entity (&quot;you&quot;, &quot;customer&quot;) accessing this platform to book vehicles.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">2. Eligibility</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">2. Eligibility</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li>You must be at least 21 years old (25 for certain vehicle categories)</li>
               <li>You must hold a valid driving licence for the vehicle category booked</li>
@@ -35,7 +35,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">3. Bookings and Payment</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">3. Bookings and Payment</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li>A booking is confirmed once payment is successfully processed and you receive a booking reference</li>
               <li>Prices are quoted in EUR inclusive of VAT</li>
@@ -46,7 +46,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">4. Cancellations and Refunds</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">4. Cancellations and Refunds</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong>72+ hours before pickup:</strong> Full refund</li>
               <li><strong>24–72 hours before pickup:</strong> 50% refund</li>
@@ -56,7 +56,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">5. Vehicle Use</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">5. Vehicle Use</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li>Vehicles must be returned at the agreed time and location in the same condition</li>
               <li>Smoking in vehicles is prohibited and will incur a €150 cleaning fee</li>
@@ -67,7 +67,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">6. Damage and Liability</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">6. Damage and Liability</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li>A digital inspection is performed at pickup and return</li>
               <li>Pre-existing damage recorded at pickup will not be charged</li>
@@ -77,12 +77,12 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">7. AI-Powered Features</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">7. AI-Powered Features</h2>
             <p>Search suggestions and vehicle recommendations use AI. Results are provided for convenience only and do not constitute guaranteed availability. Availability is confirmed at checkout. AI-generated content may contain errors — always verify booking details before payment.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">8. Loyalty Points</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">8. Loyalty Points</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li>Points are awarded at €1 spent = 1 point</li>
               <li>Points expire 12 months after earning if no account activity</li>
@@ -92,17 +92,17 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">9. Limitation of Liability</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">9. Limitation of Liability</h2>
             <p>To the maximum extent permitted by German law, {brand.shortName}&apos;s total liability to you is capped at the amount paid for the booking giving rise to the claim. {brand.shortName} is not liable for indirect, consequential, or incidental damages.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">10. Governing Law</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">10. Governing Law</h2>
             <p>These terms are governed by German law. Disputes shall be subject to the exclusive jurisdiction of the courts of {brand.city}, {brand.country}.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">11. Contact</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">11. Contact</h2>
             <p>{brand.legalName} · {brand.city}, {brand.country} · <a href={`mailto:${brand.legalEmail}`} className="text-[#407E3C] hover:underline">{brand.legalEmail}</a></p>
           </section>
 

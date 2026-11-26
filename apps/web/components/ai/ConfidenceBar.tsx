@@ -22,7 +22,7 @@ export default function ConfidenceBar({ confidence, showLabel = true }: Confiden
         />
       </div>
       {showLabel && (
-        <span className="text-xs font-medium text-[#6B7280] dark:text-gray-400 w-10 text-right">{pct}%</span>
+        <span className="text-xs font-medium text-text-muted dark:text-gray-400 w-10 text-right">{pct}%</span>
       )}
     </div>
   )

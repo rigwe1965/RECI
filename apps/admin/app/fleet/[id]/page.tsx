@@ -26,8 +26,8 @@ const Schema = z.object({
 })
 type FormData = z.infer<typeof Schema>
 
-const inputCls = 'w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2.5 text-sm bg-white dark:bg-gray-800 text-[#1A1A1A] dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors'
-const labelCls = 'block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1.5'
+const inputCls = 'w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2.5 text-sm bg-white dark:bg-gray-800 text-text dark:text-gray-100 focus:outline-hidden focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors'
+const labelCls = 'block text-sm font-medium text-text dark:text-gray-200 mb-1.5'
 
 export default function EditVehiclePage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
@@ -90,8 +90,8 @@ export default function EditVehiclePage(props: { params: Promise<{ id: string }>
   if (loading) {
     return (
       <div className="p-6 max-w-2xl mx-auto animate-pulse space-y-4">
-        <div className="h-4 w-16 bg-[#F3F4F6] dark:bg-gray-800 rounded" />
-        <div className="h-7 w-40 bg-[#F3F4F6] dark:bg-gray-800 rounded" />
+        <div className="h-4 w-16 bg-[#F3F4F6] dark:bg-gray-800 rounded-sm" />
+        <div className="h-7 w-40 bg-[#F3F4F6] dark:bg-gray-800 rounded-sm" />
         <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-10 bg-[#F3F4F6] dark:bg-gray-800 rounded-lg" />
@@ -103,15 +103,15 @@ export default function EditVehiclePage(props: { params: Promise<{ id: string }>
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <button onClick={() => router.back()} className="inline-flex items-center gap-1.5 text-sm text-[#6B7280] dark:text-gray-400 hover:text-[#1A1A1A] dark:hover:text-gray-100 mb-5 transition-colors">
+      <button onClick={() => router.back()} className="inline-flex items-center gap-1.5 text-sm text-text-muted dark:text-gray-400 hover:text-text dark:hover:text-gray-100 mb-5 transition-colors">
         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
         Back
       </button>
-      <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight mb-6">Edit Vehicle</h1>
+      <h1 className="text-2xl font-bold text-text dark:text-gray-100 tracking-tight mb-6">Edit Vehicle</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 space-y-5 shadow-sm">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 space-y-5 shadow-xs">
         <div className="grid grid-cols-2 gap-4">
           {(['make', 'model', 'registration_plate', 'color'] as const).map((name) => (
             <div key={name}>
@@ -171,7 +171,7 @@ export default function EditVehiclePage(props: { params: Promise<{ id: string }>
           <label className="flex items-start gap-3 cursor-pointer group">
             <input type="checkbox" {...register('guaranteed_model')} className="mt-0.5 w-4 h-4 accent-[#407E3C] cursor-pointer" />
             <div>
-              <p className="text-sm font-medium text-[#1A1A1A] dark:text-gray-200 group-hover:text-[#407E3C] transition-colors">Exact Model Guaranteed</p>
+              <p className="text-sm font-medium text-text dark:text-gray-200 group-hover:text-[#407E3C] transition-colors">Exact Model Guaranteed</p>
               <p className="text-xs text-[#9CA3AF] dark:text-gray-500 mt-0.5">Customer is guaranteed this exact vehicle, not &ldquo;or similar&rdquo;. Show badge on listing.</p>
             </div>
           </label>
@@ -182,7 +182,7 @@ export default function EditVehiclePage(props: { params: Promise<{ id: string }>
         )}
 
         <div className="flex gap-3 pt-1">
-          <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#407E3C] hover:bg-[#356834] text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50 shadow-sm">
+          <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#407E3C] hover:bg-primary-hover text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50 shadow-xs">
             {isSubmitting ? 'Saving…' : 'Save changes'}
           </button>
           {confirmDeactivate ? (
@@ -190,12 +190,12 @@ export default function EditVehiclePage(props: { params: Promise<{ id: string }>
               <button type="button" onClick={handleDeactivate} disabled={deactivating} className="px-4 py-2.5 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50">
                 {deactivating ? 'Deactivating…' : 'Confirm'}
               </button>
-              <button type="button" onClick={() => setConfirmDeactivate(false)} className="px-4 py-2.5 border border-[#E5E7EB] dark:border-gray-700 text-[#6B7280] dark:text-gray-400 text-sm font-semibold rounded-lg hover:bg-[#F9FAFB] dark:hover:bg-gray-800 transition-colors">
+              <button type="button" onClick={() => setConfirmDeactivate(false)} className="px-4 py-2.5 border border-[#E5E7EB] dark:border-gray-700 text-text-muted dark:text-gray-400 text-sm font-semibold rounded-lg hover:bg-[#F9FAFB] dark:hover:bg-gray-800 transition-colors">
                 Cancel
               </button>
             </div>
           ) : (
-            <button type="button" onClick={() => setConfirmDeactivate(true)} className="px-4 py-2.5 border border-[#E5E7EB] dark:border-gray-700 text-[#DC2626] dark:text-red-400 text-sm font-semibold rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
+            <button type="button" onClick={() => setConfirmDeactivate(true)} className="px-4 py-2.5 border border-[#E5E7EB] dark:border-gray-700 text-error dark:text-red-400 text-sm font-semibold rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
               Deactivate
             </button>
           )}

@@ -8,9 +8,9 @@ interface DamageReportProps {
 }
 
 const SEVERITY_STYLES = {
-  none: 'bg-[#F0FDF4] text-[#16A34A] border-[#BBF7D0]',
+  none: 'bg-[#F0FDF4] text-success border-[#BBF7D0]',
   minor: 'bg-orange-50 text-orange-700 border-orange-200',
-  major: 'bg-red-50 text-[#DC2626] border-red-200',
+  major: 'bg-red-50 text-error border-red-200',
 }
 
 const SEVERITY_LABELS = {
@@ -36,7 +36,7 @@ export default function DamageReportView({ report }: DamageReportProps) {
 
       {/* Confidence */}
       <div>
-        <p className="text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-1.5">
+        <p className="text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-1.5">
           AI Confidence
         </p>
         <ConfidenceBar confidence={report.confidence} />
@@ -45,13 +45,13 @@ export default function DamageReportView({ report }: DamageReportProps) {
       {/* Locations */}
       {report.new_damage && report.locations.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-1">
+          <p className="text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-1">
             Affected Areas
           </p>
           <ul className="space-y-1">
             {report.locations.map((loc, i) => (
-              <li key={i} className="flex items-center gap-2 text-sm text-[#1A1A1A] dark:text-gray-200">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#DC2626] shrink-0" />
+              <li key={i} className="flex items-center gap-2 text-sm text-text dark:text-gray-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-error shrink-0" />
                 {loc}
               </li>
             ))}
@@ -61,17 +61,17 @@ export default function DamageReportView({ report }: DamageReportProps) {
 
       {/* Reasoning */}
       <div>
-        <p className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-1">
+        <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-1">
           Assessment
         </p>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400">{report.reasoning}</p>
+        <p className="text-sm text-text-muted dark:text-gray-400">{report.reasoning}</p>
       </div>
 
       {/* Dispute raised */}
       {report.dispute_raised && (
         <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
           <span className="text-base shrink-0">⚠</span>
-          <p className="text-sm text-[#DC2626] font-medium">
+          <p className="text-sm text-error font-medium">
             Dispute raised — our team will review within 24 hours and contact you.
           </p>
         </div>

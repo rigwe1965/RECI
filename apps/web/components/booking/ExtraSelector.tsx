@@ -53,7 +53,7 @@ export default function ExtraSelector({ extras, days, recommendations = [] }: Ex
           className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${
             rec.priority === 'high'
               ? 'bg-[#F0FDF4] text-[#407E3C] border border-[#BBF7D0]'
-              : 'bg-[#F9FAFB] text-[#6B7280] border border-[#E5E7EB]'
+              : 'bg-[#F9FAFB] text-text-muted border border-[#E5E7EB]'
           }`}
         >
           {rec.priority === 'high' ? 'Recommended' : 'Suggested'}
@@ -85,7 +85,7 @@ export default function ExtraSelector({ extras, days, recommendations = [] }: Ex
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2">
-            <span className="font-medium text-[#1A1A1A] dark:text-gray-100">{extra.name}</span>
+            <span className="font-medium text-text dark:text-gray-100">{extra.name}</span>
             <span className="text-sm font-semibold text-primary whitespace-nowrap">
               {type === 'radio' && extra.price_per_day === 0
                 ? 'Included'
@@ -93,7 +93,7 @@ export default function ExtraSelector({ extras, days, recommendations = [] }: Ex
             </span>
           </div>
           {extra.description && (
-            <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-0.5">{extra.description}</p>
+            <p className="text-sm text-text-muted dark:text-gray-400 mt-0.5">{extra.description}</p>
           )}
           <RecommendBadge id={extra.id} />
         </div>
@@ -111,7 +111,7 @@ export default function ExtraSelector({ extras, days, recommendations = [] }: Ex
 
       {insurance.length > 0 && (
         <div>
-          <h3 className="font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">Insurance</h3>
+          <h3 className="font-semibold text-text dark:text-gray-100 mb-3">Insurance</h3>
           <div className="space-y-3">
             {insurance.map((extra) => renderExtra(extra, 'radio'))}
           </div>
@@ -120,7 +120,7 @@ export default function ExtraSelector({ extras, days, recommendations = [] }: Ex
 
       {addons.length > 0 && (
         <div>
-          <h3 className="font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">Add-ons</h3>
+          <h3 className="font-semibold text-text dark:text-gray-100 mb-3">Add-ons</h3>
           <div className="space-y-3">
             {addons.map((extra) => renderExtra(extra, 'checkbox'))}
           </div>

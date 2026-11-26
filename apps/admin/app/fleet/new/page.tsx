@@ -23,8 +23,8 @@ const Schema = z.object({
 })
 type FormData = z.infer<typeof Schema>
 
-const inputCls = 'w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2.5 text-sm bg-white dark:bg-gray-800 text-[#1A1A1A] dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors'
-const labelCls = 'block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1.5'
+const inputCls = 'w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2.5 text-sm bg-white dark:bg-gray-800 text-text dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors'
+const labelCls = 'block text-sm font-medium text-text dark:text-gray-200 mb-1.5'
 
 export default function NewVehiclePage() {
   const router = useRouter()
@@ -63,15 +63,15 @@ export default function NewVehiclePage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <button onClick={() => router.back()} className="inline-flex items-center gap-1.5 text-sm text-[#6B7280] dark:text-gray-400 hover:text-[#1A1A1A] dark:hover:text-gray-100 mb-5 transition-colors">
+      <button onClick={() => router.back()} className="inline-flex items-center gap-1.5 text-sm text-text-muted dark:text-gray-400 hover:text-text dark:hover:text-gray-100 mb-5 transition-colors">
         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
         Back
       </button>
-      <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight mb-6">Add Vehicle</h1>
+      <h1 className="text-2xl font-bold text-text dark:text-gray-100 tracking-tight mb-6">Add Vehicle</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 space-y-5 shadow-sm">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 space-y-5 shadow-xs">
         <div>
           <p className="text-[10px] font-bold text-[#9CA3AF] dark:text-gray-500 uppercase tracking-widest mb-4">Basic Info</p>
           <div className="grid grid-cols-2 gap-4">
@@ -162,7 +162,7 @@ export default function NewVehiclePage() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-[#407E3C] hover:bg-[#356834] text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50 shadow-sm"
+          className="w-full bg-[#407E3C] hover:bg-primary-hover text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50 shadow-xs"
         >
           {isSubmitting ? 'Creating…' : 'Create vehicle'}
         </button>
