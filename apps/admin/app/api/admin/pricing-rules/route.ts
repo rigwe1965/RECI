@@ -8,7 +8,7 @@ import { parseJsonBody } from '@reci/api'
 export const dynamic = 'force-dynamic'
 
 const CreateSchema = z.object({
-  category_id: z.string().uuid(),
+  category_id: z.guid(),
   base_rate_per_day: z.number().positive(),
   effective_from: z.string(),
   effective_to: z.string().nullable().optional(),

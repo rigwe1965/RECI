@@ -12,8 +12,8 @@ const Schema = z.object({
   model: z.string().min(1, 'Required'),
   year: z.coerce.number().int().min(2000).max(2030),
   registration_plate: z.string().min(1, 'Required'),
-  category_id: z.string().uuid('Required'),
-  location_id: z.string().uuid('Required'),
+  category_id: z.guid('Required'),
+  location_id: z.guid('Required'),
   fuel_type: z.enum(FUEL_TYPES),
   transmission: z.enum(TRANSMISSIONS),
   color: z.string().min(1, 'Required'),
@@ -38,7 +38,7 @@ export default function EditVehiclePage(props: { params: Promise<{ id: string }>
   const [deactivating, setDeactivating] = useState(false)
   const [confirmDeactivate, setConfirmDeactivate] = useState(false)
 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<z.input<typeof Schema>, unknown, FormData>({
     resolver: zodResolver(Schema),
   })
 

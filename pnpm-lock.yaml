@@ -52,7 +52,7 @@ importers:
     dependencies:
       '@anthropic-ai/sdk':
         specifier: ^0.95.2
-        version: 0.95.2(zod@3.25.76)
+        version: 0.95.2(zod@4.6.7)
       '@fullcalendar/core':
         specifier: ^6.1.20
         version: 6.1.20
@@ -105,8 +105,8 @@ importers:
         specifier: ^7.54.2
         version: 7.75.0(react@18.3.1)
       zod:
-        specifier: ^3.24.1
-        version: 3.25.76
+        specifier: ^4.6.7
+        version: 4.6.7
     devDependencies:
       '@reci/config':
         specifier: workspace:*
@@ -190,8 +190,8 @@ importers:
         specifier: 0.76.5
         version: 0.76.5(@babel/core@7.29.13)(@babel/preset-env@7.29.5(@babel/core@7.29.13))(@types/react@18.3.28)(react@18.3.1)
       zod:
-        specifier: ^3.24.1
-        version: 3.25.76
+        specifier: ^4.6.7
+        version: 4.6.7
       zustand:
         specifier: ^5.0.2
         version: 5.0.13(@types/react@18.3.28)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
@@ -210,7 +210,7 @@ importers:
     dependencies:
       '@anthropic-ai/sdk':
         specifier: ^0.95.2
-        version: 0.95.2(zod@3.25.76)
+        version: 0.95.2(zod@4.6.7)
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.75.0(react@18.3.1))
@@ -266,8 +266,8 @@ importers:
         specifier: ^17.5.0
         version: 17.7.0
       zod:
-        specifier: ^3.24.1
-        version: 3.25.76
+        specifier: ^4.6.7
+        version: 4.6.7
       zustand:
         specifier: ^5.0.2
         version: 5.0.13(@types/react@18.3.28)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
@@ -321,8 +321,8 @@ importers:
         specifier: '*'
         version: 15.5.29(@babel/core@7.29.13)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.0)(@types/node@22.19.19)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       zod:
-        specifier: ^3.24.1
-        version: 3.25.76
+        specifier: ^4.6.7
+        version: 4.6.7
     devDependencies:
       typescript:
         specifier: ^5.7.2
@@ -6802,8 +6802,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
   zustand@5.0.13:
     resolution: {integrity: sha512-efI2tVaVQPqtOh114loML/Z80Y4NP3yc+Ff0fYiZJPauNeWZeIp/bRFD7I9bfmCOYBh/PHxlglQ9+wvlwnPikQ==}
@@ -6829,12 +6829,12 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@anthropic-ai/sdk@0.95.2(zod@3.25.76)':
+  '@anthropic-ai/sdk@0.95.2(zod@4.6.7)':
     dependencies:
       json-schema-to-ts: 3.1.1
       standardwebhooks: 1.0.0
     optionalDependencies:
-      zod: 3.25.76
+      zod: 4.6.7
 
   '@babel/code-frame@7.10.4':
     dependencies:
@@ -14405,7 +14405,7 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@3.25.76: {}
+  zod@4.6.7: {}
 
   zustand@5.0.13(@types/react@18.3.28)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1)):
     optionalDependencies:

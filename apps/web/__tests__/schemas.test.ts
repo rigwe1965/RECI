@@ -18,6 +18,18 @@ describe('CreateBookingSchema', () => {
     expect(CreateBookingSchema.safeParse(valid).success).toBe(true)
   })
 
+  // The seed and demo data use IDs like c0000000-0000-0000-0000-000000000001,
+  // which zod 4's strict .uuid() rejects. The schemas use z.guid() for that.
+  test('accepts seed-style IDs that are not RFC 9562 UUIDs', () => {
+    const result = CreateBookingSchema.safeParse({
+      ...valid,
+      vehicle_id: 'c0000000-0000-0000-0000-000000000001',
+      pickup_location_id: '00000000-0000-0000-0000-000000000001',
+      extras: [{ extra_id: 'e0000000-0000-0000-0000-000000000001', quantity: 1, price_snapshot: 5 }],
+    })
+    expect(result.success).toBe(true)
+  })
+
   test('rejects invalid vehicle_id (not UUID)', () => {
     const result = CreateBookingSchema.safeParse({ ...valid, vehicle_id: 'not-a-uuid' })
     expect(result.success).toBe(false)

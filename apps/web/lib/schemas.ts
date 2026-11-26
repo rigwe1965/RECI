@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { FUEL_TYPES, TRANSMISSIONS } from '@reci/types'
 
 export const VehicleCategorySchema = z.object({
-  id: z.string().uuid(),
+  id: z.guid(),
   name: z.string(),
   slug: z.string(),
   tier: z.union([z.literal('1'), z.literal('2'), z.literal('3'), z.literal('4'), z.literal('5')]),
@@ -12,9 +12,9 @@ export const VehicleCategorySchema = z.object({
 })
 
 export const VehicleSchema = z.object({
-  id: z.string().uuid(),
-  category_id: z.string().uuid(),
-  location_id: z.string().uuid(),
+  id: z.guid(),
+  category_id: z.guid(),
+  location_id: z.guid(),
   make: z.string(),
   model: z.string(),
   year: z.number(),
@@ -35,7 +35,7 @@ export const VehicleSchema = z.object({
 })
 
 export const SearchParamsSchema = z.object({
-  pickup_location_id: z.string().uuid().optional(),
+  pickup_location_id: z.guid().optional(),
   pickup_date: z.string().optional(), // ISO date string
   dropoff_date: z.string().optional(),
   category_slug: z.string().optional(),
@@ -56,7 +56,7 @@ export const AvailabilityBlockSchema = z.object({
 })
 
 export const ExtraSchema = z.object({
-  id: z.string().uuid(),
+  id: z.guid(),
   name: z.string(),
   description: z.string().nullable(),
   price_per_day: z.number(),
@@ -75,11 +75,11 @@ export const DriverDetailsSchema = z.object({
 })
 
 export const CreateBookingSchema = z.object({
-  vehicle_id: z.string().uuid(),
+  vehicle_id: z.guid(),
   pickup_datetime: z.string(),
   dropoff_datetime: z.string(),
-  pickup_location_id: z.string().uuid(),
-  dropoff_location_id: z.string().uuid(),
+  pickup_location_id: z.guid(),
+  dropoff_location_id: z.guid(),
   driver_first_name: z.string().min(1),
   driver_last_name: z.string().min(1),
   driver_email: z.string().email(),
@@ -87,7 +87,7 @@ export const CreateBookingSchema = z.object({
   driver_licence_number: z.string().optional(),
   extras: z.array(
     z.object({
-      extra_id: z.string().uuid(),
+      extra_id: z.guid(),
       quantity: z.number().int().positive(),
       price_snapshot: z.number(),
     })
@@ -115,7 +115,7 @@ export type PricingSignal = z.infer<typeof PricingSignalSchema>
 // ─── Phase 3: Payment + Confirmation ─────────────────────────────────────────
 
 export const CreatePaymentIntentSchema = z.object({
-  booking_id: z.string().uuid(),
+  booking_id: z.guid(),
 })
 
 export const PaymentIntentResponseSchema = z.object({
@@ -125,7 +125,7 @@ export const PaymentIntentResponseSchema = z.object({
 })
 
 export const BookingConfirmationSchema = z.object({
-  id: z.string().uuid(),
+  id: z.guid(),
   booking_ref: z.string(),
   status: z.string(),
   driver_first_name: z.string(),
@@ -169,7 +169,7 @@ export const LicenceOCRResponseSchema = z.object({
 
 // Trip Co-pilot
 export const TripCopilotRequestSchema = z.object({
-  booking_id: z.string().uuid(),
+  booking_id: z.guid(),
   pickup_location: z.string(),
   fuel_type: z.enum(FUEL_TYPES),
   pickup_date: z.string(),
@@ -195,7 +195,7 @@ export const TripCopilotResponseSchema = z.object({
 
 // AI Damage Detection
 export const DamageDetectionRequestSchema = z.object({
-  booking_id: z.string().uuid(),
+  booking_id: z.guid(),
   inspection_type: z.enum(['pickup', 'return']),
   photo_urls: z.array(z.string().url()).min(1).max(8),
   baseline_photo_urls: z.array(z.string().url()).optional(),

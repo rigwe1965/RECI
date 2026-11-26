@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import type { ZodSchema } from 'zod'
+import { z, type ZodSchema } from 'zod'
 
 export type ParsedBody<T> = { ok: true; data: T } | { ok: false; response: NextResponse }
 
@@ -17,7 +17,7 @@ export async function parseJsonBody<T>(request: NextRequest, schema: ZodSchema<T
   }
   const parsed = schema.safeParse(body)
   if (!parsed.success) {
-    return { ok: false, response: NextResponse.json({ error: parsed.error.flatten() }, { status: 422 }) }
+    return { ok: false, response: NextResponse.json({ error: z.flattenError(parsed.error) }, { status: 422 }) }
   }
   return { ok: true, data: parsed.data }
 }

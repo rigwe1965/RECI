@@ -10,7 +10,7 @@ import { parseJsonBody } from '@reci/api'
 export const dynamic = 'force-dynamic'
 
 const ResolveSchema = z.object({
-  vehicle_id: z.string().uuid(),
+  vehicle_id: z.guid(),
 })
 
 // Thresholds (km since last service)
