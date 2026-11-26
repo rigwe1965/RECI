@@ -212,14 +212,15 @@ export const POST = withErrorHandling(async function POST(request: NextRequest) 
     return NextResponse.json({ error: 'Failed to create booking' }, { status: 500 })
   }
 
-  // Insert booking_extras
-  if (data.extras.length > 0) {
-    const extrasInsert = data.extras.map((e) => ({
-      booking_id: booking.id,
-      extra_id: e.extra_id,
-      quantity: e.quantity,
-      price_snapshot: e.price_snapshot,
-    }))
+  // Insert booking_extras. The snapshot is the extra's catalogue price at booking time, read from the database
+  // above (extraRows), never the price the browser sent; extras that do not exist are skipped, as the total does.
+  const extrasInsert = (extraRows ?? []).map((row) => ({
+    booking_id: booking.id,
+    extra_id: row.id,
+    quantity: data.extras.find((e) => e.extra_id === row.id)?.quantity ?? 1,
+    price_snapshot: row.price_per_day,
+  }))
+  if (extrasInsert.length > 0) {
     const { error: extrasError } = await supabase.from('booking_extras').insert(extrasInsert)
     if (extrasError) {
       console.error('booking_extras insert error:', extrasError)

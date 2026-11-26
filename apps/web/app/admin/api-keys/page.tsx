@@ -1,6 +1,6 @@
 'use client'
 
-import { brand } from '@reci/utils'
+import { brand, apiErrorMessage } from '@reci/utils'
 import { useEffect, useState } from 'react'
 
 interface ApiKey {
@@ -47,7 +47,7 @@ export default function ApiKeysPage() {
       fetchKeys()
     } else {
       const data = await res.json()
-      setError(data.error ?? 'Failed to generate key')
+      setError(apiErrorMessage(data, 'Failed to generate key'))
     }
     setGenerating(false)
   }

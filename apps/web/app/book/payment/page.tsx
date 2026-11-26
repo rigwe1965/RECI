@@ -8,7 +8,7 @@ import Navbar from '@/components/layout/Navbar'
 import CheckoutStepper from '@/components/booking/CheckoutStepper'
 import OrderSummary from '@/components/booking/OrderSummary'
 import { useBookingStore } from '@/hooks/useBookingStore'
-import { formatEUR } from '@reci/utils'
+import { formatEUR, apiErrorMessage } from '@reci/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -123,8 +123,8 @@ export default function BookPaymentPage() {
       })
 
       if (!res.ok) {
-        const { error } = await res.json().catch(() => ({ error: 'Failed to initialise payment' }))
-        setIntentError(error ?? 'Failed to initialise payment')
+        const body = await res.json().catch(() => null)
+        setIntentError(apiErrorMessage(body, 'Failed to initialise payment'))
         return
       }
 

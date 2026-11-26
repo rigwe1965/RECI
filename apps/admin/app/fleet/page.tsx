@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { apiErrorMessage } from '@reci/utils'
 
 const MAINT_THRESHOLDS = { warning: 8000, alert: 12000, critical: 18000 }
 
@@ -102,7 +103,7 @@ export default function FleetPage() {
     })
     if (!res.ok) {
       const d = await res.json().catch(() => ({}))
-      setActionError(d.error ?? 'Action failed. Please try again.')
+      setActionError(apiErrorMessage(d, 'Action failed. Please try again.'))
       return
     }
     setConfirmId(null)

@@ -7,3 +7,4 @@ export { AI_MODEL_CHOICES, AI_MODEL_DEFAULTS, AI_MODEL_ENV, ADMIN_AI_MODEL_CHOIC
 export type { AiPurpose, AdminAiModel } from './ai-models'
 export { brand, brandFrom, brandLeftovers } from './brand'
 export type { Brand } from './brand'
+export { apiErrorMessage } from './api-error'

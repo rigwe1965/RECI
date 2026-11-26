@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Link from 'next/link'
+import { apiErrorMessage } from '@reci/utils'
 
 const Schema = z.object({
   email: z.string().email('Valid email required'),
@@ -42,7 +43,7 @@ export default function CreateUserPage() {
       body: JSON.stringify(data),
     })
     const result = await res.json()
-    if (!res.ok) { setServerError(result.error ?? 'Failed to create user'); return }
+    if (!res.ok) { setServerError(apiErrorMessage(result, 'Failed to create user')); return }
     setCreated({ email: result.email, temp_password: result.temp_password })
   }
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { formatEUR } from '@reci/utils'
+import { formatEUR, apiErrorMessage } from '@reci/utils'
 
 function PricingSkeleton() {
   return (
@@ -66,7 +66,7 @@ export default function PricingPage() {
       body: JSON.stringify({ ...newRule, base_rate_per_day: parseFloat(newRule.base_rate_per_day) }),
     })
     const d = await res.json()
-    if (!res.ok) setError(d.error ?? 'Failed')
+    if (!res.ok) setError(apiErrorMessage(d, 'Failed'))
     else { setNewRule({ category_id: '', base_rate_per_day: '', effective_from: new Date().toISOString().split('T')[0] }); load() }
     setSaving(false)
   }
@@ -84,7 +84,7 @@ export default function PricingPage() {
       body: JSON.stringify({ ...newOverride, surcharge_pct: parseFloat(newOverride.surcharge_pct) }),
     })
     const d = await res.json()
-    if (!res.ok) setError(d.error ?? 'Failed')
+    if (!res.ok) setError(apiErrorMessage(d, 'Failed'))
     else { setNewOverride({ name: '', start_date: '', end_date: '', surcharge_pct: '' }); load() }
     setSaving(false)
   }

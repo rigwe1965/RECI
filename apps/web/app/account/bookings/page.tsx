@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { formatEUR } from '@reci/utils'
+import { formatEUR, apiErrorMessage } from '@reci/utils'
 
 interface BookingRow {
   id: string
@@ -44,7 +44,7 @@ export default function AccountBookingsPage() {
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data)) setBookings(data)
-        else setError(data.error ?? 'Failed to load')
+        else setError(apiErrorMessage(data, 'Failed to load'))
       })
       .catch(() => setError('Network error'))
       .finally(() => setLoading(false))

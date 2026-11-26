@@ -1,6 +1,6 @@
 'use client'
 
-import { brand } from '@reci/utils'
+import { brand, apiErrorMessage } from '@reci/utils'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -44,7 +44,7 @@ export default function ProfilePage() {
       router.push('/?deleted=1')
     } else {
       const data = await res.json().catch(() => ({}))
-      setDeleteError(data.error ?? `Deletion failed. Contact ${brand.supportEmail}.`)
+      setDeleteError(apiErrorMessage(data, `Deletion failed. Contact ${brand.supportEmail}.`))
       setDeleting(false)
     }
   }
@@ -57,7 +57,7 @@ export default function ProfilePage() {
     fetch('/api/account/profile')
       .then((r) => r.json())
       .then((data) => {
-        if (data.error) { setError(data.error); return }
+        if (data.error) { setError(apiErrorMessage(data, 'Something went wrong')); return }
         setProfile(data)
         reset({
           first_name: data.first_name ?? '',

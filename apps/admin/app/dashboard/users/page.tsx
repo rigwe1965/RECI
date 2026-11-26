@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState, useCallback } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createBrowserSupabaseClient } from '@/lib/supabase/browser'
+import { apiErrorMessage } from '@reci/utils'
 
 interface InternalUser {
   id: string
@@ -83,7 +84,7 @@ function UsersContent() {
       setTotal((t) => t - 1)
     } else {
       const d = await res.json()
-      alert(d.error ?? 'Failed to delete user')
+      alert(apiErrorMessage(d, 'Failed to delete user'))
     }
     setDeletingId(null)
   }

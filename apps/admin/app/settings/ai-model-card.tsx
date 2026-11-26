@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { apiErrorMessage } from '@reci/utils'
 
 type Choice = { id: string; label: string; note: string }
 type State = { model: string | null; choices: Choice[]; ready: boolean }
@@ -25,7 +26,7 @@ export default function AiModelCard() {
     setMessage(null)
     try {
       const r = await fetch('/admin/api/admin/ai-model', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model }) })
-      if (!r.ok) throw new Error((await r.json().catch(() => ({})))?.error ?? 'Could not save')
+      if (!r.ok) throw new Error(apiErrorMessage(await r.json().catch(() => null), 'Could not save'))
       setState({ ...state, model })
       setMessage({ ok: true, text: 'Saved. The website uses it within a minute.' })
     } catch (e) {

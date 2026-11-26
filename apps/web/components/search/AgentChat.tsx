@@ -1,6 +1,6 @@
 'use client'
 
-import { brand } from '@reci/utils'
+import { brand, apiErrorMessage } from '@reci/utils'
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useBookingStore } from '@/hooks/useBookingStore'
@@ -114,7 +114,7 @@ export default function AgentChat({ onSearchParams }: AgentChatProps) {
         const err = await res.json().catch(() => ({}))
         setMessages((prev) => [
           ...prev,
-          { role: 'assistant', content: err.error ?? 'Something went wrong. Please try again.' },
+          { role: 'assistant', content: apiErrorMessage(err, 'Something went wrong. Please try again.') },
         ])
         return
       }
