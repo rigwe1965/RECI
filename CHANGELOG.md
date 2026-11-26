@@ -14,6 +14,7 @@ All notable changes to RECI Transport. Follows [Keep a Changelog](https://keepac
 - React 18 → 19 for the web and admin apps (`react`, `react-dom` and their types 19.3), with `@stripe/react-stripe-js` 2.9 → 3.11 (2.x does not support React 19). `@reci/ui` accepts React 18 or 19. The mobile app stays on React 18 until the Expo SDK upgrade.
 
 ### Fixed
+- Extras have a unique name (migration `016_extras_unique_name.sql`): a re-run or two overlapping seed runs listed every extra twice (8 duplicates on the live site, 10 on the demo, removed on 26 Nov). The four seed scripts treat "already exists" (23505) from an overlapping run as fine.
 - `.env.example` listed `SENTRY_DSN` and `NEXT_PUBLIC_ADMIN_URL`, which nothing reads: the apps read `NEXT_PUBLIC_SENTRY_DSN` (so error monitoring stayed off when set as documented) and `ADMIN_URL`. Both corrected.
 - The licence settings (`LICENCE_ENFORCEMENT`, `LICENCE_KEY`) were documented in the root `.env.example`, but only the admin app reads them and each Next.js app loads only its own `.env.local`; they are now in `apps/admin/.env.example`, with the admin app's `ANTHROPIC_API_KEY` (maintenance assistant).
 - Settings the code reads were missing from the examples: `INTERNAL_APP_URL`, `AI_VISION_PROVIDER`/`AI_VISION_BASE_URL`/`AI_VISION_API_KEY`, and `ADMIN_EMAIL`/`ADMIN_PASSWORD` for `create_admin.mjs`. `packages/utils/src/env-example.test.ts` now fails when an app reads a setting its own `.env.example` does not list, or an example lists a setting nothing uses.

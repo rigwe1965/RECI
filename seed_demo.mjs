@@ -249,7 +249,7 @@ if (vErr) { console.error('vehicles:', vErr.message); process.exit(1) }
 console.log(`✓ ${vehicles.length} vehicles`)
 
 // ── 3. Extras ───────────────────────────────────────────────────────────────
-// extras has no unique name (its id is random), so upsert() added 10 more copies on every run: update the ones that exist, insert the missing ones.
+// extras are matched by name (unique since migration 016; the id is random): update the ones that exist, insert the missing ones.
 const extraRows = [
   { name: 'Basic Insurance',     description: 'Third-party liability. Required minimum.',           price_per_day:   0.00, is_one_time_fee: false, exclusive_group: 'insurance', sort_order: 1 },
   { name: 'Full Insurance',      description: 'Zero-excess comprehensive cover.',                   price_per_day:  18.00, is_one_time_fee: false, exclusive_group: 'insurance', sort_order: 2 },
@@ -267,7 +267,8 @@ let exErr = haveErr
 if (!exErr) {
   const have = new Set((haveExtras ?? []).map((e) => e.name))
   const missing = extraRows.filter((e) => !have.has(e.name))
-  if (missing.length) exErr = (await supabase.from('extras').insert(missing)).error
+  // 23505 = another seed run inserted the same name a moment ago (the unique rule of migration 016): that is fine, the update below sets it.
+  if (missing.length) { exErr = (await supabase.from('extras').insert(missing)).error; if (exErr?.code === '23505') exErr = null }
   for (const e of extraRows.filter((x) => have.has(x.name))) {
     if (exErr) break
     exErr = (await supabase.from('extras').update(e).eq('name', e.name)).error
