@@ -13,7 +13,7 @@ const CreateSchema = z.object({
   end_date: z.string(),
   surcharge_pct: z.number().min(0).optional(),
   flat_surcharge: z.number().min(0).optional(),
-  category_id: z.string().uuid().nullable().optional(),
+  category_id: z.guid().nullable().optional(),
 })
 
 export const GET = withAdminAuth(async () => {
