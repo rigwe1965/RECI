@@ -103,7 +103,9 @@ export async function POST(request: NextRequest) {
 
   let parsed: unknown
   try {
-    parsed = JSON.parse(jsonText, (_, v) => (v === null ? undefined : v))
+    // Keep nulls: the prompt asks for null on unreadable fields and the schema accepts them. (Turning null into
+    // undefined here made every partly readable licence fail as 'schema mismatch'.)
+    parsed = JSON.parse(jsonText)
   } catch {
     console.error('[ai/licence] Non-JSON response:', rawText)
     return NextResponse.json({ error: 'AI returned malformed response' }, { status: 422 })
