@@ -29,8 +29,8 @@ function FleetSkeleton() {
         <div key={i} className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-5 animate-pulse space-y-3">
           <div className="flex items-start justify-between">
             <div className="space-y-1.5">
-              <div className="h-4 w-36 bg-[#F3F4F6] dark:bg-gray-800 rounded" />
-              <div className="h-3 w-24 bg-[#F3F4F6] dark:bg-gray-800 rounded" />
+              <div className="h-4 w-36 bg-[#F3F4F6] dark:bg-gray-800 rounded-sm" />
+              <div className="h-3 w-24 bg-[#F3F4F6] dark:bg-gray-800 rounded-sm" />
             </div>
             <div className="h-5 w-16 bg-[#F3F4F6] dark:bg-gray-800 rounded-full" />
           </div>
@@ -116,9 +116,9 @@ export default function FleetPage() {
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight">Fleet</h1>
+          <h1 className="text-2xl font-bold text-text dark:text-gray-100 tracking-tight">Fleet</h1>
           {!loading && (
-            <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-0.5">
+            <p className="text-sm text-text-muted dark:text-gray-400 mt-0.5">
               {vehicles.filter(v => v.is_active).length} active
               {vehicles.filter(v => !v.is_active).length > 0 && ` · ${vehicles.filter(v => !v.is_active).length} inactive`}
             </p>
@@ -126,7 +126,7 @@ export default function FleetPage() {
         </div>
         <Link
           href="/fleet/new"
-          className="inline-flex items-center gap-2 bg-[#407E3C] hover:bg-[#356834] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 bg-[#407E3C] hover:bg-primary-hover text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors shadow-xs"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -145,7 +145,7 @@ export default function FleetPage() {
 
       {error && (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <p className="text-[#6B7280] dark:text-gray-400 text-sm mb-3">{error}</p>
+          <p className="text-text-muted dark:text-gray-400 text-sm mb-3">{error}</p>
           <button onClick={() => loadVehicles(page)} className="text-sm font-semibold text-[#407E3C] hover:underline">Try again</button>
         </div>
       )}
@@ -161,16 +161,16 @@ export default function FleetPage() {
                 key={v.id}
                 className={`bg-white dark:bg-gray-900 border rounded-xl p-5 transition-all ${
                   v.is_active
-                    ? 'border-[#E5E7EB] dark:border-gray-700 hover:border-[#D1D5DB] dark:hover:border-gray-600 hover:shadow-sm'
+                    ? 'border-[#E5E7EB] dark:border-gray-700 hover:border-[#D1D5DB] dark:hover:border-gray-600 hover:shadow-xs'
                     : 'border-red-200 dark:border-red-800/50 opacity-60'
                 }`}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <p className="font-semibold text-[#1A1A1A] dark:text-gray-100 text-sm leading-snug">
+                    <p className="font-semibold text-text dark:text-gray-100 text-sm leading-snug">
                       {v.year} {v.make} {v.model}
                     </p>
-                    <p className="text-xs text-[#6B7280] dark:text-gray-400 font-mono mt-0.5">{v.registration_plate}</p>
+                    <p className="text-xs text-text-muted dark:text-gray-400 font-mono mt-0.5">{v.registration_plate}</p>
                   </div>
                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide shrink-0 ${
                     v.is_active
@@ -211,7 +211,7 @@ export default function FleetPage() {
 
                 {isConfirming ? (
                   <div className="flex items-center gap-2">
-                    <p className="text-xs text-[#6B7280] dark:text-gray-400 flex-1">
+                    <p className="text-xs text-text-muted dark:text-gray-400 flex-1">
                       {v.is_active ? 'Deactivate?' : 'Reactivate?'}
                     </p>
                     <button onClick={() => toggleActive(v.id, v.is_active)} className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">Confirm</button>
@@ -227,7 +227,7 @@ export default function FleetPage() {
                     </button>
                     <button
                       onClick={() => setConfirmId(v.id)}
-                      className="flex-1 border border-[#E5E7EB] dark:border-gray-700 text-[#6B7280] dark:text-gray-400 text-xs font-semibold py-2 rounded-lg hover:bg-[#F9FAFB] dark:hover:bg-gray-800 transition-colors"
+                      className="flex-1 border border-[#E5E7EB] dark:border-gray-700 text-text-muted dark:text-gray-400 text-xs font-semibold py-2 rounded-lg hover:bg-[#F9FAFB] dark:hover:bg-gray-800 transition-colors"
                     >
                       {v.is_active ? 'Deactivate' : 'Activate'}
                     </button>
@@ -241,7 +241,7 @@ export default function FleetPage() {
 
       {!error && !loading && totalPages > 1 && (
         <div className="flex items-center justify-between mt-6 pt-4 border-t border-[#E5E7EB] dark:border-gray-700">
-          <p className="text-sm text-[#6B7280] dark:text-gray-400">
+          <p className="text-sm text-text-muted dark:text-gray-400">
             {((page - 1) * PER_PAGE) + 1}–{Math.min(page * PER_PAGE, total)} of {total} vehicles
           </p>
           <div className="flex gap-2">
@@ -252,7 +252,7 @@ export default function FleetPage() {
             >
               Previous
             </button>
-            <span className="flex items-center px-3 text-sm text-[#6B7280] dark:text-gray-400">
+            <span className="flex items-center px-3 text-sm text-text-muted dark:text-gray-400">
               {page} / {totalPages}
             </span>
             <button

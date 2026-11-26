@@ -105,17 +105,17 @@ function LicenceCard({ item, onAction }: { item: LicenceReview; onAction: () => 
 
   if (done) return null
 
-  const inputCls = 'w-full border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#407E3C]'
+  const inputCls = 'w-full border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-[#407E3C]'
 
   return (
     <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 space-y-4">
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="font-semibold text-[#1A1A1A] text-sm">
+          <p className="font-semibold text-text text-sm">
             {item.profile ? `${item.profile.first_name} ${item.profile.last_name}` : 'Unknown customer'}
           </p>
-          <p className="text-xs text-[#6B7280]">{item.profile?.email}</p>
+          <p className="text-xs text-text-muted">{item.profile?.email}</p>
         </div>
         <div className="flex items-center gap-2">
           <ConfidencePill value={item.confidence} />
@@ -126,23 +126,23 @@ function LicenceCard({ item, onAction }: { item: LicenceReview; onAction: () => 
       {/* AI extracted fields — editable */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div>
-          <label htmlFor={`name-${item.id}`} className="block text-xs font-semibold text-[#6B7280] uppercase tracking-wide mb-1">Name</label>
+          <label htmlFor={`name-${item.id}`} className="block text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Name</label>
           <input id={`name-${item.id}`} className={inputCls} value={name} onChange={e => setName(e.target.value)} placeholder="Full name" />
         </div>
         <div>
-          <label htmlFor={`licence-${item.id}`} className="block text-xs font-semibold text-[#6B7280] uppercase tracking-wide mb-1">Licence No.</label>
+          <label htmlFor={`licence-${item.id}`} className="block text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Licence No.</label>
           <input id={`licence-${item.id}`} className={inputCls} value={licenceNumber} onChange={e => setLicenceNumber(e.target.value)} placeholder="Licence number" />
         </div>
         <div>
-          <label htmlFor={`expiry-${item.id}`} className="block text-xs font-semibold text-[#6B7280] uppercase tracking-wide mb-1">Expiry</label>
+          <label htmlFor={`expiry-${item.id}`} className="block text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Expiry</label>
           <input id={`expiry-${item.id}`} type="date" className={inputCls} value={expiry} onChange={e => setExpiry(e.target.value)} />
         </div>
       </div>
 
       {item.extracted_data.categories && item.extracted_data.categories.length > 0 && (
-        <p className="text-xs text-[#6B7280]">
-          Categories: <span className="font-medium text-[#1A1A1A]">{item.extracted_data.categories.join(', ')}</span>
-          {item.extracted_data.issuing_country && <> · Country: <span className="font-medium text-[#1A1A1A]">{item.extracted_data.issuing_country}</span></>}
+        <p className="text-xs text-text-muted">
+          Categories: <span className="font-medium text-text">{item.extracted_data.categories.join(', ')}</span>
+          {item.extracted_data.issuing_country && <> · Country: <span className="font-medium text-text">{item.extracted_data.issuing_country}</span></>}
         </p>
       )}
 
@@ -154,7 +154,7 @@ function LicenceCard({ item, onAction }: { item: LicenceReview; onAction: () => 
 
       {/* Staff note */}
       <div>
-        <label htmlFor={`note-${item.id}`} className="block text-xs font-semibold text-[#6B7280] uppercase tracking-wide mb-1">Staff Note (optional)</label>
+        <label htmlFor={`note-${item.id}`} className="block text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Staff Note (optional)</label>
         <input id={`note-${item.id}`} className={inputCls} value={note} onChange={e => setNote(e.target.value)} placeholder="Reason for rejection or correction note" />
       </div>
 
@@ -167,7 +167,7 @@ function LicenceCard({ item, onAction }: { item: LicenceReview; onAction: () => 
         <button
           onClick={() => act('approve')}
           disabled={loading}
-          className="flex-1 bg-[#407E3C] hover:bg-[#356834] disabled:opacity-50 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex-1 bg-[#407E3C] hover:bg-primary-hover disabled:opacity-50 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           {loading ? 'Saving…' : '✓ Verify & Approve'}
         </button>
@@ -223,10 +223,10 @@ function DamageCard({ item, onAction }: { item: DamageReview; onAction: () => vo
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="font-semibold text-[#1A1A1A] text-sm">
+          <p className="font-semibold text-text text-sm">
             {booking?.booking_ref ?? 'Unknown'} · {vehicle ? `${vehicle.make} ${vehicle.model} (${vehicle.registration_plate})` : ''}
           </p>
-          <p className="text-xs text-[#6B7280]">
+          <p className="text-xs text-text-muted">
             {booking ? `${booking.driver_first_name} ${booking.driver_last_name} — ${booking.driver_email}` : ''}
           </p>
         </div>
@@ -255,15 +255,15 @@ function DamageCard({ item, onAction }: { item: DamageReview; onAction: () => vo
       {/* AI report */}
       <div className="bg-[#F9FAFB] rounded-lg p-3 space-y-2">
         {report.locations.length > 0 && (
-          <p className="text-xs text-[#1A1A1A]">
+          <p className="text-xs text-text">
             <span className="font-semibold">Locations: </span>{report.locations.join(', ')}
           </p>
         )}
-        <p className="text-xs text-[#6B7280]">
-          <span className="font-semibold text-[#1A1A1A]">AI assessment: </span>{report.reasoning}
+        <p className="text-xs text-text-muted">
+          <span className="font-semibold text-text">AI assessment: </span>{report.reasoning}
         </p>
         {report.needs_human_review && (
-          <p className="text-xs text-yellow-700 bg-yellow-50 border border-yellow-200 rounded px-2 py-1">
+          <p className="text-xs text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-sm px-2 py-1">
             ⚠ Flagged for review — confidence below threshold
           </p>
         )}
@@ -271,10 +271,10 @@ function DamageCard({ item, onAction }: { item: DamageReview; onAction: () => vo
 
       {/* Staff note */}
       <div>
-        <label htmlFor={`damage-note-${item.id}`} className="block text-xs font-semibold text-[#6B7280] uppercase tracking-wide mb-1">Staff Note (optional)</label>
+        <label htmlFor={`damage-note-${item.id}`} className="block text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Staff Note (optional)</label>
         <input
           id={`damage-note-${item.id}`}
-          className="w-full border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#407E3C]"
+          className="w-full border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-[#407E3C]"
           value={note}
           onChange={e => setNote(e.target.value)}
           placeholder="Add context for the booking record"
@@ -304,7 +304,7 @@ function DamageCard({ item, onAction }: { item: DamageReview; onAction: () => vo
         <button
           onClick={() => act('dismiss')}
           disabled={loading}
-          className="px-4 py-2 bg-[#407E3C] hover:bg-[#356834] disabled:opacity-50 text-white text-sm font-semibold rounded-lg transition-colors"
+          className="px-4 py-2 bg-[#407E3C] hover:bg-primary-hover disabled:opacity-50 text-white text-sm font-semibold rounded-lg transition-colors"
         >
           No Damage
         </button>
@@ -342,15 +342,15 @@ export default function ReviewsPage() {
     `px-4 py-2 text-sm font-semibold rounded-lg transition-colors ${
       tab === t
         ? 'bg-[#407E3C] text-white'
-        : 'text-[#6B7280] hover:bg-[#F3F4F6]'
+        : 'text-text-muted hover:bg-[#F3F4F6]'
     }`
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight">AI Reviews</h1>
-          <p className="text-sm text-[#6B7280] mt-0.5">Verify AI decisions before they take effect</p>
+          <h1 className="text-2xl font-bold text-text tracking-tight">AI Reviews</h1>
+          <p className="text-sm text-text-muted mt-0.5">Verify AI decisions before they take effect</p>
         </div>
       </div>
 

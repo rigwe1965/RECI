@@ -23,13 +23,13 @@ export default function TopBar({ onMenuOpen }: { onMenuOpen?: () => void }) {
   const isDark = theme === 'dark'
 
   return (
-    <header className="sticky top-0 z-20 h-12 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-[#E5E7EB] dark:border-gray-700/60 flex items-center px-4 gap-2">
+    <header className="sticky top-0 z-20 h-12 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xs border-b border-[#E5E7EB] dark:border-gray-700/60 flex items-center px-4 gap-2">
       {/* Hamburger — mobile only */}
       {onMenuOpen && (
         <button
           onClick={onMenuOpen}
           aria-label="Open menu"
-          className="lg:hidden w-9 h-9 rounded-lg flex items-center justify-center text-[#6B7280] dark:text-gray-400 hover:bg-[#F3F4F6] dark:hover:bg-gray-800 transition-colors"
+          className="lg:hidden w-9 h-9 rounded-lg flex items-center justify-center text-text-muted dark:text-gray-400 hover:bg-[#F3F4F6] dark:hover:bg-gray-800 transition-colors"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -51,7 +51,7 @@ export default function TopBar({ onMenuOpen }: { onMenuOpen?: () => void }) {
       <button
         onClick={toggle}
         aria-label="Toggle theme"
-        className="w-9 h-9 rounded-full flex items-center justify-center bg-white dark:bg-gray-800 border border-[#E5E7EB] dark:border-gray-700 text-[#6B7280] dark:text-gray-300 hover:border-[#407E3C] transition-colors shadow-sm"
+        className="w-9 h-9 rounded-full flex items-center justify-center bg-white dark:bg-gray-800 border border-[#E5E7EB] dark:border-gray-700 text-text-muted dark:text-gray-300 hover:border-[#407E3C] transition-colors shadow-xs"
       >
         {isDark ? <SunIcon /> : <MoonIcon />}
       </button>

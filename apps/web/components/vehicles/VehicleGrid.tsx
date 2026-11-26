@@ -6,16 +6,16 @@ import VehicleCard from './VehicleCard'
 function SkeletonCard() {
   return (
     <div className="card animate-pulse">
-      <div className="aspect-[16/9] bg-[#E5E7EB] dark:bg-gray-700 rounded-md mb-4" />
-      <div className="h-3 bg-[#E5E7EB] dark:bg-gray-700 rounded w-1/4 mb-2" />
-      <div className="h-5 bg-[#E5E7EB] dark:bg-gray-700 rounded w-3/4 mb-1" />
-      <div className="h-3 bg-[#E5E7EB] dark:bg-gray-700 rounded w-1/4 mb-4" />
+      <div className="aspect-video bg-[#E5E7EB] dark:bg-gray-700 rounded-md mb-4" />
+      <div className="h-3 bg-[#E5E7EB] dark:bg-gray-700 rounded-sm w-1/4 mb-2" />
+      <div className="h-5 bg-[#E5E7EB] dark:bg-gray-700 rounded-sm w-3/4 mb-1" />
+      <div className="h-3 bg-[#E5E7EB] dark:bg-gray-700 rounded-sm w-1/4 mb-4" />
       <div className="flex gap-2 mb-4">
         <div className="h-6 w-16 bg-[#E5E7EB] dark:bg-gray-700 rounded-full" />
         <div className="h-6 w-16 bg-[#E5E7EB] dark:bg-gray-700 rounded-full" />
       </div>
       <div className="flex justify-between items-center pt-4 border-t border-[#E5E7EB] dark:border-gray-700">
-        <div className="h-7 w-20 bg-[#E5E7EB] dark:bg-gray-700 rounded" />
+        <div className="h-7 w-20 bg-[#E5E7EB] dark:bg-gray-700 rounded-sm" />
         <div className="h-9 w-24 bg-[#E5E7EB] dark:bg-gray-700 rounded-button" />
       </div>
     </div>
@@ -37,7 +37,7 @@ export default function VehicleGrid() {
 
   if (error) {
     return (
-      <div className="text-center py-16 text-[#DC2626]">
+      <div className="text-center py-16 text-error">
         <p className="font-medium">Search failed</p>
         <p className="text-sm mt-1">{error}</p>
       </div>
@@ -53,8 +53,8 @@ export default function VehicleGrid() {
             <path d="M5 17H3v-4l2.5-5h11L19 13v4h-2M9 17h6M6 9h12"/>
           </svg>
         </div>
-        <p className="font-medium text-[#1A1A1A] dark:text-gray-100">No vehicles available for your dates</p>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-1">Try different dates or remove the type filter</p>
+        <p className="font-medium text-text dark:text-gray-100">No vehicles available for your dates</p>
+        <p className="text-sm text-text-muted dark:text-gray-400 mt-1">Try different dates or remove the type filter</p>
       </div>
     )
   }

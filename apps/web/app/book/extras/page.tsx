@@ -86,7 +86,7 @@ export default function BookExtrasPage() {
       <CheckoutStepper current={2} />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-6">Choose your extras</h1>
+        <h1 className="text-2xl font-bold text-text dark:text-gray-100 mb-6">Choose your extras</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
@@ -101,7 +101,7 @@ export default function BookExtrasPage() {
             )}
 
             <div className="flex items-center justify-between mt-6">
-              <button onClick={() => router.back()} className="text-sm text-[#6B7280] dark:text-gray-400 hover:text-[#1A1A1A] dark:hover:text-gray-100 transition-colors">
+              <button onClick={() => router.back()} className="text-sm text-text-muted dark:text-gray-400 hover:text-text dark:hover:text-gray-100 transition-colors">
                 ← Back
               </button>
               <button onClick={() => router.push('/book/driver')} className="btn-primary">

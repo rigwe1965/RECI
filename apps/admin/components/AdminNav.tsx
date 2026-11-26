@@ -101,7 +101,7 @@ export default function AdminNav({ userEmail, userRole, onClose }: { userEmail: 
           </button>
         )}
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 bg-[#407E3C] rounded-lg flex items-center justify-center shadow-sm shrink-0">
+          <div className="w-7 h-7 bg-[#407E3C] rounded-lg flex items-center justify-center shadow-xs shrink-0">
             <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
             </svg>
@@ -124,7 +124,7 @@ export default function AdminNav({ userEmail, userRole, onClose }: { userEmail: 
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                 active
-                  ? 'bg-[#407E3C] text-white shadow-sm'
+                  ? 'bg-[#407E3C] text-white shadow-xs'
                   : 'text-white/55 hover:bg-white/8 hover:text-white'
               }`}
             >
@@ -141,7 +141,7 @@ export default function AdminNav({ userEmail, userRole, onClose }: { userEmail: 
           href="/reviews"
           className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${
             pathname === '/reviews' || pathname.startsWith('/reviews/')
-              ? 'bg-[#407E3C] text-white shadow-sm'
+              ? 'bg-[#407E3C] text-white shadow-xs'
               : 'text-white/55 hover:bg-white/8 hover:text-white'
           }`}
         >
@@ -162,7 +162,7 @@ export default function AdminNav({ userEmail, userRole, onClose }: { userEmail: 
           href="/integrations"
           className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
             pathname === '/integrations' || pathname.startsWith('/integrations/')
-              ? 'bg-[#407E3C] text-white shadow-sm'
+              ? 'bg-[#407E3C] text-white shadow-xs'
               : 'text-white/55 hover:bg-white/8 hover:text-white'
           }`}
         >
@@ -183,7 +183,7 @@ export default function AdminNav({ userEmail, userRole, onClose }: { userEmail: 
                   href={item.href}
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                     active
-                      ? 'bg-[#407E3C] text-white shadow-sm'
+                      ? 'bg-[#407E3C] text-white shadow-xs'
                       : 'text-white/55 hover:bg-white/8 hover:text-white'
                   }`}
                 >

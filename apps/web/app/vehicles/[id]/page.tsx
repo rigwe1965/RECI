@@ -39,7 +39,7 @@ export default async function VehicleDetailPage(props: { params: Promise<{ id: s
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back */}
-        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] mb-6 transition-colors">
+        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-text-muted dark:text-gray-400 hover:text-[#407E3C] mb-6 transition-colors">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
@@ -49,7 +49,7 @@ export default async function VehicleDetailPage(props: { params: Promise<{ id: s
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* Left: image + gallery */}
           <div className="lg:col-span-3 space-y-4">
-            <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-[#F3F4F6] dark:bg-gray-800 relative">
+            <div className="aspect-video rounded-2xl overflow-hidden bg-[#F3F4F6] dark:bg-gray-800 relative">
               {primaryImage ? (
                 <Image
                   src={unsplashUrl(primaryImage, 900)}
@@ -68,7 +68,7 @@ export default async function VehicleDetailPage(props: { params: Promise<{ id: s
                 </div>
               )}
               {guaranteed_model && (
-                <span className="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-[#407E3C] text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border border-[#407E3C]/30">
+                <span className="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xs text-[#407E3C] text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border border-[#407E3C]/30">
                   ✓ Exact Model
                 </span>
               )}
@@ -78,7 +78,7 @@ export default async function VehicleDetailPage(props: { params: Promise<{ id: s
             {image_urls && image_urls.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {image_urls.slice(1).map((url, i) => (
-                  <div key={i} className="w-24 h-16 flex-shrink-0 rounded-lg overflow-hidden relative bg-[#F3F4F6] dark:bg-gray-800">
+                  <div key={i} className="w-24 h-16 shrink-0 rounded-lg overflow-hidden relative bg-[#F3F4F6] dark:bg-gray-800">
                     <Image src={unsplashUrl(url, 200)} alt={`${make} ${model} view ${i + 2}`} fill unoptimized className="object-cover" />
                   </div>
                 ))}
@@ -94,8 +94,8 @@ export default async function VehicleDetailPage(props: { params: Promise<{ id: s
                   {category.name}
                 </span>
               )}
-              <h1 className="text-3xl font-bold text-[#1A1A1A] dark:text-gray-100">{make} {model}</h1>
-              <p className="text-[#6B7280] dark:text-gray-400 font-medium mt-0.5">{year} · {color}</p>
+              <h1 className="text-3xl font-bold text-text dark:text-gray-100">{make} {model}</h1>
+              <p className="text-text-muted dark:text-gray-400 font-medium mt-0.5">{year} · {color}</p>
             </div>
 
             {/* Specs */}
@@ -122,7 +122,7 @@ export default async function VehicleDetailPage(props: { params: Promise<{ id: s
             {/* Features */}
             {features?.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-200 mb-2">Features</h3>
+                <h3 className="text-sm font-semibold text-text dark:text-gray-200 mb-2">Features</h3>
                 <div className="flex flex-wrap gap-1.5">
                   {features.map((f) => (
                     <span key={f} className="text-xs px-2.5 py-1 bg-[#407E3C]/10 text-[#407E3C] rounded-full font-medium">{f}</span>
@@ -132,15 +132,15 @@ export default async function VehicleDetailPage(props: { params: Promise<{ id: s
             )}
 
             {/* Price + Book */}
-            <div className="card !p-5 space-y-4">
+            <div className="card p-5! space-y-4">
               {daily_rate != null ? (
                 <div>
                   <span className="text-3xl font-bold text-[#407E3C]">€{daily_rate}</span>
                   <span className="text-sm text-[#9CA3AF] ml-1">/day</span>
-                  <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-1">Extras and insurance selected at checkout</p>
+                  <p className="text-xs text-text-muted dark:text-gray-400 mt-1">Extras and insurance selected at checkout</p>
                 </div>
               ) : (
-                <p className="text-sm text-[#6B7280]">Price on request</p>
+                <p className="text-sm text-text-muted">Price on request</p>
               )}
               <Link
                 href={`/book/${vehicle.id}`}

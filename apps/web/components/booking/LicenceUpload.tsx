@@ -131,7 +131,7 @@ export default function LicenceUpload({ firstName, lastName, onVerified }: Licen
       )}
 
       {state.kind === 'uploading' && (
-        <div className="inline-flex items-center gap-2 text-sm text-[#6B7280]">
+        <div className="inline-flex items-center gap-2 text-sm text-text-muted">
           <span className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           Analysing your licence…
         </div>
@@ -139,7 +139,7 @@ export default function LicenceUpload({ firstName, lastName, onVerified }: Licen
 
       {state.kind === 'verified' && (
         <div className="flex items-center gap-3">
-          <div className="inline-flex items-center gap-1.5 text-sm font-medium text-[#16A34A] bg-[#F0FDF4] dark:bg-green-900/20 border border-[#BBF7D0] dark:border-green-800 rounded-md px-3 py-1.5">
+          <div className="inline-flex items-center gap-1.5 text-sm font-medium text-success bg-[#F0FDF4] dark:bg-green-900/20 border border-[#BBF7D0] dark:border-green-800 rounded-md px-3 py-1.5">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
@@ -147,7 +147,7 @@ export default function LicenceUpload({ firstName, lastName, onVerified }: Licen
           </div>
           <label
             htmlFor="licence-upload-input"
-            className="text-xs text-[#6B7280] hover:text-[#1A1A1A] cursor-pointer underline"
+            className="text-xs text-text-muted hover:text-text cursor-pointer underline"
           >
             Retake
           </label>
@@ -164,7 +164,7 @@ export default function LicenceUpload({ firstName, lastName, onVerified }: Licen
           </div>
           <label
             htmlFor="licence-upload-input"
-            className="text-xs text-[#6B7280] hover:text-[#1A1A1A] cursor-pointer underline"
+            className="text-xs text-text-muted hover:text-text cursor-pointer underline"
           >
             Retry
           </label>
@@ -173,7 +173,7 @@ export default function LicenceUpload({ firstName, lastName, onVerified }: Licen
 
       {(state.kind === 'failed' || state.kind === 'error') && (
         <div className="flex items-center gap-3">
-          <p className="text-sm text-[#6B7280]">
+          <p className="text-sm text-text-muted">
             {state.kind === 'failed' ? state.message : 'Verification unavailable — please enter licence number manually.'}
           </p>
           <label

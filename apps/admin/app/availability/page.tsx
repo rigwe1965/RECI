@@ -15,10 +15,10 @@ function AvailabilitySkeleton() {
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <label className="block text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-1.5">{children}</label>
+  return <label className="block text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-1.5">{children}</label>
 }
 
-const inputCls = 'w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-[#1A1A1A] dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors'
+const inputCls = 'w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-text dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors'
 
 const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -96,13 +96,13 @@ export default function AvailabilityPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight">Availability Blocks</h1>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-1">Prevent vehicles from being booked during specific date ranges.</p>
+        <h1 className="text-2xl font-bold text-text dark:text-gray-100 tracking-tight">Availability Blocks</h1>
+        <p className="text-sm text-text-muted dark:text-gray-400 mt-1">Prevent vehicles from being booked during specific date ranges.</p>
       </div>
 
       {/* Add block form */}
-      <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-5 shadow-sm">
-        <p className="text-xs font-bold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider mb-4">Block Vehicle</p>
+      <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-5 shadow-xs">
+        <p className="text-xs font-bold text-text-muted dark:text-gray-400 uppercase tracking-wider mb-4">Block Vehicle</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
             <Label>Vehicle</Label>
@@ -136,22 +136,22 @@ export default function AvailabilityPage() {
           <button
             onClick={addBlock}
             disabled={saving || !form.vehicle_id || !form.start_date || !form.end_date}
-            className="bg-[#407E3C] hover:bg-[#356834] text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-40 shadow-sm"
+            className="bg-[#407E3C] hover:bg-primary-hover text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-40 shadow-xs"
           >
             {saving ? 'Saving…' : 'Block dates'}
           </button>
           {previewDays && (
-            <p className="text-xs text-[#6B7280] dark:text-gray-400">{previewDays} day{previewDays !== 1 ? 's' : ''} blocked</p>
+            <p className="text-xs text-text-muted dark:text-gray-400">{previewDays} day{previewDays !== 1 ? 's' : ''} blocked</p>
           )}
         </div>
       </div>
 
       {/* Blocks table */}
-      <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl overflow-hidden shadow-xs">
         <div className="px-5 py-4 border-b border-[#F3F4F6] dark:border-gray-800 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100">Current Blocks</h2>
+          <h2 className="text-sm font-semibold text-text dark:text-gray-100">Current Blocks</h2>
           {!loading && (
-            <span className="text-xs text-[#6B7280] dark:text-gray-400">{blocks.length} block{blocks.length !== 1 ? 's' : ''}</span>
+            <span className="text-xs text-text-muted dark:text-gray-400">{blocks.length} block{blocks.length !== 1 ? 's' : ''}</span>
           )}
         </div>
 
@@ -159,7 +159,7 @@ export default function AvailabilityPage() {
           <div className="p-5"><AvailabilitySkeleton /></div>
         ) : blocks.length === 0 ? (
           <div className="px-5 py-12 text-center">
-            <p className="text-sm text-[#6B7280] dark:text-gray-400">No availability blocks.</p>
+            <p className="text-sm text-text-muted dark:text-gray-400">No availability blocks.</p>
             <p className="text-xs text-[#9CA3AF] dark:text-gray-500 mt-1">All vehicles are bookable by default.</p>
           </div>
         ) : (
@@ -178,16 +178,16 @@ export default function AvailabilityPage() {
                 const isConfirming = confirmId === b.id
                 return (
                   <tr key={b.id} className="border-b border-[#F3F4F6] dark:border-gray-800 last:border-0">
-                    <td className="px-4 py-3 font-medium text-[#1A1A1A] dark:text-gray-100 whitespace-nowrap">
+                    <td className="px-4 py-3 font-medium text-text dark:text-gray-100 whitespace-nowrap">
                       {v ? `${v.year} ${v.make} ${v.model}` : '—'}
                     </td>
-                    <td className="px-4 py-3 text-[#6B7280] dark:text-gray-400 text-xs whitespace-nowrap">
+                    <td className="px-4 py-3 text-text-muted dark:text-gray-400 text-xs whitespace-nowrap">
                       {fmtDate(b.start_date)} – {fmtDate(b.end_date)}
                     </td>
-                    <td className="px-4 py-3 text-[#6B7280] dark:text-gray-400 text-xs">
+                    <td className="px-4 py-3 text-text-muted dark:text-gray-400 text-xs">
                       {blockDays(b.start_date, b.end_date)}d
                     </td>
-                    <td className="px-4 py-3 text-[#6B7280] dark:text-gray-400 text-xs max-w-[140px] truncate">
+                    <td className="px-4 py-3 text-text-muted dark:text-gray-400 text-xs max-w-[140px] truncate">
                       {b.reason ?? <span className="text-[#D1D5DB] dark:text-gray-600">—</span>}
                     </td>
                     <td className="px-4 py-3">
@@ -196,12 +196,12 @@ export default function AvailabilityPage() {
                     <td className="px-4 py-3 text-right">
                       {isConfirming ? (
                         <div className="flex items-center justify-end gap-2">
-                          <span className="text-xs text-[#6B7280] dark:text-gray-400">Remove?</span>
+                          <span className="text-xs text-text-muted dark:text-gray-400">Remove?</span>
                           <button onClick={() => deleteBlock(b.id)} className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">Yes</button>
                           <button onClick={() => setConfirmId(null)} className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#F3F4F6] dark:bg-gray-800 text-[#374151] dark:text-gray-300 hover:bg-[#E5E7EB] dark:hover:bg-gray-700 transition-colors">No</button>
                         </div>
                       ) : (
-                        <button onClick={() => setConfirmId(b.id)} className="text-xs text-[#DC2626] dark:text-red-400 font-medium px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
+                        <button onClick={() => setConfirmId(b.id)} className="text-xs text-error dark:text-red-400 font-medium px-2 py-1 rounded-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
                           Remove
                         </button>
                       )}

@@ -33,11 +33,11 @@ export default async function AccountLayout({ children }: { children: React.Reac
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block px-4 py-3 text-sm font-medium text-[#1A1A1A] dark:text-gray-200 hover:bg-[#F9FAFB] dark:hover:bg-gray-800 border-b border-[#E5E7EB] dark:border-gray-700 last:border-b-0 transition-colors"
+                  className="block px-4 py-3 text-sm font-medium text-text dark:text-gray-200 hover:bg-[#F9FAFB] dark:hover:bg-gray-800 border-b border-[#E5E7EB] dark:border-gray-700 last:border-b-0 transition-colors"
                 >
                   {item.label}
                   {item.href === '/account/corporate' && profile?.corporate_account_id && (
-                    <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-[#F0FDF4] dark:bg-green-900/30 text-[#407E3C]">
+                    <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-sm text-xs font-medium bg-[#F0FDF4] dark:bg-green-900/30 text-[#407E3C]">
                       Active
                     </span>
                   )}

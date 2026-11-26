@@ -24,10 +24,10 @@ const STATUS_META: Record<string, { label: string; color: string; dot: string }>
 
 function StatCard({ label, value, dot }: { label: string; value: number; dot: string }) {
   return (
-    <div className="flex items-center gap-2.5 bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl px-4 py-2.5 shadow-sm">
+    <div className="flex items-center gap-2.5 bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl px-4 py-2.5 shadow-xs">
       <span className={`w-2 h-2 rounded-full shrink-0 ${dot}`} />
-      <span className="text-xs font-medium text-[#6B7280] dark:text-gray-400 whitespace-nowrap">{label}</span>
-      <span className="text-sm font-bold text-[#1A1A1A] dark:text-gray-100 ml-1">{value}</span>
+      <span className="text-xs font-medium text-text-muted dark:text-gray-400 whitespace-nowrap">{label}</span>
+      <span className="text-sm font-bold text-text dark:text-gray-100 ml-1">{value}</span>
     </div>
   )
 }
@@ -185,14 +185,14 @@ export default function CalendarPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight leading-none">Fleet Calendar</h1>
-          <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-1.5">Live vehicle schedule &amp; booking overview</p>
+          <h1 className="text-2xl font-bold text-text dark:text-gray-100 tracking-tight leading-none">Fleet Calendar</h1>
+          <p className="text-sm text-text-muted dark:text-gray-400 mt-1.5">Live vehicle schedule &amp; booking overview</p>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
           {Object.entries(STATUS_META).map(([key, { label, dot }]) => (
             <div key={key} className="flex items-center gap-1.5">
-              <span className={`w-2.5 h-2.5 rounded-sm ${dot}`} />
-              <span className="text-xs text-[#6B7280] dark:text-gray-400 font-medium">{label}</span>
+              <span className={`w-2.5 h-2.5 rounded-xs ${dot}`} />
+              <span className="text-xs text-text-muted dark:text-gray-400 font-medium">{label}</span>
             </div>
           ))}
         </div>
@@ -220,7 +220,7 @@ export default function CalendarPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-2xl shadow-xs overflow-hidden">
           <div className="px-5 pt-5 pb-6">
             {loading && <CalendarSkeleton />}
             <div ref={containerRef} className={loading ? 'hidden' : ''} />

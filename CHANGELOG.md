@@ -9,6 +9,7 @@ All notable changes to RECI Transport. Follows [Keep a Changelog](https://keepac
 - White-label branding settings (`NEXT_PUBLIC_BRAND_*`), footer settings and a per-deployment vehicle licence (off unless `LICENCE_ENFORCEMENT=1`).
 
 ### Changed
+- Tailwind CSS 3 → 4 for the web and admin apps (`@tailwindcss/postcss`, CSS-first config). The design tokens moved from `packages/config/tailwind/index.ts` to `packages/config/tailwind/theme.css`, which both apps import. Pages compared before and after in screenshots: no visible change.
 - React 18 → 19 for the web and admin apps (`react`, `react-dom` and their types 19.3), with `@stripe/react-stripe-js` 2.9 → 3.11 (2.x does not support React 19). `@reci/ui` accepts React 18 or 19. The mobile app stays on React 18 until the Expo SDK upgrade.
 
 ### Fixed

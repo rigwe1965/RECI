@@ -63,8 +63,8 @@ export default function IntegrationsPage() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight">Hardware Integrations</h1>
-        <p className="text-sm text-[#6B7280] mt-1.5 max-w-2xl">
+        <h1 className="text-2xl font-bold text-text tracking-tight">Hardware Integrations</h1>
+        <p className="text-sm text-text-muted mt-1.5 max-w-2xl">
           {brand.shortName} is designed to connect with fleet hardware. These integrations will automate mileage tracking, keyless entry, and GPS — eliminating manual staff inputs and reducing operational costs.
         </p>
       </div>
@@ -83,7 +83,7 @@ export default function IntegrationsPage() {
         {INTEGRATIONS.map((group) => (
           <section key={group.category}>
             <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-lg font-bold text-[#1A1A1A]">{group.category}</h2>
+              <h2 className="text-lg font-bold text-text">{group.category}</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {group.items.map((integration) => (
@@ -92,12 +92,12 @@ export default function IntegrationsPage() {
                   className="bg-white border border-[#E5E7EB] rounded-xl p-5 flex flex-col gap-3"
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-semibold text-[#1A1A1A] text-sm">{integration.name}</h3>
+                    <h3 className="font-semibold text-text text-sm">{integration.name}</h3>
                     <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full bg-[#F3F4F6] text-[#9CA3AF]">
                       Coming Soon
                     </span>
                   </div>
-                  <p className="text-xs text-[#6B7280] leading-relaxed">{integration.description}</p>
+                  <p className="text-xs text-text-muted leading-relaxed">{integration.description}</p>
                   <ul className="space-y-1">
                     {integration.benefits.map((b) => (
                       <li key={b} className="text-xs text-[#374151] flex items-start gap-1.5">
