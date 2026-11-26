@@ -18,7 +18,7 @@ export default function LicenceBanner({ userRole }: { userRole: string }) {
   useEffect(() => {
     if (userRole !== 'admin') return
     let live = true
-    fetch('/api/admin/licence/status')
+    fetch('/admin/api/admin/licence/status') // the admin app lives under basePath /admin
       .then((r) => (r.ok ? r.json() : null))
       .then((s) => live && setStatus(s))
       .catch(() => {})

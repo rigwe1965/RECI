@@ -249,7 +249,8 @@ if (vErr) { console.error('vehicles:', vErr.message); process.exit(1) }
 console.log(`✓ ${vehicles.length} vehicles`)
 
 // ── 3. Extras ───────────────────────────────────────────────────────────────
-const { error: exErr } = await supabase.from('extras').upsert([
+// extras has no unique name (its id is random), so upsert() added 10 more copies on every run: update the ones that exist, insert the missing ones.
+const extraRows = [
   { name: 'Basic Insurance',     description: 'Third-party liability. Required minimum.',           price_per_day:   0.00, is_one_time_fee: false, exclusive_group: 'insurance', sort_order: 1 },
   { name: 'Full Insurance',      description: 'Zero-excess comprehensive cover.',                   price_per_day:  18.00, is_one_time_fee: false, exclusive_group: 'insurance', sort_order: 2 },
   { name: 'GPS Navigation',      description: 'Portable Garmin satnav, updated maps.',             price_per_day:   8.00, is_one_time_fee: false, exclusive_group: null,        sort_order: 3 },
@@ -260,7 +261,18 @@ const { error: exErr } = await supabase.from('extras').upsert([
   { name: 'Chauffeur',           description: 'Professional driver for the full duration.',        price_per_day: 120.00, is_one_time_fee: false, exclusive_group: null,        sort_order: 8 },
   { name: 'Wi-Fi Hotspot',       description: 'In-car 4G/LTE hotspot. Unlimited data.',           price_per_day:   5.00, is_one_time_fee: false, exclusive_group: null,        sort_order: 9 },
   { name: 'Ski Rack',            description: 'Roof-mounted ski and snowboard carrier.',           price_per_day:  12.00, is_one_time_fee: false, exclusive_group: null,        sort_order: 10 },
-])
+]
+const { data: haveExtras, error: haveErr } = await supabase.from('extras').select('name')
+let exErr = haveErr
+if (!exErr) {
+  const have = new Set((haveExtras ?? []).map((e) => e.name))
+  const missing = extraRows.filter((e) => !have.has(e.name))
+  if (missing.length) exErr = (await supabase.from('extras').insert(missing)).error
+  for (const e of extraRows.filter((x) => have.has(x.name))) {
+    if (exErr) break
+    exErr = (await supabase.from('extras').update(e).eq('name', e.name)).error
+  }
+}
 if (exErr) { console.error('extras:', exErr.message); process.exit(1) }
 console.log('✓ extras')
 

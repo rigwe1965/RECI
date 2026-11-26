@@ -1222,9 +1222,10 @@ CREATE TRIGGER trg_maintenance_updated_at
 1. Create account at [console.anthropic.com](https://console.anthropic.com).
 2. Go to **API Keys** and generate a key.
 3. Models to use:
-   - `claude-haiku-4-5-20251001` — maintenance batch and extras recommendations (low cost, batch/on-load)
-   - `claude-sonnet-4-6` — chat assistant, trip planning, search (tool-use capable)
-   - `claude-sonnet-4-6` — damage detection, licence OCR (vision required; haiku does not support vision)
+   - `claude-haiku-5-5` (default) — maintenance batch and extras recommendations (low cost, batch/on-load)
+   - `claude-sonnet-5-5` (default) — chat assistant, trip planning, search (tool-use capable)
+   - `claude-sonnet-5-5` (default) — damage detection, licence OCR (vision)
+   - Defaults live in `packages/utils/src/ai-models.ts`; any model there can be set per feature (`AI_MODEL_*`) or by an admin.
 
 ### 7.3 Resend
 

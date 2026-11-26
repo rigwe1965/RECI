@@ -977,7 +977,7 @@ All environment variables must be set in `.env.local` (development) or in your h
 | `RESEND_FROM_EMAIL` | web (server only) | Sender email address (must be from a verified domain in Resend). | No — server only |
 | `AI_VISION_PROVIDER` | web (server only) | Vision AI provider: `anthropic` (default) or `openai-compatible` (for LLaVA, Ollama, LM Studio). | No — server only |
 | `AI_VISION_BASE_URL` | web (server only) | Base URL for OpenAI-compatible vision API. Required when `AI_VISION_PROVIDER=openai-compatible`. Example: `http://localhost:11434/v1` (Ollama). | No — server only |
-| `AI_VISION_MODEL` | web (server only) | Model name for the vision provider. Default: `claude-sonnet-4-6`. For Ollama: `llava` or `llava-v1.6-mistral-7b`. | No — server only |
+| `AI_VISION_MODEL` | web (server only) | Model name for the vision provider. Default: `claude-sonnet-5-5`. For Ollama: `llava` or `llava-v1.6-mistral-7b`. | No — server only |
 | `AI_VISION_API_KEY` | web (server only) | API key for OpenAI-compatible provider. Leave blank for local Ollama/LM Studio (no auth required). | No — server only |
 
 > **Security:** Any variable not prefixed with `NEXT_PUBLIC_` is server-side only and never sent to the browser. Never move a secret variable into a `NEXT_PUBLIC_` prefixed name, as this would expose it to all visitors.
@@ -1148,10 +1148,10 @@ The Anthropic API key is used across these features:
 
 | Feature | Route | Model Used |
 |---|---|---|
-| AI search assistant | `POST /api/ai/search` | claude-sonnet-4-6 |
-| Extras recommendations | `POST /api/ai/extras-recommend` | claude-haiku-4-5-20251001 |
-| Predictive maintenance notes | `GET /admin/api/admin/maintenance` | claude-haiku-4-5-20251001 |
-| Trip Co-pilot | `POST /api/ai/trip-copilot` (streaming) | claude-sonnet-4-6 |
+| AI search assistant | `POST /api/ai/search` | claude-sonnet-5-5 (default) |
+| Extras recommendations | `POST /api/ai/extras-recommend` | claude-haiku-5-5 (default) |
+| Predictive maintenance notes | `GET /admin/api/admin/maintenance` | claude-haiku-5-5 (default) |
+| Trip Co-pilot | `POST /api/ai/trip-copilot` (streaming) | claude-sonnet-5-5 (default) |
 | Damage detection (vision) | `POST /api/ai/damage` | via AI Vision Adapter (see 3.9) |
 | Driving licence OCR (vision) | `POST /api/ai/licence` | via AI Vision Adapter (see 3.9) |
 
