@@ -7,6 +7,7 @@ import { calculatePrice, activeBookingFilter } from '@reci/utils'
 import { runCorporateAgent } from '@/lib/corporate-agent'
 import { withErrorHandling } from '@/lib/api-handler'
 import { parseJsonBody } from '@reci/api'
+import { VEHICLE_WITH_PRICING_SELECT, baseRateFromVehicle } from '@/lib/vehicle-pricing'
 
 // Wrapped so any exception this handler doesn't explicitly catch (e.g. a
 // Supabase call throwing instead of returning { error }) still gets a
@@ -41,7 +42,7 @@ export const POST = withErrorHandling(async function POST(request: NextRequest) 
   const [
     { data: conflictingBookings },
     { data: blockConflicts },
-    { data: vehicle },
+    { data: vehicle, error: vehicleError },
     { data: profile },
   ] = await Promise.all([
     supabase
@@ -60,10 +61,10 @@ export const POST = withErrorHandling(async function POST(request: NextRequest) 
       .gt('end_date', data.pickup_datetime),
     supabase
       .from('vehicles')
-      .select('id, category_id, pricing:pricing_rules(base_rate_per_day)')
+      .select(VEHICLE_WITH_PRICING_SELECT)
       .eq('id', data.vehicle_id)
       .eq('is_active', true)
-      .single(),
+      .maybeSingle(),
     user
       ? supabase
           .from('user_profiles')
@@ -87,12 +88,17 @@ export const POST = withErrorHandling(async function POST(request: NextRequest) 
     )
   }
 
+  if (vehicleError) {
+    // A failing query is a server fault, not a missing vehicle: say so and log why.
+    console.error('[bookings] vehicle lookup failed:', vehicleError.code, vehicleError.message)
+    return NextResponse.json({ error: 'Could not load the vehicle' }, { status: 500 })
+  }
+
   if (!vehicle) {
     return NextResponse.json({ error: 'Vehicle not found' }, { status: 404 })
   }
 
-  const pricingArr = vehicle.pricing as Array<{ base_rate_per_day: number }> | null
-  let base_rate_per_day = pricingArr?.[0]?.base_rate_per_day
+  let base_rate_per_day = baseRateFromVehicle(vehicle)
   if (!base_rate_per_day) {
     return NextResponse.json({ error: 'Pricing not configured for this vehicle' }, { status: 422 })
   }
