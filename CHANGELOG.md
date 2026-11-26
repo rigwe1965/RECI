@@ -8,6 +8,9 @@ All notable changes to RECI Transport. Follows [Keep a Changelog](https://keepac
 - README, LICENSE, SECURITY.md, this changelog, a pull request template and Dependabot config (project standard).
 - White-label branding settings (`NEXT_PUBLIC_BRAND_*`), footer settings and a per-deployment vehicle licence (off unless `LICENCE_ENFORCEMENT=1`).
 
+### Changed
+- Tailwind CSS 3 → 4 for the web and admin apps (`@tailwindcss/postcss`, CSS-first config). The design tokens moved from `packages/config/tailwind/index.ts` to `packages/config/tailwind/theme.css`, which both apps import. Pages compared before and after in screenshots: no visible change.
+
 ### Fixed
 - `.env.example` listed `SENTRY_DSN` and `NEXT_PUBLIC_ADMIN_URL`, which nothing reads: the apps read `NEXT_PUBLIC_SENTRY_DSN` (so error monitoring stayed off when set as documented) and `ADMIN_URL`. Both corrected.
 - The licence settings (`LICENCE_ENFORCEMENT`, `LICENCE_KEY`) were documented in the root `.env.example`, but only the admin app reads them and each Next.js app loads only its own `.env.local`; they are now in `apps/admin/.env.example`, with the admin app's `ANTHROPIC_API_KEY` (maintenance assistant).

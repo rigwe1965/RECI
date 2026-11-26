@@ -32,7 +32,7 @@ function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       onClick={() => router.push(`/vehicles/${id}`)}
     >
       {/* Image */}
-      <div className="aspect-[16/9] bg-[#F3F4F6] dark:bg-gray-800 relative overflow-hidden">
+      <div className="aspect-video bg-[#F3F4F6] dark:bg-gray-800 relative overflow-hidden">
         {image && !imgError ? (
           <Image
             src={unsplashUrl(image, 640)}
@@ -59,7 +59,7 @@ function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
         )}
         {/* Exact model guarantee badge */}
         {vehicle.guaranteed_model && (
-          <span className="absolute top-3 right-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-[#407E3C] text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full border border-[#407E3C]/30">
+          <span className="absolute top-3 right-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xs text-[#407E3C] text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full border border-[#407E3C]/30">
             ✓ Exact Model
           </span>
         )}
@@ -68,7 +68,7 @@ function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
         <div className="mb-3">
-          <h3 className="font-bold text-[#1A1A1A] dark:text-gray-100 text-lg leading-tight">{make} {model}</h3>
+          <h3 className="font-bold text-text dark:text-gray-100 text-lg leading-tight">{make} {model}</h3>
           <p className="text-sm text-[#9CA3AF] dark:text-gray-500 font-medium">{year}</p>
         </div>
 
@@ -113,7 +113,7 @@ function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
             </Link>
             <Link
               href={`/book/${id}`}
-              className="relative z-10 bg-[#407E3C] hover:bg-[#356834] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+              className="relative z-10 bg-[#407E3C] hover:bg-primary-hover text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
             >
               Book Now
             </Link>

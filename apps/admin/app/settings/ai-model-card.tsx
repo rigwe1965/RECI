@@ -44,9 +44,9 @@ export default function AiModelCard() {
   ]
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 shadow-sm mt-6">
-      <h2 className="text-base font-semibold text-[#1A1A1A] dark:text-gray-100 mb-1">AI model</h2>
-      <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-4">
+    <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 shadow-xs mt-6">
+      <h2 className="text-base font-semibold text-text dark:text-gray-100 mb-1">AI model</h2>
+      <p className="text-sm text-text-muted dark:text-gray-400 mb-4">
         Which Claude model answers customer chat, search, trip planning, corporate requests and licence/damage photo checks. Larger models cost more.
         Suggestions on the extras page and maintenance notes always stay on a small, cheap model.
       </p>
@@ -55,11 +55,11 @@ export default function AiModelCard() {
       )}
       <fieldset disabled={saving || !state.ready} className="space-y-2">
         {options.map((o) => (
-          <label key={o.id ?? 'builtin'} className="flex items-start gap-3 border border-[#E5E7EB] dark:border-gray-700 rounded-lg p-3 cursor-pointer has-[:checked]:border-[#407E3C]">
+          <label key={o.id ?? 'builtin'} className="flex items-start gap-3 border border-[#E5E7EB] dark:border-gray-700 rounded-lg p-3 cursor-pointer has-checked:border-[#407E3C]">
             <input type="radio" name="ai-model" className="mt-1" checked={state.model === o.id} onChange={() => choose(o.id)} />
             <span className="text-sm">
-              <span className="font-medium text-[#1A1A1A] dark:text-gray-100">{o.label}</span>
-              <span className="block text-[#6B7280] dark:text-gray-400">{o.note}</span>
+              <span className="font-medium text-text dark:text-gray-100">{o.label}</span>
+              <span className="block text-text-muted dark:text-gray-400">{o.note}</span>
             </span>
           </label>
         ))}

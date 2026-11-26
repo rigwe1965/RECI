@@ -13,9 +13,9 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <div className="w-7 h-7 rounded-lg bg-[#407E3C] flex items-center justify-center text-white font-bold text-sm">R</div>
-              <span className="font-bold text-[#1A1A1A] dark:text-gray-100 text-sm">{brand.name}</span>
+              <span className="font-bold text-text dark:text-gray-100 text-sm">{brand.name}</span>
             </div>
-            <p className="text-xs text-[#6B7280] dark:text-gray-400 leading-relaxed">
+            <p className="text-xs text-text-muted dark:text-gray-400 leading-relaxed">
               {brand.city}&apos;s AI-native vehicle rental. Cars, vans, and trucks with instant confirmation.
             </p>
             <p className="text-xs text-[#9CA3AF] dark:text-gray-500 mt-3">
@@ -26,8 +26,8 @@ export default function Footer() {
 
           {/* Pickup Locations */}
           <div>
-            <h4 className="text-xs font-bold text-[#1A1A1A] dark:text-gray-100 uppercase tracking-widest mb-3">Pickup Locations</h4>
-            <ul className="space-y-2 text-xs text-[#6B7280] dark:text-gray-400">
+            <h4 className="text-xs font-bold text-text dark:text-gray-100 uppercase tracking-widest mb-3">Pickup Locations</h4>
+            <ul className="space-y-2 text-xs text-text-muted dark:text-gray-400">
               {brand.pickupLocations.map((loc) => (
                 <li key={loc}>{loc}</li>
               ))}
@@ -36,22 +36,22 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="text-xs font-bold text-[#1A1A1A] dark:text-gray-100 uppercase tracking-widest mb-3">Support</h4>
+            <h4 className="text-xs font-bold text-text dark:text-gray-100 uppercase tracking-widest mb-3">Support</h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href={`mailto:${brand.contactEmail}`} className="text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
+                <a href={`mailto:${brand.contactEmail}`} className="text-text-muted dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
                   {brand.contactEmail}
                 </a>
               </li>
-              {brand.phone && <li className="text-[#6B7280] dark:text-gray-400">{brand.phone}</li>}
-              {brand.supportHours && <li className="text-[#6B7280] dark:text-gray-400">{brand.supportHours}</li>}
+              {brand.phone && <li className="text-text-muted dark:text-gray-400">{brand.phone}</li>}
+              {brand.supportHours && <li className="text-text-muted dark:text-gray-400">{brand.supportHours}</li>}
             </ul>
           </div>
 
           {/* Quick FAQ */}
           <div>
-            <h4 className="text-xs font-bold text-[#1A1A1A] dark:text-gray-100 uppercase tracking-widest mb-3">Quick FAQ</h4>
-            <ul className="space-y-2 text-xs text-[#6B7280] dark:text-gray-400">
+            <h4 className="text-xs font-bold text-text dark:text-gray-100 uppercase tracking-widest mb-3">Quick FAQ</h4>
+            <ul className="space-y-2 text-xs text-text-muted dark:text-gray-400">
               <li>Insurance included in all rates</li>
               <li>Free cancellation up to 48h before pickup</li>
               <li>Corporate accounts available</li>
@@ -66,16 +66,16 @@ export default function Footer() {
             © {year} {brand.legalName}, {brand.city}
           </span>
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-1">
-            <Link href="/privacy" className="text-xs text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
+            <Link href="/privacy" className="text-xs text-text-muted dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-xs text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
+            <Link href="/terms" className="text-xs text-text-muted dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
               Terms of Service
             </Link>
-            <Link href="/terms" className="text-xs text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
+            <Link href="/terms" className="text-xs text-text-muted dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
               Legal
             </Link>
-            <a href={`mailto:${brand.contactEmail}`} className="text-xs text-[#6B7280] dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
+            <a href={`mailto:${brand.contactEmail}`} className="text-xs text-text-muted dark:text-gray-400 hover:text-[#407E3C] dark:hover:text-[#5a9e56] transition-colors">
               Contact
             </a>
           </nav>

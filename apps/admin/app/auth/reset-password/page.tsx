@@ -80,17 +80,17 @@ function ResetPasswordContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100">
+          <h1 className="text-xl font-bold text-text dark:text-gray-100">
             {required ? 'Set your permanent password' : 'Set new password'}
           </h1>
-          <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-1">
+          <p className="text-sm text-text-muted dark:text-gray-400 mt-1">
             {required
               ? 'Your temporary password must be changed before continuing.'
               : 'Choose a strong password for your account'}
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 shadow-sm">
+        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 shadow-xs">
           {success ? (
             <div className="text-center space-y-3 py-2">
               <div className="w-12 h-12 bg-green-50 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto">
@@ -98,13 +98,13 @@ function ResetPasswordContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100">Password updated</p>
-              <p className="text-xs text-[#6B7280] dark:text-gray-400">Redirecting to dashboard…</p>
+              <p className="text-sm font-semibold text-text dark:text-gray-100">Password updated</p>
+              <p className="text-xs text-text-muted dark:text-gray-400">Redirecting to dashboard…</p>
             </div>
           ) : !ready ? (
             <div className="text-center py-6 space-y-2">
               <div className="w-8 h-8 border-2 border-[#407E3C] border-t-transparent rounded-full animate-spin mx-auto" />
-              <p className="text-sm text-[#6B7280] dark:text-gray-400">Verifying reset link…</p>
+              <p className="text-sm text-text-muted dark:text-gray-400">Verifying reset link…</p>
               {!required && (
                 <p className="text-xs text-[#9CA3AF] dark:text-gray-500">
                   If this takes too long, the link may have expired.{' '}
@@ -115,7 +115,7 @@ function ResetPasswordContent() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1.5">
+                <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1.5">
                   New password
                 </label>
                 <PasswordInput
@@ -127,7 +127,7 @@ function ResetPasswordContent() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1.5">
+                <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1.5">
                   Confirm password
                 </label>
                 <PasswordInput
@@ -148,7 +148,7 @@ function ResetPasswordContent() {
               <button
                 type="submit"
                 disabled={loading || !password || !confirm}
-                className="w-full bg-[#407E3C] hover:bg-[#356834] text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                className="w-full bg-[#407E3C] hover:bg-primary-hover text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
               >
                 {loading ? 'Updating…' : 'Update password'}
               </button>

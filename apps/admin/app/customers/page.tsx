@@ -10,7 +10,7 @@ function CustomersSkeleton() {
         <tr key={i} className="border-b border-[#F3F4F6] dark:border-gray-800">
           {[140, 180, 70, 100, 60, 70].map((w, j) => (
             <td key={j} className="px-4 py-3">
-              <div className="h-3.5 bg-[#F3F4F6] dark:bg-gray-800 rounded animate-pulse" style={{ width: w, opacity: 1 - i * 0.09 }} />
+              <div className="h-3.5 bg-[#F3F4F6] dark:bg-gray-800 rounded-sm animate-pulse" style={{ width: w, opacity: 1 - i * 0.09 }} />
             </td>
           ))}
         </tr>
@@ -47,8 +47,8 @@ function CustomersContent() {
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight">Customers</h1>
-          {!loading && <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-0.5">{total} total</p>}
+          <h1 className="text-2xl font-bold text-text dark:text-gray-100 tracking-tight">Customers</h1>
+          {!loading && <p className="text-sm text-text-muted dark:text-gray-400 mt-0.5">{total} total</p>}
         </div>
       </div>
 
@@ -62,12 +62,12 @@ function CustomersContent() {
             placeholder="Search name or email…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-8 pr-3 py-2 border border-[#E5E7EB] dark:border-gray-700 rounded-lg text-sm w-64 bg-white dark:bg-gray-900 text-[#1A1A1A] dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#407E3C] transition-colors"
+            className="pl-8 pr-3 py-2 border border-[#E5E7EB] dark:border-gray-700 rounded-lg text-sm w-64 bg-white dark:bg-gray-900 text-text dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-[#407E3C] transition-colors"
           />
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl overflow-hidden shadow-xs">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-[#E5E7EB] dark:border-gray-700 bg-[#F9FAFB] dark:bg-gray-800/50">
@@ -82,7 +82,7 @@ function CustomersContent() {
             ) : customers.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-4 py-12 text-center">
-                  <p className="text-sm text-[#6B7280] dark:text-gray-400">No customers found.</p>
+                  <p className="text-sm text-text-muted dark:text-gray-400">No customers found.</p>
                   <p className="text-xs text-[#9CA3AF] dark:text-gray-500 mt-1">Try a different search term.</p>
                 </td>
               </tr>
@@ -100,10 +100,10 @@ function CustomersContent() {
                       <div className="w-7 h-7 rounded-full bg-[#407E3C]/10 dark:bg-[#407E3C]/20 flex items-center justify-center text-[#407E3C] text-[10px] font-bold shrink-0">
                         {initials}
                       </div>
-                      <span className="font-medium text-[#1A1A1A] dark:text-gray-100">{c.first_name} {c.last_name}</span>
+                      <span className="font-medium text-text dark:text-gray-100">{c.first_name} {c.last_name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-[#6B7280] dark:text-gray-400">{c.email}</td>
+                  <td className="px-4 py-3 text-text-muted dark:text-gray-400">{c.email}</td>
                   <td className="px-4 py-3">
                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                       c.role === 'admin'             ? 'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' :
@@ -111,13 +111,13 @@ function CustomersContent() {
                       'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
                     }`}>{c.role}</span>
                   </td>
-                  <td className="px-4 py-3 text-[#6B7280] dark:text-gray-400 text-sm">{corp?.company_name ?? '—'}</td>
+                  <td className="px-4 py-3 text-text-muted dark:text-gray-400 text-sm">{corp?.company_name ?? '—'}</td>
                   <td className="px-4 py-3">
                     {c.licence_verified
                       ? <span className="text-[#407E3C] font-semibold text-xs flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#407E3C]" />Verified</span>
                       : <span className="text-[#9CA3AF] dark:text-gray-500 text-xs">—</span>}
                   </td>
-                  <td className="px-4 py-3 text-[#6B7280] dark:text-gray-400 text-xs">{new Date(c.created_at).toLocaleDateString('en-DE')}</td>
+                  <td className="px-4 py-3 text-text-muted dark:text-gray-400 text-xs">{new Date(c.created_at).toLocaleDateString('en-DE')}</td>
                 </tr>
               )
             })}
@@ -127,14 +127,14 @@ function CustomersContent() {
 
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-4">
-          <p className="text-sm text-[#6B7280] dark:text-gray-400">{total} total</p>
+          <p className="text-sm text-text-muted dark:text-gray-400">{total} total</p>
           <div className="flex gap-2 items-center">
             {page > 1 && (
-              <button onClick={() => router.push(`/customers?page=${page - 1}`)} className="px-3 py-1.5 border border-[#E5E7EB] dark:border-gray-700 rounded-lg text-sm text-[#6B7280] dark:text-gray-400 hover:bg-[#F9FAFB] dark:hover:bg-gray-800 transition-colors">← Prev</button>
+              <button onClick={() => router.push(`/customers?page=${page - 1}`)} className="px-3 py-1.5 border border-[#E5E7EB] dark:border-gray-700 rounded-lg text-sm text-text-muted dark:text-gray-400 hover:bg-[#F9FAFB] dark:hover:bg-gray-800 transition-colors">← Prev</button>
             )}
-            <span className="px-3 py-1.5 text-xs text-[#6B7280] dark:text-gray-400">{page} / {totalPages}</span>
+            <span className="px-3 py-1.5 text-xs text-text-muted dark:text-gray-400">{page} / {totalPages}</span>
             {page < totalPages && (
-              <button onClick={() => router.push(`/customers?page=${page + 1}`)} className="px-3 py-1.5 border border-[#E5E7EB] dark:border-gray-700 rounded-lg text-sm text-[#6B7280] dark:text-gray-400 hover:bg-[#F9FAFB] dark:hover:bg-gray-800 transition-colors">Next →</button>
+              <button onClick={() => router.push(`/customers?page=${page + 1}`)} className="px-3 py-1.5 border border-[#E5E7EB] dark:border-gray-700 rounded-lg text-sm text-text-muted dark:text-gray-400 hover:bg-[#F9FAFB] dark:hover:bg-gray-800 transition-colors">Next →</button>
             )}
           </div>
         </div>

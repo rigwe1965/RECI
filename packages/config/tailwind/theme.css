@@ -1,0 +1,74 @@
+/* RECI design tokens, shared by apps/web and apps/admin (Tailwind CSS v4).
+   "inline" keeps the literal values in utilities (as in v3): admin redefines
+   --color-text etc. for dark mode, and text-text must not follow it.
+   Import after 'tailwindcss' in each app's globals.css. */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-primary: #407e3c;
+  --color-primary-hover: #356834;
+  --color-primary-light: #5a9e56;
+
+  --color-accent: #5a9e56;
+
+  --color-brand-green: #407e3c;
+  --color-brand-white: #ffffff;
+
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b7280;
+
+  --color-error: #dc2626;
+  --color-success: #16a34a;
+
+  --font-sans: Poppins, sans-serif;
+  --font-mono: JetBrains Mono, monospace;
+
+  --text-h1: 2.5rem;
+  --text-h1--line-height: 1.2;
+  --text-h1--font-weight: 700;
+  --text-h2: 2rem;
+  --text-h2--line-height: 1.25;
+  --text-h2--font-weight: 600;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-body--font-weight: 400;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.4;
+  --text-caption--font-weight: 400;
+  --text-code: 0.875rem;
+  --text-code--line-height: 1.5;
+  --text-code--font-weight: 400;
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+
+  --radius-button: 6px;
+  --radius-card: 8px;
+
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}

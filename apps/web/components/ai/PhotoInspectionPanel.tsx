@@ -41,7 +41,7 @@ export default function PhotoInspectionPanel({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="text-xs font-semibold text-[#6B7280] dark:text-gray-400 uppercase tracking-wider text-center">
+      <p className="text-xs font-semibold text-text-muted dark:text-gray-400 uppercase tracking-wider text-center">
         {ANGLE_ICONS[angle]} {ANGLE_LABELS[angle]}
       </p>
 
@@ -57,7 +57,7 @@ export default function PhotoInspectionPanel({
 
       <label
         htmlFor={`photo-${angle}`}
-        className={`relative aspect-[4/3] rounded-card overflow-hidden cursor-pointer border-2 transition-colors flex items-center justify-center ${
+        className={`relative aspect-4/3 rounded-card overflow-hidden cursor-pointer border-2 transition-colors flex items-center justify-center ${
           preview
             ? 'border-[#407E3C]'
             : 'border-dashed border-[#E5E7EB] dark:border-gray-600 hover:border-primary/50 bg-[#F9FAFB] dark:bg-gray-800'
@@ -68,7 +68,7 @@ export default function PhotoInspectionPanel({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={preview} alt={`${angle} view`} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-center justify-center">
-              <span className="opacity-0 hover:opacity-100 text-white text-xs font-medium bg-black/60 px-2 py-1 rounded transition-opacity">
+              <span className="opacity-0 hover:opacity-100 text-white text-xs font-medium bg-black/60 px-2 py-1 rounded-sm transition-opacity">
                 Retake
               </span>
             </div>

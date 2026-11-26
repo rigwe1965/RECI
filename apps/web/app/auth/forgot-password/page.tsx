@@ -49,8 +49,8 @@ export default function ForgotPasswordPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-2">Check your email</h2>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400">
+        <h2 className="text-xl font-bold text-text dark:text-gray-100 mb-2">Check your email</h2>
+        <p className="text-sm text-text-muted dark:text-gray-400">
           If that address is registered, we sent a password reset link. Check your inbox and spam folder.
         </p>
         <Link
@@ -65,25 +65,25 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="card">
-      <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-1">Forgot password?</h1>
-      <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-6">
+      <h1 className="text-2xl font-bold text-text dark:text-gray-100 mb-1">Forgot password?</h1>
+      <p className="text-sm text-text-muted dark:text-gray-400 mb-6">
         Enter your email and we&apos;ll send you a reset link.
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">Email</label>
+          <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">Email</label>
           <input
             type="email"
             autoComplete="email"
             className="input w-full"
             {...register('email')}
           />
-          {errors.email && <p className="mt-1 text-xs text-[#DC2626]">{errors.email.message}</p>}
+          {errors.email && <p className="mt-1 text-xs text-error">{errors.email.message}</p>}
         </div>
 
         {serverError && (
-          <p className="text-sm text-[#DC2626] bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded px-3 py-2">
+          <p className="text-sm text-error bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-sm px-3 py-2">
             {serverError}
           </p>
         )}
@@ -97,7 +97,7 @@ export default function ForgotPasswordPage() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-[#6B7280] dark:text-gray-400">
+      <p className="mt-6 text-center text-sm text-text-muted dark:text-gray-400">
         Remember it?{' '}
         <Link href="/auth/login" className="text-primary font-medium hover:underline">
           Sign in

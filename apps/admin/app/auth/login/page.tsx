@@ -84,11 +84,11 @@ function LoginContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100">{brand.shortName} Admin</h1>
-          <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-1">Staff access only</p>
+          <h1 className="text-xl font-bold text-text dark:text-gray-100">{brand.shortName} Admin</h1>
+          <p className="text-sm text-text-muted dark:text-gray-400 mt-1">Staff access only</p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 shadow-sm">
+        <div className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-6 shadow-xs">
           {unauthorized && (
             <div className="mb-4 flex items-start gap-2.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-3 py-2.5">
               <svg className="w-4 h-4 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -100,12 +100,12 @@ function LoginContent() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1.5">Email</label>
               <input
                 type="email"
                 autoComplete="email"
                 placeholder="admin@example.com"
-                className="w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2.5 text-sm bg-white dark:bg-gray-800 text-[#1A1A1A] dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors"
+                className="w-full border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-3 py-2.5 text-sm bg-white dark:bg-gray-800 text-text dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-colors"
                 {...register('email')}
               />
               {errors.email && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.email.message}</p>}
@@ -113,10 +113,10 @@ function LoginContent() {
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-sm font-medium text-[#1A1A1A] dark:text-gray-200">Password</label>
+                <label className="text-sm font-medium text-text dark:text-gray-200">Password</label>
                 <Link
                   href="/auth/forgot-password"
-                  className="text-xs text-[#407E3C] hover:text-[#356834] font-medium transition-colors"
+                  className="text-xs text-[#407E3C] hover:text-primary-hover font-medium transition-colors"
                 >
                   Forgot password?
                 </Link>
@@ -140,7 +140,7 @@ function LoginContent() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#407E3C] hover:bg-[#356834] text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm mt-1"
+              className="w-full bg-[#407E3C] hover:bg-primary-hover text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-xs mt-1"
             >
               {loading ? 'Signing in…' : 'Sign in'}
             </button>

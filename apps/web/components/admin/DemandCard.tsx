@@ -38,11 +38,11 @@ export default function DemandCard() {
   return (
     <div className="card">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100">Fleet Demand Today</h3>
-        <div className="flex gap-3 text-xs text-[#6B7280] dark:text-gray-400">
+        <h3 className="text-sm font-semibold text-text dark:text-gray-100">Fleet Demand Today</h3>
+        <div className="flex gap-3 text-xs text-text-muted dark:text-gray-400">
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#407E3C]" />Normal</span>
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-orange-500" />High</span>
-          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#DC2626]" />Peak</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-error" />Peak</span>
         </div>
       </div>
 
@@ -53,7 +53,7 @@ export default function DemandCard() {
       )}
 
       {!loading && rows.length === 0 && (
-        <p className="text-sm text-[#6B7280] text-center py-4">
+        <p className="text-sm text-text-muted text-center py-4">
           No demand data yet — run pricing cron first.
         </p>
       )}

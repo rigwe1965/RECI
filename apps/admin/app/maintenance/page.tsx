@@ -102,8 +102,8 @@ export default function MaintenancePage() {
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 tracking-tight">Predictive Maintenance</h1>
-          <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-0.5">AI-powered service alerts based on mileage</p>
+          <h1 className="text-2xl font-bold text-text dark:text-gray-100 tracking-tight">Predictive Maintenance</h1>
+          <p className="text-sm text-text-muted dark:text-gray-400 mt-0.5">AI-powered service alerts based on mileage</p>
         </div>
         <button
           onClick={load}
@@ -120,13 +120,13 @@ export default function MaintenancePage() {
       {summary && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
           {[
-            { label: 'Total Flagged', value: summary.total_flagged, color: 'text-[#1A1A1A] dark:text-gray-100' },
+            { label: 'Total Flagged', value: summary.total_flagged, color: 'text-text dark:text-gray-100' },
             { label: 'Critical', value: summary.critical, color: 'text-red-600 dark:text-red-400' },
             { label: 'Alert', value: summary.alert, color: 'text-orange-600 dark:text-orange-400' },
             { label: 'Warning', value: summary.warning, color: 'text-yellow-600 dark:text-yellow-400' },
           ].map((s) => (
             <div key={s.label} className="bg-white dark:bg-gray-900 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-4">
-              <p className="text-xs text-[#6B7280] dark:text-gray-400 font-medium uppercase tracking-wide">{s.label}</p>
+              <p className="text-xs text-text-muted dark:text-gray-400 font-medium uppercase tracking-wide">{s.label}</p>
               <p className={`text-3xl font-bold mt-1 ${s.color}`}>{s.value}</p>
             </div>
           ))}
@@ -135,7 +135,7 @@ export default function MaintenancePage() {
 
       {/* Threshold legend */}
       {summary && (
-        <div className="flex flex-wrap gap-4 mb-6 text-xs text-[#6B7280] dark:text-gray-400">
+        <div className="flex flex-wrap gap-4 mb-6 text-xs text-text-muted dark:text-gray-400">
           <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-yellow-400" /> Warning ≥ {summary.thresholds.warning.toLocaleString()} km since service</span>
           <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-orange-500" /> Alert ≥ {summary.thresholds.alert.toLocaleString()} km since service</span>
           <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-500" /> Critical ≥ {summary.thresholds.critical.toLocaleString()} km since service</span>
@@ -155,8 +155,8 @@ export default function MaintenancePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <p className="font-semibold text-[#1A1A1A] dark:text-gray-100 mb-1">All clear</p>
-          <p className="text-sm text-[#6B7280] dark:text-gray-400">No vehicles require maintenance at this time.</p>
+          <p className="font-semibold text-text dark:text-gray-100 mb-1">All clear</p>
+          <p className="text-sm text-text-muted dark:text-gray-400">No vehicles require maintenance at this time.</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -171,14 +171,14 @@ export default function MaintenancePage() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 flex-wrap mb-2">
-                      <p className="font-semibold text-[#1A1A1A] dark:text-gray-100">
+                      <p className="font-semibold text-text dark:text-gray-100">
                         {v.year} {v.make} {v.model}
                       </p>
-                      <span className="font-mono text-xs text-[#6B7280] dark:text-gray-400">{v.registration_plate}</span>
+                      <span className="font-mono text-xs text-text-muted dark:text-gray-400">{v.registration_plate}</span>
                       <SeverityBadge severity={v.severity} />
                     </div>
 
-                    <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-[#6B7280] dark:text-gray-400 mb-3">
+                    <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-text-muted dark:text-gray-400 mb-3">
                       <span>{v.mileage.toLocaleString()} km total</span>
                       <span className={`font-semibold ${cfg.text}`}>
                         {v.km_since_service.toLocaleString()} km since last service
@@ -209,7 +209,7 @@ export default function MaintenancePage() {
                     <button
                       onClick={() => markServiced(v.id)}
                       disabled={resolvingId === v.id}
-                      className="text-xs font-semibold px-3 py-1.5 bg-[#407E3C] hover:bg-[#356834] text-white rounded-lg transition-colors disabled:opacity-50"
+                      className="text-xs font-semibold px-3 py-1.5 bg-[#407E3C] hover:bg-primary-hover text-white rounded-lg transition-colors disabled:opacity-50"
                     >
                       {resolvingId === v.id ? 'Saving…' : 'Mark Serviced'}
                     </button>

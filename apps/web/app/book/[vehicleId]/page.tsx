@@ -95,7 +95,7 @@ export default function BookStep1Page(props: { params: Promise<{ vehicleId: stri
     <div className="min-h-screen bg-[#F9FAFB] dark:bg-gray-950">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <p className="text-[#DC2626] font-medium">{error ?? 'Vehicle not found'}</p>
+        <p className="text-error font-medium">{error ?? 'Vehicle not found'}</p>
         <button onClick={() => router.push('/')} className="btn-primary mt-4">Back to search</button>
       </div>
     </div>
@@ -107,13 +107,13 @@ export default function BookStep1Page(props: { params: Promise<{ vehicleId: stri
       <CheckoutStepper current={1} />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-6">Confirm your vehicle</h1>
+        <h1 className="text-2xl font-bold text-text dark:text-gray-100 mb-6">Confirm your vehicle</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Vehicle detail */}
           <div className="lg:col-span-2 space-y-4">
             <div className="card">
-              <div className="relative aspect-[16/9] bg-[#F3F4F6] dark:bg-gray-800 rounded-md mb-4 overflow-hidden">
+              <div className="relative aspect-video bg-[#F3F4F6] dark:bg-gray-800 rounded-md mb-4 overflow-hidden">
                 {vehicle.image_urls?.[0] ? (
                   <Image
                     src={unsplashUrl(vehicle.image_urls[0], 800)}
@@ -124,19 +124,19 @@ export default function BookStep1Page(props: { params: Promise<{ vehicleId: stri
                   />
                 ) : (
                   <div className="flex items-center justify-center w-full h-full">
-                    <span className="text-[#6B7280] dark:text-gray-400 text-sm">No image</span>
+                    <span className="text-text-muted dark:text-gray-400 text-sm">No image</span>
                   </div>
                 )}
               </div>
               <div className="flex items-start justify-between">
                 <div>
                   {vehicle.category && <p className="text-xs font-medium text-primary uppercase tracking-wide">{vehicle.category.name}</p>}
-                  <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100">{vehicle.make} {vehicle.model} <span className="text-[#6B7280] dark:text-gray-400 font-normal text-base">({vehicle.year})</span></h2>
+                  <h2 className="text-xl font-bold text-text dark:text-gray-100">{vehicle.make} {vehicle.model} <span className="text-text-muted dark:text-gray-400 font-normal text-base">({vehicle.year})</span></h2>
                 </div>
                 {vehicle.daily_rate && (
                   <div className="text-right">
                     <span className="text-2xl font-bold text-primary">€{vehicle.daily_rate}</span>
-                    <span className="text-sm text-[#6B7280] dark:text-gray-400">/day</span>
+                    <span className="text-sm text-text-muted dark:text-gray-400">/day</span>
                   </div>
                 )}
               </div>
@@ -159,7 +159,7 @@ export default function BookStep1Page(props: { params: Promise<{ vehicleId: stri
 
             {/* Date picker */}
             <div className="card">
-              <h3 className="font-semibold text-[#1A1A1A] dark:text-gray-100 mb-4">Select your dates</h3>
+              <h3 className="font-semibold text-text dark:text-gray-100 mb-4">Select your dates</h3>
 
               {vehicle.category?.id && pickup && dropoff && (
                 <DemandBanner
@@ -170,22 +170,22 @@ export default function BookStep1Page(props: { params: Promise<{ vehicleId: stri
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">Pick-up Date</label>
+                  <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">Pick-up Date</label>
                   <input type="date" min={today} value={pickup} onChange={(e) => setPickup(e.target.value)} className="input-field" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">Drop-off Date</label>
+                  <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">Drop-off Date</label>
                   <input type="date" min={pickup || today} value={dropoff} onChange={(e) => setDropoff(e.target.value)} className="input-field" />
                 </div>
               </div>
               {pickup && dropoff && dropoff <= pickup && (
-                <p className="text-[#DC2626] text-xs mt-2">Drop-off must be after pick-up</p>
+                <p className="text-error text-xs mt-2">Drop-off must be after pick-up</p>
               )}
 
               {/* Return location */}
               {locations.length > 1 && (
                 <div className="mt-4 pt-4 border-t border-[#F3F4F6] dark:border-gray-700">
-                  <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">
+                  <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">
                     Return Location
                     {isOneWay && (
                       <span className="ml-2 text-xs font-normal text-[#407E3C] bg-[#F0FDF4] border border-[#BBF7D0] px-2 py-0.5 rounded-full">
@@ -203,7 +203,7 @@ export default function BookStep1Page(props: { params: Promise<{ vehicleId: stri
                     ))}
                   </select>
                   {isOneWay && (
-                    <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-1.5">
+                    <p className="text-xs text-text-muted dark:text-gray-400 mt-1.5">
                       One-way fee applies · Our team will confirm the surcharge by email.
                     </p>
                   )}
@@ -215,21 +215,21 @@ export default function BookStep1Page(props: { params: Promise<{ vehicleId: stri
           {/* Price preview */}
           <div className="lg:col-span-1">
             <div className="card sticky top-24">
-              <h3 className="font-semibold text-[#1A1A1A] dark:text-gray-100 mb-4">Price Preview</h3>
+              <h3 className="font-semibold text-text dark:text-gray-100 mb-4">Price Preview</h3>
               {preview ? (
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-[#6B7280] dark:text-gray-400">€{vehicle.daily_rate} × {days} day{days !== 1 ? 's' : ''}</span>
+                    <span className="text-text-muted dark:text-gray-400">€{vehicle.daily_rate} × {days} day{days !== 1 ? 's' : ''}</span>
                     <span className="dark:text-gray-200">{formatEUR(preview.base_subtotal)}</span>
                   </div>
                   <div className="flex justify-between font-semibold pt-2 border-t border-[#E5E7EB] dark:border-gray-700">
                     <span className="dark:text-gray-200">Subtotal</span>
                     <span className="text-primary">{formatEUR(preview.total)}</span>
                   </div>
-                  <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-2">Extras added in next step</p>
+                  <p className="text-xs text-text-muted dark:text-gray-400 mt-2">Extras added in next step</p>
                 </div>
               ) : (
-                <p className="text-sm text-[#6B7280] dark:text-gray-400">Select dates to see price</p>
+                <p className="text-sm text-text-muted dark:text-gray-400">Select dates to see price</p>
               )}
 
               <button

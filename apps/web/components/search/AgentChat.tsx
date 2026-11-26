@@ -40,10 +40,10 @@ function VehicleCard({ vehicle, searchParams }: { vehicle: VehicleResult; search
   return (
     <div className="flex items-start justify-between gap-3 bg-white dark:bg-gray-800 border border-[#E5E7EB] dark:border-gray-700 rounded-xl p-3 hover:border-[#407E3C] transition-colors">
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-[#1A1A1A] dark:text-gray-100 truncate">
-          {vehicle.make} {vehicle.model} <span className="font-normal text-[#6B7280]">· {vehicle.year}</span>
+        <p className="text-sm font-semibold text-text dark:text-gray-100 truncate">
+          {vehicle.make} {vehicle.model} <span className="font-normal text-text-muted">· {vehicle.year}</span>
         </p>
-        <p className="text-xs text-[#6B7280] dark:text-gray-400 mt-0.5">
+        <p className="text-xs text-text-muted dark:text-gray-400 mt-0.5">
           {fuelLabel} · {transIcon} · {vehicle.category.passenger_capacity} seats
         </p>
         {vehicle.features.length > 0 && (
@@ -58,7 +58,7 @@ function VehicleCard({ vehicle, searchParams }: { vehicle: VehicleResult; search
         )}
         <button
           onClick={handleBook}
-          className="text-xs font-semibold bg-[#407E3C] hover:bg-[#356834] text-white px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap"
+          className="text-xs font-semibold bg-[#407E3C] hover:bg-primary-hover text-white px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap"
         >
           Book →
         </button>
@@ -167,7 +167,7 @@ export default function AgentChat({ onSearchParams }: AgentChatProps) {
           <span className="text-xs text-[#9CA3AF]">— describe what you need</span>
         </div>
         {messages.length > 0 && (
-          <button onClick={handleClear} className="text-xs text-[#9CA3AF] hover:text-[#6B7280] transition-colors">
+          <button onClick={handleClear} className="text-xs text-[#9CA3AF] hover:text-text-muted transition-colors">
             Clear
           </button>
         )}
@@ -184,7 +184,7 @@ export default function AgentChat({ onSearchParams }: AgentChatProps) {
                   className={`px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
                     msg.role === 'user'
                       ? 'bg-[#407E3C] text-white rounded-tr-sm'
-                      : 'bg-[#F3F4F6] dark:bg-gray-700 text-[#1A1A1A] dark:text-gray-100 rounded-tl-sm'
+                      : 'bg-[#F3F4F6] dark:bg-gray-700 text-text dark:text-gray-100 rounded-tl-sm'
                   }`}
                 >
                   {msg.content}
@@ -263,12 +263,12 @@ export default function AgentChat({ onSearchParams }: AgentChatProps) {
           }
           disabled={loading}
           maxLength={1000}
-          className="flex-1 border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] dark:text-gray-100 placeholder:text-[#9CA3AF] dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-shadow bg-[#F9FAFB] dark:bg-gray-800"
+          className="flex-1 border border-[#E5E7EB] dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-text dark:text-gray-100 placeholder:text-[#9CA3AF] dark:placeholder-gray-500 focus:outline-hidden focus:ring-2 focus:ring-[#407E3C] focus:border-transparent transition-shadow bg-[#F9FAFB] dark:bg-gray-800"
         />
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="flex items-center gap-2 bg-[#407E3C] hover:bg-[#356834] disabled:opacity-40 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
+          className="flex items-center gap-2 bg-[#407E3C] hover:bg-primary-hover disabled:opacity-40 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
         >
           {loading ? (
             <>

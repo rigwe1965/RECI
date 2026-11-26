@@ -65,8 +65,8 @@ function ResetPasswordContent() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-2">Password updated</h2>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400">
+        <h2 className="text-xl font-bold text-text dark:text-gray-100 mb-2">Password updated</h2>
+        <p className="text-sm text-text-muted dark:text-gray-400">
           {required
             ? 'Your password has been set. You can now use the platform.'
             : 'Your password has been changed. Sign in with your new credentials.'}
@@ -83,10 +83,10 @@ function ResetPasswordContent() {
 
   return (
     <div className="card">
-      <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-1">
+      <h1 className="text-2xl font-bold text-text dark:text-gray-100 mb-1">
         {required ? 'Set your permanent password' : 'Set new password'}
       </h1>
-      <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-6">
+      <p className="text-sm text-text-muted dark:text-gray-400 mb-6">
         {required
           ? 'Your temporary password must be changed before you can continue.'
           : 'Choose a strong password for your account.'}
@@ -94,19 +94,19 @@ function ResetPasswordContent() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">New password</label>
+          <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">New password</label>
           <PasswordInput autoComplete="new-password" {...register('password')} />
-          {errors.password && <p className="mt-1 text-xs text-[#DC2626]">{errors.password.message}</p>}
+          {errors.password && <p className="mt-1 text-xs text-error">{errors.password.message}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#1A1A1A] dark:text-gray-200 mb-1">Confirm password</label>
+          <label className="block text-sm font-medium text-text dark:text-gray-200 mb-1">Confirm password</label>
           <PasswordInput autoComplete="new-password" {...register('confirm_password')} />
-          {errors.confirm_password && <p className="mt-1 text-xs text-[#DC2626]">{errors.confirm_password.message}</p>}
+          {errors.confirm_password && <p className="mt-1 text-xs text-error">{errors.confirm_password.message}</p>}
         </div>
 
         {serverError && (
-          <p className="text-sm text-[#DC2626] bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded px-3 py-2">
+          <p className="text-sm text-error bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-sm px-3 py-2">
             {serverError}
           </p>
         )}
@@ -121,7 +121,7 @@ function ResetPasswordContent() {
       </form>
 
       {!required && (
-        <p className="mt-6 text-center text-sm text-[#6B7280] dark:text-gray-400">
+        <p className="mt-6 text-center text-sm text-text-muted dark:text-gray-400">
           <Link href="/auth/login" className="text-primary font-medium hover:underline">
             Back to sign in
           </Link>

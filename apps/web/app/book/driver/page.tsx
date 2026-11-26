@@ -84,13 +84,13 @@ export default function BookDriverPage() {
       <CheckoutStepper current={3} />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-6">Driver details</h1>
+        <h1 className="text-2xl font-bold text-text dark:text-gray-100 mb-6">Driver details</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <div className="card">
               {error && (
-                <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-card text-sm text-[#DC2626]">
+                <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-card text-sm text-error">
                   {error}
                 </div>
               )}
@@ -103,7 +103,7 @@ export default function BookDriverPage() {
 
             <button
               onClick={() => router.back()}
-              className="mt-4 text-sm text-[#6B7280] dark:text-gray-400 hover:text-[#1A1A1A] dark:hover:text-gray-100 transition-colors"
+              className="mt-4 text-sm text-text-muted dark:text-gray-400 hover:text-text dark:hover:text-gray-100 transition-colors"
             >
               ← Back
             </button>

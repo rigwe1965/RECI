@@ -113,14 +113,14 @@ export default function InspectPickupPage() {
           <Link href={`/account/bookings/${bookingId}`} className="text-sm text-primary hover:underline">
             ← Back to booking
           </Link>
-          <h1 className="text-xl font-bold text-[#1A1A1A] dark:text-gray-100 mt-2">Pickup Inspection</h1>
-          <p className="text-sm text-[#6B7280] dark:text-gray-400 mt-1">
+          <h1 className="text-xl font-bold text-text dark:text-gray-100 mt-2">Pickup Inspection</h1>
+          <p className="text-sm text-text-muted dark:text-gray-400 mt-1">
             Photograph all 4 angles before taking the vehicle. This protects you from existing damage claims.
           </p>
         </div>
 
         {sizeError && (
-          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md text-sm text-[#DC2626]">
+          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md text-sm text-error">
             {sizeError}
           </div>
         )}
@@ -140,7 +140,7 @@ export default function InspectPickupPage() {
             </div>
 
             <div className="flex items-center justify-between mb-4">
-              <p className="text-sm text-[#6B7280] dark:text-gray-400">
+              <p className="text-sm text-text-muted dark:text-gray-400">
                 {ANGLES.filter((a) => previews[a]).length} / 4 photos captured
               </p>
               <div className="flex gap-1">
@@ -171,7 +171,7 @@ export default function InspectPickupPage() {
 
         {state.kind === 'done' && (
           <div className="card space-y-4">
-            <h2 className="text-base font-semibold text-[#1A1A1A] dark:text-gray-100">Inspection Complete</h2>
+            <h2 className="text-base font-semibold text-text dark:text-gray-100">Inspection Complete</h2>
             <DamageReportView report={state.report} />
             <Link href={`/account/bookings/${bookingId}`} className="btn-primary w-full text-center block mt-4">
               Back to Booking
@@ -181,7 +181,7 @@ export default function InspectPickupPage() {
 
         {state.kind === 'error' && (
           <div className="card space-y-3">
-            <p className="text-sm text-[#6B7280] dark:text-gray-400">{state.message}</p>
+            <p className="text-sm text-text-muted dark:text-gray-400">{state.message}</p>
             <button onClick={() => setState({ kind: 'capturing' })} className="btn-primary w-full">
               Try Again
             </button>

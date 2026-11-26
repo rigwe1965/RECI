@@ -15,18 +15,18 @@ export default function PrivacyPage() {
     <div className="min-h-screen bg-[#F9FAFB] dark:bg-gray-950">
       <Navbar />
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1 className="text-3xl font-bold text-[#1A1A1A] dark:text-gray-100 mb-2">Privacy Policy</h1>
-        <p className="text-sm text-[#6B7280] dark:text-gray-400 mb-10">Last updated: {updated}</p>
+        <h1 className="text-3xl font-bold text-text dark:text-gray-100 mb-2">Privacy Policy</h1>
+        <p className="text-sm text-text-muted dark:text-gray-400 mb-10">Last updated: {updated}</p>
 
         <div className="prose prose-gray dark:prose-invert max-w-none space-y-8 text-[#374151] dark:text-gray-300">
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">1. Controller</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">1. Controller</h2>
             <p>{brand.legalName}, {brand.city}, {brand.country} (<strong>we / us / our</strong>) is the data controller for personal data processed through this website and mobile app. Contact: <a href={`mailto:${brand.privacyEmail}`} className="text-[#407E3C] hover:underline">{brand.privacyEmail}</a></p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">2. Data We Collect</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">2. Data We Collect</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong>Account data:</strong> name, email address, password (hashed), company name (corporate accounts)</li>
               <li><strong>Booking data:</strong> pickup/dropoff dates, vehicle selections, extras, pricing, booking reference</li>
@@ -39,7 +39,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">3. How We Use Your Data</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">3. How We Use Your Data</h2>
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="border-b border-[#E5E7EB] dark:border-gray-700">
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">4. Data Processors</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">4. Data Processors</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong>Supabase Inc.</strong> (USA) — database and authentication. SCCs in place.</li>
               <li><strong>Stripe Inc.</strong> (USA) — payment processing. SCCs and EU-US DPF.</li>
@@ -70,7 +70,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">5. Data Retention</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">5. Data Retention</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li>Account data: until account deletion, or 3 years of inactivity</li>
               <li>Booking records: 10 years (German commercial law — HGB § 257)</li>
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">6. Your Rights</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">6. Your Rights</h2>
             <p className="mb-2">Under GDPR you have the right to:</p>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong>Access</strong> — request a copy of your personal data</li>
@@ -96,12 +96,12 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">7. Cookies</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">7. Cookies</h2>
             <p>We use strictly necessary cookies only (session authentication). We do not use tracking or advertising cookies without your explicit consent. See our cookie banner for controls.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-[#1A1A1A] dark:text-gray-100 mb-3">8. Changes</h2>
+            <h2 className="text-xl font-semibold text-text dark:text-gray-100 mb-3">8. Changes</h2>
             <p>Material changes will be notified by email 30 days in advance. Continued use after the effective date constitutes acceptance.</p>
           </section>
 

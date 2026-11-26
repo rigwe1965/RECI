@@ -36,12 +36,12 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-base bg-[#407E3C] group-hover:bg-[#356834] transition-colors shadow-sm">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-base bg-[#407E3C] group-hover:bg-primary-hover transition-colors shadow-xs">
             R
           </div>
           <div className="leading-none">
-            <span className="font-bold text-[#1A1A1A] dark:text-gray-100 text-base tracking-tight">{brand.shortName}</span>
-            <span className="font-normal text-[#6B7280] dark:text-gray-400 text-base tracking-tight"> Transport</span>
+            <span className="font-bold text-text dark:text-gray-100 text-base tracking-tight">{brand.shortName}</span>
+            <span className="font-normal text-text-muted dark:text-gray-400 text-base tracking-tight"> Transport</span>
           </div>
         </Link>
 
@@ -51,7 +51,7 @@ export default function Navbar() {
           <button
             onClick={toggle}
             aria-label="Toggle theme"
-            className="w-9 h-9 rounded-full flex items-center justify-center text-[#6B7280] dark:text-gray-400 hover:bg-[#F3F4F6] dark:hover:bg-gray-800 transition-colors"
+            className="w-9 h-9 rounded-full flex items-center justify-center text-text-muted dark:text-gray-400 hover:bg-[#F3F4F6] dark:hover:bg-gray-800 transition-colors"
           >
             {theme === 'dark' ? (
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -81,7 +81,7 @@ export default function Navbar() {
               {dropdownOpen && (
                 <div className="absolute right-0 mt-1.5 w-52 bg-white dark:bg-gray-900 rounded-xl border border-[#E5E7EB] dark:border-gray-700 shadow-xl py-1.5 z-50">
                   <div className="px-4 py-2.5 border-b border-[#F3F4F6] dark:border-gray-800">
-                    <p className="text-xs font-semibold text-[#1A1A1A] dark:text-gray-100 truncate">{user.email}</p>
+                    <p className="text-xs font-semibold text-text dark:text-gray-100 truncate">{user.email}</p>
                   </div>
                   {[
                     { href: '/account/bookings', label: 'My Bookings' },
@@ -100,7 +100,7 @@ export default function Navbar() {
                   <div className="border-t border-[#F3F4F6] dark:border-gray-800 mt-1 pt-1">
                     <button
                       onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-[#DC2626] hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                      className="block w-full text-left px-4 py-2 text-sm text-error hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                     >
                       Sign out
                     </button>
@@ -110,12 +110,12 @@ export default function Navbar() {
             </div>
           ) : !user ? (
             <>
-              <Link href="/auth/login" className="text-sm font-medium text-[#6B7280] dark:text-gray-400 hover:text-[#1A1A1A] dark:hover:text-gray-100 transition-colors px-3 py-2">
+              <Link href="/auth/login" className="text-sm font-medium text-text-muted dark:text-gray-400 hover:text-text dark:hover:text-gray-100 transition-colors px-3 py-2">
                 Sign in
               </Link>
               <Link
                 href="/auth/register"
-                className="text-sm font-semibold text-white bg-[#407E3C] hover:bg-[#356834] px-4 py-2 rounded-lg transition-colors"
+                className="text-sm font-semibold text-white bg-[#407E3C] hover:bg-primary-hover px-4 py-2 rounded-lg transition-colors"
               >
                 Register
               </Link>
