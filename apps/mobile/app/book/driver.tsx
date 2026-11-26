@@ -65,7 +65,7 @@ export default function DriverScreen() {
                 style={[styles.input, errors[field.name] && styles.inputError]}
                 placeholder={field.placeholder}
                 placeholderTextColor="#9CA3AF"
-                autoCapitalize={field.autoCapitalize as never}
+                autoCapitalize={('autoCapitalize' in field ? field.autoCapitalize : undefined) as never}
                 keyboardType={('keyboardType' in field ? field.keyboardType : 'default') as never}
                 value={f.value}
                 onChangeText={f.onChange}
@@ -79,7 +79,7 @@ export default function DriverScreen() {
         </View>
       ))}
 
-      <TouchableOpacity style={styles.continueBtn} onPress={handleSubmit(onSubmit)}>
+      <TouchableOpacity style={styles.continueBtn} onPress={() => handleSubmit(onSubmit)()}>
         <Text style={styles.continueBtnText}>Continue to Payment →</Text>
       </TouchableOpacity>
     </ScrollView>

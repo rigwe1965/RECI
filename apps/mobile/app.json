@@ -4,12 +4,8 @@
     "slug": "reci-transport",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "scheme": "recitransport",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "backgroundColor": "#407E3C"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "de.recitransport.app"
@@ -22,7 +18,21 @@
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      "@react-native-community/datetimepicker",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": [],
+          "enableGooglePay": false
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#407E3C"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
