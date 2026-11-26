@@ -11,3 +11,6 @@ Sentry.init({
     'Non-Error promise rejection captured',
   ],
 })
+
+// Lets Sentry trace client-side navigations (Next.js 15.3+ hook).
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart

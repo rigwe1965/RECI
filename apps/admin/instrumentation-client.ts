@@ -6,3 +6,6 @@ Sentry.init({
   environment: process.env.NODE_ENV,
   enabled: process.env.NODE_ENV === 'production',
 })
+
+// Lets Sentry trace client-side navigations (Next.js 15.3+ hook).
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart
