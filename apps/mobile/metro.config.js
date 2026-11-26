@@ -1,20 +1,7 @@
 const { getDefaultConfig } = require('expo/metro-config')
-const path = require('path')
 
-const projectRoot = __dirname
-const workspaceRoot = path.resolve(projectRoot, '../..')
-
-const config = getDefaultConfig(projectRoot)
-
-// pnpm workspace packages (e.g. @reci/utils, @reci/types) live outside
-// apps/mobile/node_modules as symlinks — Metro needs to watch the monorepo
-// root and follow symlinks to resolve them.
-config.watchFolders = [workspaceRoot]
-config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, 'node_modules'),
-  path.resolve(workspaceRoot, 'node_modules'),
-]
-config.resolver.unstable_enableSymlinks = true
-config.resolver.disableHierarchicalLookup = true
-
-module.exports = config
+// Expo's default config handles this pnpm monorepo (watch folders, symlinked
+// workspace packages such as @reci/utils and @reci/types) by itself since
+// SDK 52. The old manual overrides (disableHierarchicalLookup,
+// unstable_enableSymlinks) broke module resolution under pnpm.
+module.exports = getDefaultConfig(__dirname)
