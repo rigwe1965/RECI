@@ -161,10 +161,11 @@ export const LicenceOCRResponseSchema = z.object({
   name: z.string().nullable(),
   licence_number: z.string().nullable(),
   expiry_date: z.string().nullable(),
-  categories: z.array(z.string()),
+  // The prompt asks for all fields null when the image is not a licence: read that as "nothing found".
+  categories: z.array(z.string()).nullable().transform((v) => v ?? []),
   issuing_country: z.string().nullable(),
-  confidence: z.number().min(0).max(1),
-  name_match: z.boolean(),
+  confidence: z.number().min(0).max(1).nullable().transform((v) => v ?? 0),
+  name_match: z.boolean().nullable().transform((v) => v ?? false),
 })
 
 // Trip Co-pilot
